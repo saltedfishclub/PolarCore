@@ -40,3 +40,4 @@ public final class PluginManager
 		plugin.setEnabled(false);
 	}
 }
+

@@ -34,3 +34,4 @@ public abstract class JavaPlugin
 		return loader;
 	}
 }
+
