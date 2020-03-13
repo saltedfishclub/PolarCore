@@ -52,14 +52,17 @@ public class CommandManager {
             cmd = m.getMessage().trim().replaceFirst(Core.getConf().startsWith, "");
             exec = CommandMap.getOrDefault(cmd, u);
             if (m.getUser().hasPermission(exec.getPerm())) {
-                exec.onCommand(m.getUser(), m);
+                exec.onCommand(m.getUser(), new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), "", m.getGroupID()));
+            } else {
+                Core.getBot(m).sendMessage(m, "Permission Denied.");
             }
         } else {
             exec = CommandMap.getOrDefault(args[0], u);
             if (m.getUser().hasPermission(exec.getPerm())) {
                 exec.onCommand(m.getUser(), new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), m.getMessage().replaceFirst(Core.getConf().startsWith.concat(args[0]).concat(" "), ""), m.getGroupID()));
+            } else {
+                Core.getBot(m).sendMessage(m, "Permission Denied.");
             }
-
         }
     }
 }
