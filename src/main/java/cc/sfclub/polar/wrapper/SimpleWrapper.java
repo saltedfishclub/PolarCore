@@ -11,25 +11,28 @@ public final class SimpleWrapper implements Bot {
     }
 
     @Override
-    public void sendMessage(long id, String message, String platfrom) {
-        Core.getLogger().info("ID: {} Msg: {} Platfrom: {}", id, message, platfrom);
+    public long sendMessage(long id, String message) {
+        Core.getLogger().info("ID: {} Msg: {} Platfrom: {}", id, message);
+        return 0L;
     }
 
     @Override
-    public void deleteMsg(long msg, String platfrom) {
+    public void deleteMsg(long msg) {
 
     }
 
     @Override
-    public void sendMessage(TextMessage from, String output) {
-        sendMessage(from.getGroupID(), output, from.getProvider());
+    public long sendMessage(TextMessage from, String output) {
+        sendMessage(from.getGroupID(), output);
+        return 0L;
     }
 
     @Override
-    public void sendMessage(TextMessage from, String[] output) {
+    public long sendMessage(TextMessage from, String[] output) {
         for (String s : output) {
             sendMessage(from, s);
         }
+        return 0L;
     }
 
     @Override

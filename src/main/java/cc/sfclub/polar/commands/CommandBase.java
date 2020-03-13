@@ -9,4 +9,8 @@ public abstract class CommandBase {
     public abstract String getPerm();
 
     public abstract void onCommand(User u, TextMessage Command);
+
+    public String getUsage() {
+        return "Try to use \"help\" for some help.";
+    }
 }

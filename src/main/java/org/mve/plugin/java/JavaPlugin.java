@@ -1,20 +1,25 @@
 package org.mve.plugin.java;
 
-public abstract class JavaPlugin
-{
+import java.io.File;
+
+public abstract class JavaPlugin {
 	private boolean enabled = false;
 	private final PluginLoader loader;
+	private final File DataFolder;
 
-	public JavaPlugin()
-	{
+	public JavaPlugin() {
 		this.loader = ((PluginClassLoader) this.getClass().getClassLoader()).getLoader();
+		DataFolder = new File("./plugins/config");
 	}
 
-	public void onLoad(){}
+	public void onLoad() {
+	}
 
-	public void onEnable(){}
+	public void onEnable() {
+	}
 
-	public void onDisable(){}
+	public void onDisable() {
+	}
 
 	public final void setEnabled(boolean enabled)
 	{
@@ -24,14 +29,16 @@ public abstract class JavaPlugin
 		else this.onDisable();
 	}
 
-	public final boolean isEnabled()
-	{
+	public final boolean isEnabled() {
 		return enabled;
 	}
 
-	public final PluginLoader getPluginLoader()
-	{
+	public final PluginLoader getPluginLoader() {
 		return loader;
+	}
+
+	public final File getDataFolder() {
+		return DataFolder;
 	}
 }
 

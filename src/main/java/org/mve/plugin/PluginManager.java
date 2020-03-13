@@ -26,12 +26,12 @@ public final class PluginManager {
     }
 
     public void enablePlugin(JavaPlugin plugin) {
-        Core.getLogger().info("Enable plugin " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getName() + " " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getVersion());
+        Core.getLogger().info("Enabling plugin " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getName() + " " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getVersion());
         plugin.setEnabled(true);
     }
 
     public void disablePlugin(JavaPlugin plugin) {
-        Core.getLogger().info("Disable plugin " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getName() + " " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getVersion());
+        Core.getLogger().info("Disabling plugin " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getName() + " " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getVersion());
         plugin.setEnabled(false);
     }
 }

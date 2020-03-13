@@ -48,11 +48,10 @@ public final class PluginClassLoader extends URLClassLoader
 		try
 		{
 			clazz = Class.forName(main, true, this);
-			plugin = (JavaPlugin) clazz.newInstance();
+			plugin = (JavaPlugin) clazz.getDeclaredConstructor().newInstance();
 		}
-		catch (Throwable e)
-		{
-			throw new InvalidPluginException("Can not load plugin "+file.getAbsolutePath(), e);
+		catch (Throwable e) {
+			throw new InvalidPluginException("Could not load plugin " + file.getAbsolutePath(), e);
 		}
 		this.description = new PluginDescription(name, version, (Class<? extends JavaPlugin>) clazz);
 		this.plugin = plugin;

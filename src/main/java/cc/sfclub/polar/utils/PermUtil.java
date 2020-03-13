@@ -13,7 +13,7 @@ public final class PermUtil {
     public ArrayList<String> getDefaults(String group) {
         Group g = dao.fetch(Group.class, Cnd.where("pGroup", "=", group));
         if (g != null) {
-            return g.nodes; //todo test
+            return g.nodes;
         } else {
             return new ArrayList<String>();
         }

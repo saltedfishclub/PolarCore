@@ -7,8 +7,8 @@ public class TextMessage extends Message {
     @Getter
     private String Message;
 
-    public TextMessage(String Provider, int MsgID, long User, String Message) {
-        super(Provider, MsgID, User);
+    public TextMessage(String Provider, long MsgID, long User, String Message, long Group) {
+        super(Provider, MsgID, User, Group);
         this.Message = Message;
     }
 

@@ -12,30 +12,31 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class CommandManager {
-    Reflections pl;
     static volatile HashMap<String, CommandBase> CommandMap = new HashMap<>();
     Unknown u = new Unknown();
 
-    public void register(String prefix) {
-        pl = new Reflections(prefix);
+    public void register(Reflections pl) {
         scan(pl);
     }
 
     void scan(Reflections rfl) {
         rfl.getSubTypesOf(CommandBase.class).forEach(clazz -> {
-            try {
-                CommandBase a = clazz.getDeclaredConstructor().newInstance();
-                String name = clazz.getSimpleName().toLowerCase();
-                String desc = a.getDescription();
-                if (desc != null) {
-                    CommandMap.put(clazz.getSimpleName().toLowerCase(), clazz.getDeclaredConstructor().newInstance());
-                    Core.getLogger().info("Register Command:" + name + " ~ " + desc);
-                }
-            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
+            register(clazz);
         });
+    }
+
+    public void register(Class<? extends CommandBase> clazz) {
+        try {
+            CommandBase a = clazz.getDeclaredConstructor().newInstance();
+            String name = clazz.getSimpleName().toLowerCase();
+            String desc = a.getDescription();
+            if (desc != null) {
+                CommandMap.put(clazz.getSimpleName().toLowerCase(), clazz.getDeclaredConstructor().newInstance());
+                Core.getLogger().info("Register Command:" + name + " ~ " + desc);
+            }
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
@@ -56,7 +57,7 @@ public class CommandManager {
         } else {
             exec = CommandMap.getOrDefault(args[0], u);
             if (m.getUser().hasPermission(exec.getPerm())) {
-                exec.onCommand(m.getUser(), new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), m.getMessage().replaceFirst(Core.getConf().startsWith.concat(args[0]).concat(" "), "")));
+                exec.onCommand(m.getUser(), new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), m.getMessage().replaceFirst(Core.getConf().startsWith.concat(args[0]).concat(" "), ""), m.getGroupID()));
             }
 
         }

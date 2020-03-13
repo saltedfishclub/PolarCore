@@ -5,13 +5,13 @@ import cc.sfclub.polar.events.messages.TextMessage;
 public interface Bot {
     String getPlatfrom();
 
-    void sendMessage(long Gid, String message, String platfrom);
+    long sendMessage(long Gid, String message);
 
-    void deleteMsg(long msg, String platfrom);
+    void deleteMsg(long msg);
 
-    void sendMessage(TextMessage from, String output);
+    long sendMessage(TextMessage from, String output);
 
-    void sendMessage(TextMessage from, String[] output);
+    long sendMessage(TextMessage from, String[] output);
 
     Byte[] getImage(String img);
 

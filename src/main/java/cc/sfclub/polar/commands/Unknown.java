@@ -17,6 +17,6 @@ public class Unknown extends CommandBase {
 
     @Override
     public void onCommand(User u, TextMessage Command) {
-        Core.getBot(Command).sendMessage(Command, "Wrong usage or unknown command.");
+        Core.getBot(Command).sendMessage(Command, "Wrong usage or unknown command.(Maybe you can try \"help\" for help)");
     }
 }

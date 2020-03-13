@@ -11,14 +11,15 @@ public class Message extends Event {
     @Getter
     private long UID;
     @Getter
-    private int MsgID;
+    private long MsgID;
     @Getter
     private long GroupID;
 
-    public Message(String Provider, int MsgID, long User) {
+    public Message(String Provider, long MsgID, long User, long GroupID) {
         this.Provider = Provider;
         this.UID = User;
         this.MsgID = MsgID;
+        this.GroupID = GroupID;
     }
 
     public User getUser() {

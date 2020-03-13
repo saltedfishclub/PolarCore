@@ -13,8 +13,10 @@ import lombok.Getter;
 import org.greenrobot.eventbus.EventBus;
 import org.mve.plugin.PluginException;
 import org.mve.plugin.PluginManager;
+import org.mve.plugin.java.JavaPlugin;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +28,7 @@ import java.util.Scanner;
 public class Core {
     private static final int CONFIG_VERSION = 5;
 
+    @Getter
     private static EventBus Message;
     @Getter
     private static final Logger logger = LoggerFactory.getLogger(Core.class);
@@ -48,6 +51,7 @@ public class Core {
     private static CommandManager CommandManager = new CommandManager();
     @Getter
     private static String DefaultGroup;
+    private static ArrayList<JavaPlugin> plugins = new ArrayList<>();
 
     public static void main(String[] args) {
         logger.info("Loading Config");
@@ -59,10 +63,10 @@ public class Core {
         UserManager = new UserUtil();
         logger.info("Loading Events");
         loadEventBus();
+        logger.info("Loading CommandManager");
+        CommandManager.register(new Reflections("cc.sfclub.polar"));
         logger.info("Loading Plugins");
         loadPlugins();
-        logger.info("Loading CommandManager");
-        CommandManager.register("cc.sfclub.polar");
         addBot(new SimpleWrapper());
         logger.info("All-Completed.");
         waitCommand();
@@ -75,15 +79,20 @@ public class Core {
             if (!a.mkdir()) {
                 Core.getLogger().error("Could not create plugins folder.");
             }
+            new File("./plugins/config").mkdir();
             return;
         }
         ArrayList<File> fs = new ArrayList<>();
         for (File file : a.listFiles()) {
             if (!file.isDirectory()) {
                 try {
-                    PluginManager.enablePlugin(PluginManager.loadPlugin(file));
+                    JavaPlugin jp = PluginManager.loadPlugin(file);
+                    if (jp != null) {
+                        PluginManager.enablePlugin(jp);
+                        plugins.add(jp);
+                    }
                 } catch (PluginException e) {
-                    Core.getLogger().error(e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }
@@ -123,9 +132,10 @@ public class Core {
             command = scanner.nextLine();
             if (command.equals("stop")) {
                 logger.info("Stopping Server...");
+                plugins.forEach(PluginManager::disablePlugin);
                 break;
             }
-            Message.post(new TextMessage("CLI", i, 0L, command));
+            Message.post(new TextMessage("CLI", i, 0L, command, 0));
             i++;
         }
         scanner.close();
@@ -157,6 +167,7 @@ public class Core {
             Group member = new Group();
             member.pGroup = "MEMBER";
             member.nodes.add("member.basic.*");
+            member.isDefault = true;
             //
             conf.groups.add(op);
             conf.groups.add(mod);
@@ -210,6 +221,10 @@ public class Core {
 
     public static Bot getBot(cc.sfclub.polar.events.Message msg) {
         return Wrappers.get(msg.getProvider());
+    }
+
+    public static Bot getBot(String Provider) {
+        return Wrappers.get(Provider);
     }
 
     public static void addBot(Bot bot) {
