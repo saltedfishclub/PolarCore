@@ -42,24 +42,24 @@ public class CommandManager {
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public final void onMessage(TextMessage m) {
         if (!m.getMessage().trim().startsWith(Core.getConf().startsWith)) return;
-        String[] args = m.getMessage().trim().replaceFirst(Core.getConf().startsWith, "").split(" ");
+        String[] args = m.getMessage().trim().replaceFirst(Core.getConf().startsWith.concat(" "), "").split(" ");
         CommandBase exec;
         if (!Core.getUserManager().isUserExists(m.getUID(), m.getProvider())) {
             Core.getUserManager().addUser(new User(m.getUID(), m.getProvider(), Core.getDefaultGroup()));
         }
-        if (args.length == 0) {
+        if (args.length > 1) {
             String cmd;
             cmd = m.getMessage().trim().replaceFirst(Core.getConf().startsWith, "");
             exec = CommandMap.getOrDefault(cmd, u);
             if (m.getUser().hasPermission(exec.getPerm())) {
-                exec.onCommand(m.getUser(), new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), "", m.getGroupID()));
+                exec.onCommand(m.getUser(), m);
             } else {
                 Core.getBot(m).sendMessage(m, "Permission Denied.");
             }
         } else {
             exec = CommandMap.getOrDefault(args[0], u);
             if (m.getUser().hasPermission(exec.getPerm())) {
-                exec.onCommand(m.getUser(), new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), m.getMessage().replaceFirst(Core.getConf().startsWith.concat(args[0]).concat(" "), ""), m.getGroupID()));
+                exec.onCommand(m.getUser(), new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), "", m.getGroupID()));
             } else {
                 Core.getBot(m).sendMessage(m, "Permission Denied.");
             }
