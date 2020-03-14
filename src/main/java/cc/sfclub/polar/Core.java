@@ -163,7 +163,7 @@ public class Core {
             mod.pGroup = "MODERATOR";
             mod.nodes.add("member.mod.*");
             mod.nodes.add("member.basic.*");
-            //todo Extends
+            mod.extend = "MEMBER";
             Group member = new Group();
             member.pGroup = "MEMBER";
             member.nodes.add("member.basic.*");
