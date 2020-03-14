@@ -7,8 +7,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
     String name() default "";
-
     String description() default "";
-
     String perm() default "";
 }

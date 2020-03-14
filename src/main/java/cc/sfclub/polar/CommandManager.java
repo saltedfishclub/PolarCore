@@ -32,6 +32,19 @@ public class CommandManager {
 
     public void register(CommandBase cmd) {
         try {
+            CommandFilter cfilter = cmd.getClass().getAnnotation(CommandFilter.class);
+            if (cfilter != null) {
+                String alias = cfilter.alias();
+                cmd.Provider = cfilter.provider();
+                String[] aliases = alias.split(",");
+                for (String s : aliases) {
+                    if (CommandMap.containsKey(s)) {
+                        Core.getLogger().warn("Command OVERWRITING!! Alias: {} ,from: {}", alias, cmd.getClass().getCanonicalName());
+                    }
+                    CommandMap.put(s, cmd);
+                    cmd.Aliases.add(s);
+                }
+            }
             Command c = cmd.getClass().getAnnotation(Command.class);
             String name, desc, perm;
             if (c != null) {
@@ -49,8 +62,8 @@ public class CommandManager {
                 }
             }
             name = cmd.getClass().getSimpleName().toLowerCase();
-            desc = cmd.getDescription();
-            if (desc == null || cmd.getPerm() == null) return;
+            desc = cmd.Description;
+            if (desc == null || cmd.Perm == null) return;
             CommandMap.put(cmd.getClass().getSimpleName().toLowerCase(), cmd.getClass().getDeclaredConstructor().newInstance());
             Core.getLogger().info("Register Command: {} ~ {}", name, desc);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
@@ -66,21 +79,21 @@ public class CommandManager {
         if (!Core.getUserManager().isUserExists(m.getUID(), m.getProvider())) {
             Core.getUserManager().addUser(new User(m.getUID(), m.getProvider(), Core.getDefaultGroup()));
         }
-        if (args.length > 1) {
-            exec = CommandMap.getOrDefault(args[0], u);
-            if (m.getUser().hasPermission(exec.getPerm())) {
-                TextMessage tm = new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), m.getMessage().trim().replaceFirst(Core.getConf().startsWith.concat(" "), ""), m.getGroupID());
-                exec.onCommand(m.getUser(), tm);
-            } else {
-                Core.getBot(m).sendMessage(m, "Permission Denied.");
-            }
-        } else {
-            exec = CommandMap.getOrDefault(args[0], u);
-            if (m.getUser().hasPermission(exec.getPerm())) {
-                exec.onCommand(m.getUser(), new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), "", m.getGroupID()));
-            } else {
-                Core.getBot(m).sendMessage(m, "Permission Denied.");
-            }
+        exec = CommandMap.getOrDefault(args[0], u);
+        if (!m.getProvider().matches(exec.Provider)) {
+            return;
         }
+        if (m.getUser().hasPermission(exec.Perm)) {
+            TextMessage tm;
+            if (args.length > 1) {
+                tm = new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), m.getMessage().trim().replaceFirst(Core.getConf().startsWith.concat(" "), ""), m.getGroupID());
+            } else {
+                tm = new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), "", m.getGroupID());
+            }
+            exec.onCommand(m.getUser(), tm);
+        } else {
+            Core.getBot(m).sendMessage(m, "Permission Denied.");
+        }
+
     }
 }
