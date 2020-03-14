@@ -26,8 +26,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Core {
-    private static final int CONFIG_VERSION = 5;
-
+    private static final int CONFIG_VERSION = 6;
     @Getter
     private static EventBus Message;
     @Getter
