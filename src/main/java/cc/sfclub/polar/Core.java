@@ -107,7 +107,7 @@ public class Core {
             logger.info("Creating Table: user");
             dao.create(User.class, false);
             User a = new User(0L, "CLI", "OPERATOR");
-            a.setUserName("CONSOLE");
+            a.UserName = "CONSOLE";
             logger.info("Added User: CONSOLE");
             dao.insert(a);
         }
