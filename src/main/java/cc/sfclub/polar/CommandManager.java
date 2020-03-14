@@ -1,6 +1,5 @@
 package cc.sfclub.polar;
 
-import cc.sfclub.polar.commands.CommandBase;
 import cc.sfclub.polar.commands.Unknown;
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.user.User;
@@ -28,11 +27,27 @@ public class CommandManager {
     public void register(Class<? extends CommandBase> clazz) {
         try {
             CommandBase a = clazz.getDeclaredConstructor().newInstance();
-            String name = clazz.getSimpleName().toLowerCase();
-            String desc = a.getDescription();
+            Command c = clazz.getAnnotation(Command.class);
+            String name, desc, perm;
+            if (c != null) {
+                desc = c.description();
+                perm = c.perm();
+                if (c.name().isEmpty()) {
+                    Core.getLogger().warn("{} has a empty name!!", clazz.getCanonicalName());
+                } else {
+                    CommandBase cb = clazz.getDeclaredConstructor().newInstance();
+                    cb.Perm = perm;
+                    CommandMap.put(c.name().toLowerCase(), cb);
+                    Core.getLogger().info("Register Command: {} ~ {}", c.name().toLowerCase(), desc);
+                    return;
+                }
+            }
+            name = clazz.getSimpleName().toLowerCase();
+            desc = a.getDescription();
+            if (desc == null || a.getPerm() == null) return;
             if (desc != null) {
                 CommandMap.put(clazz.getSimpleName().toLowerCase(), clazz.getDeclaredConstructor().newInstance());
-                Core.getLogger().info("Register Command:" + name + " ~ " + desc);
+                Core.getLogger().info("Register Command: {} ~ {}", name, desc);
             }
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
