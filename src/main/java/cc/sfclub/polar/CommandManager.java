@@ -3,6 +3,7 @@ package cc.sfclub.polar;
 import cc.sfclub.polar.commands.Unknown;
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.user.User;
+import lombok.Getter;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.reflections.Reflections;
@@ -11,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class CommandManager {
+    @Getter
     static volatile HashMap<String, CommandBase> CommandMap = new HashMap<>();
     Unknown u = new Unknown();
 
@@ -35,10 +37,12 @@ public class CommandManager {
             if (c != null) {
                 desc = c.description();
                 perm = c.perm();
+
                 if (c.name().isEmpty()) {
                     Core.getLogger().warn("{} has a empty name!!", cmd.getClass().getCanonicalName());
                 } else {
                     cmd.Perm = perm;
+                    cmd.Description = desc;
                     CommandMap.put(c.name().toLowerCase(), cmd);
                     Core.getLogger().info("Register Command: {} ~ {}", c.name().toLowerCase(), desc);
                     return;
