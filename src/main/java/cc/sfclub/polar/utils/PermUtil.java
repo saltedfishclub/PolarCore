@@ -11,11 +11,11 @@ public final class PermUtil {
     Dao dao = Core.getDao();
 
     public ArrayList<String> getDefaults(String group) {
-        Group g = dao.fetch(Group.class, Cnd.where("pGroup", "=", group));
+        Group g = getGroup(group);
         if (g != null) {
             return g.nodes;
         } else {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
     }
 
@@ -26,6 +26,14 @@ public final class PermUtil {
             Core.getLogger().info("with these permissions:");
             group.nodes.forEach(Core.getLogger()::info);
         }
+    }
+
+    public void delGroup(Group group) {
+        dao.delete(group);
+    }
+
+    public Group getGroup(String name) {
+        return dao.fetch(Group.class, Cnd.where("pGroup", "=", name));
     }
 
     public boolean compare(String orig, String target) {

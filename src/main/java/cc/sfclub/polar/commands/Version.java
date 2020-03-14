@@ -21,7 +21,7 @@ public class Version extends CommandBase {
         Core.getBot(Command).sendMessage(Command, new String[]{
                 Core.getConf().name + " v" + Core.getConf().config_version,
                 "PolarCore by iceBear67",
-                "Made with Love."
+                "Made with THE STRONGEST HATE"
         });
     }
 }

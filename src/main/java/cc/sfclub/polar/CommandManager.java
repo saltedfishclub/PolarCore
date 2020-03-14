@@ -20,35 +20,35 @@ public class CommandManager {
 
     void scan(Reflections rfl) {
         rfl.getSubTypesOf(CommandBase.class).forEach(clazz -> {
-            register(clazz);
+            try {
+                register(clazz.getDeclaredConstructor().newInstance());
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
         });
     }
 
-    public void register(Class<? extends CommandBase> clazz) {
+    public void register(CommandBase cmd) {
         try {
-            CommandBase a = clazz.getDeclaredConstructor().newInstance();
-            Command c = clazz.getAnnotation(Command.class);
+            Command c = cmd.getClass().getAnnotation(Command.class);
             String name, desc, perm;
             if (c != null) {
                 desc = c.description();
                 perm = c.perm();
                 if (c.name().isEmpty()) {
-                    Core.getLogger().warn("{} has a empty name!!", clazz.getCanonicalName());
+                    Core.getLogger().warn("{} has a empty name!!", cmd.getClass().getCanonicalName());
                 } else {
-                    CommandBase cb = clazz.getDeclaredConstructor().newInstance();
-                    cb.Perm = perm;
-                    CommandMap.put(c.name().toLowerCase(), cb);
+                    cmd.Perm = perm;
+                    CommandMap.put(c.name().toLowerCase(), cmd);
                     Core.getLogger().info("Register Command: {} ~ {}", c.name().toLowerCase(), desc);
                     return;
                 }
             }
-            name = clazz.getSimpleName().toLowerCase();
-            desc = a.getDescription();
-            if (desc == null || a.getPerm() == null) return;
-            if (desc != null) {
-                CommandMap.put(clazz.getSimpleName().toLowerCase(), clazz.getDeclaredConstructor().newInstance());
-                Core.getLogger().info("Register Command: {} ~ {}", name, desc);
-            }
+            name = cmd.getClass().getSimpleName().toLowerCase();
+            desc = cmd.getDescription();
+            if (desc == null || cmd.getPerm() == null) return;
+            CommandMap.put(cmd.getClass().getSimpleName().toLowerCase(), cmd.getClass().getDeclaredConstructor().newInstance());
+            Core.getLogger().info("Register Command: {} ~ {}", name, desc);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -63,11 +63,10 @@ public class CommandManager {
             Core.getUserManager().addUser(new User(m.getUID(), m.getProvider(), Core.getDefaultGroup()));
         }
         if (args.length > 1) {
-            String cmd;
-            cmd = m.getMessage().trim().replaceFirst(Core.getConf().startsWith, "");
-            exec = CommandMap.getOrDefault(cmd, u);
+            exec = CommandMap.getOrDefault(args[0], u);
             if (m.getUser().hasPermission(exec.getPerm())) {
-                exec.onCommand(m.getUser(), m);
+                TextMessage tm = new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), m.getMessage().trim().replaceFirst(Core.getConf().startsWith.concat(" "), ""), m.getGroupID());
+                exec.onCommand(m.getUser(), tm);
             } else {
                 Core.getBot(m).sendMessage(m, "Permission Denied.");
             }

@@ -2,7 +2,6 @@ package cc.sfclub.polar.user;
 
 import cc.sfclub.polar.Core;
 import lombok.Getter;
-import lombok.Setter;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -14,11 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class User {
     @Getter
     private long UID;
-    @Getter
-    private String pGroup;
-    @Setter
-    @Getter
-    private String UserName;
+    public String pGroup;
+    public String UserName;
     public String Provider;
     public ArrayList<String> Permissions = new ArrayList<>();
     @Name
