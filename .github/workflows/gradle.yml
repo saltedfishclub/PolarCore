@@ -22,9 +22,11 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew shadowjar
+    - name: Rename Artifact
+      run: mv ./build/libs/*.jar ./build/libs/Core.jar
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: "Core-1.0-SNAPSHOT-all.jar"
+        name: "Core.jar"
         # Directory containing files to upload
         path: build/libs
