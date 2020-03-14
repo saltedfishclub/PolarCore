@@ -11,5 +11,6 @@ public class Group {
     @Name
     public String pGroup;
     public long internalID;
+    public String extend;
     public boolean isDefault = false;
 }

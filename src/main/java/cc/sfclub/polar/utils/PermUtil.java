@@ -9,10 +9,20 @@ import java.util.ArrayList;
 
 public final class PermUtil {
     Dao dao = Core.getDao();
-
     public ArrayList<String> getDefaults(String group) {
         Group g = getGroup(group);
+        ArrayList<String> str = new ArrayList<>();
         if (g != null) {
+            if (g.extend != null) {
+                Group e;
+                if (getGroup(g.extend) != null) {
+                    str.addAll(getDefaults(g.extend));
+                    str.addAll(g.nodes);
+                    return str;
+                } else {
+                    Core.getLogger().warn("Group {} extends a NULL!!", group);
+                }
+            }
             return g.nodes;
         } else {
             return new ArrayList<>();
