@@ -25,6 +25,6 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: "*.jar"
+        name: "Core-1.0-SNAPSHOT-all.jar"
         # Directory containing files to upload
         path: build/libs
