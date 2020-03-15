@@ -22,6 +22,6 @@ public class Unknown extends CommandBase {
 
     @Override
     public void onCommand(User u, TextMessage Command) {
-        Command.getBot().sendMessage(Command, "WTF are you speaking?");
+        Command.reply("WTF are you speaking?");
     }
 }

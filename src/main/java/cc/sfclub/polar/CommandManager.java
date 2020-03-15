@@ -3,32 +3,18 @@ package cc.sfclub.polar;
 import cc.sfclub.polar.commands.Unknown;
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.user.User;
+import cc.sfclub.polar.utils.UserUtil;
 import lombok.Getter;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class CommandManager {
     @Getter
-    static volatile HashMap<String, CommandBase> CommandMap = new HashMap<>();
+    volatile HashMap<String, CommandBase> CommandMap = new HashMap<>();
     Unknown u = new Unknown();
-
-    public void register(Reflections pl) {
-        scan(pl);
-    }
-
-    void scan(Reflections rfl) {
-        rfl.getSubTypesOf(CommandBase.class).forEach(clazz -> {
-            try {
-                register(clazz.getDeclaredConstructor().newInstance());
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-        });
-    }
     public void register(CommandBase cmd) {
         try {
             CommandFilter cfilter = cmd.getClass().getAnnotation(CommandFilter.class);
@@ -75,8 +61,8 @@ public class CommandManager {
         if (!m.getMessage().trim().startsWith(Core.getConf().startsWith)) return;
         String[] args = m.getMessage().trim().replaceFirst(Core.getConf().startsWith.concat(" "), "").split(" ");
         CommandBase exec;
-        if (!Core.getUserManager().isUserExists(m.getUID(), m.getProvider())) {
-            Core.getUserManager().addUser(new User(m.getUID(), m.getProvider(), Core.getDefaultGroup()));
+        if (!UserUtil.isUserExists(m.getUID(), m.getProvider())) {
+            UserUtil.addUser(new User(m.getUID(), m.getProvider(), Core.getConf().defaultGroup));
         }
         exec = CommandMap.getOrDefault(args[0], u);
         if (!m.getProvider().matches(exec.Provider)) {
@@ -91,7 +77,7 @@ public class CommandManager {
             }
             exec.onCommand(m.getUser(), tm);
         } else {
-            Core.getBot(m).sendMessage(m, "Permission Denied.");
+            m.reply("Permission Denied.");
         }
 
     }

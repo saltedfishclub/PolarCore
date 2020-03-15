@@ -3,27 +3,27 @@ package cc.sfclub.polar.utils;
 import cc.sfclub.polar.Core;
 import cc.sfclub.polar.user.User;
 import org.nutz.dao.Cnd;
-import org.nutz.dao.Dao;
 
 public class UserUtil {
-    private Dao DAO = Core.getDao();
-
-    public User getUser(long uid, String Provider) {
-        return DAO.fetch(User.class, Cnd.where("Provider", "=", Provider).and("UID", "=", uid));
+    private UserUtil() {
     }
 
-    public void addUser(User u) {
-        DAO.insert(u);
+    public static User getUser(long uid, String Provider) {
+        return Core.getInstance().getDao().fetch(User.class, Cnd.where("Provider", "=", Provider).and("UID", "=", uid));
+    }
+
+    public static void addUser(User u) {
+        Core.getInstance().getDao().insert(u);
         Core.getLogger().info("New User: " + u.toString());
     }
 
-    public boolean isUserExists(long UID, String Provider) {
+    public static boolean isUserExists(long UID, String Provider) {
         return getUser(UID, Provider) != null;
     }
 
-    public void delUser(long uid, String Provider) {
+    public static void delUser(long uid, String Provider) {
         if (isUserExists(uid, Provider)) {
-            DAO.clear(User.class, Cnd.where("UniqueID", "=", getUser(uid, Provider).getUniqueID()));
+            Core.getInstance().getDao().clear(User.class, Cnd.where("UniqueID", "=", getUser(uid, Provider).getUniqueID()));
         }
     }
 }

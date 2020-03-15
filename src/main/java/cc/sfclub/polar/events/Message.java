@@ -1,12 +1,12 @@
 package cc.sfclub.polar.events;
 
 import cc.sfclub.polar.Core;
-import cc.sfclub.polar.Event;
 import cc.sfclub.polar.user.User;
+import cc.sfclub.polar.utils.UserUtil;
 import cc.sfclub.polar.wrapper.Bot;
 import lombok.Getter;
 
-public class Message extends Event {
+public class Message {
     @Getter
     private String Provider;
     @Getter
@@ -24,10 +24,10 @@ public class Message extends Event {
     }
 
     public User getUser() {
-        return Core.getUserManager().getUser(UID, Provider);
+        return UserUtil.getUser(UID, Provider);
     }
 
     public Bot getBot() {
-        return Core.getBot(this);
+        return Core.getInstance().getBot(this);
     }
 }

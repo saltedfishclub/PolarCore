@@ -2,17 +2,28 @@ package cc.sfclub.polar.wrapper;
 
 import cc.sfclub.polar.events.messages.TextMessage;
 
-public interface Bot {
-    String getPlatfrom();
+public abstract class Bot {
+    public abstract String getPlatfrom();
 
-    long sendMessage(long Gid, String message);
+    public abstract long sendMessage(long Gid, String message);
 
-    void deleteMsg(long msg);
+    public void deleteMsg(long msg) {
+    }
 
-    long sendMessage(TextMessage from, String output);
+    public long sendMessage(TextMessage from, String output) {
+        return sendMessage(from.getGroupID(), output);
+    }
 
-    long sendMessage(TextMessage from, String[] output);
+    public long sendMessage(TextMessage from, String[] in) {
+        StringBuilder str = new StringBuilder();
+        for (String string : in) {
+            str.append(string).append("\n");
+        }
+        return sendMessage(from, str.toString());
+    }
 
-    Byte[] getImage(String img);
+    public Byte[] getImage(String img) {
+        return new Byte[0];
+    }
 
 }

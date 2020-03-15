@@ -3,13 +3,11 @@ package cc.sfclub.polar.utils;
 import cc.sfclub.polar.Core;
 import cc.sfclub.polar.user.Group;
 import org.nutz.dao.Cnd;
-import org.nutz.dao.Dao;
 
 import java.util.ArrayList;
 
 public final class PermUtil {
-    Dao dao = Core.getDao();
-    public ArrayList<String> getDefaults(String group) {
+    public static ArrayList<String> getDefaults(String group) {
         Group g = getGroup(group);
         ArrayList<String> str = new ArrayList<>();
         if (g != null) {
@@ -29,8 +27,8 @@ public final class PermUtil {
         }
     }
 
-    public void addGroup(Group group) {
-        dao.insert(group);
+    public static void addGroup(Group group) {
+        Core.getInstance().getDao().insert(group);
         Core.getLogger().info(group.pGroup + " has been added to DB.");
         if (Core.getConf().debug) {
             Core.getLogger().info("with these permissions:");
@@ -38,12 +36,12 @@ public final class PermUtil {
         }
     }
 
-    public void delGroup(Group group) {
-        dao.delete(group);
+    public static void delGroup(Group group) {
+        Core.getInstance().getDao().delete(group);
     }
 
-    public Group getGroup(String name) {
-        return dao.fetch(Group.class, Cnd.where("pGroup", "=", name));
+    public static Group getGroup(String name) {
+        return Core.getInstance().getDao().fetch(Group.class, Cnd.where("pGroup", "=", name));
     }
 
     public static Result compare(String orig, String target) {

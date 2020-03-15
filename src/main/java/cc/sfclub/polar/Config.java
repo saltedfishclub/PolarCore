@@ -12,11 +12,14 @@ class database {
 }
 
 public class Config {
+    public transient String defaultGroup;
     public int config_version;
     public String version;
     public String name;
     public Boolean debug;
     public String startsWith;
+    public boolean useWhiteList;
+    public ArrayList<String> WhiteGroups;
     public database database = new database();
     public ArrayList<Group> groups = new ArrayList<>();
 }
