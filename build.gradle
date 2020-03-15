@@ -9,7 +9,10 @@ assemble.dependsOn(shadowJar)
 
 sourceCompatibility = 1.8
 repositories {
-    mavenCentral()
+    maven {
+        name = "mavenCentral"
+        url = "http://maven.aliyun.com/nexus/content/groups/public/"
+    }
 }
 buildscript {
     repositories {
