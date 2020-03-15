@@ -1,6 +1,7 @@
 package org.mve.plugin;
 
 import cc.sfclub.polar.Core;
+import lombok.Getter;
 import org.mve.plugin.java.JavaPlugin;
 import org.mve.plugin.java.PluginLoader;
 
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class PluginManager {
+    @Getter
     private final Map<Class<? extends JavaPlugin>, JavaPlugin> plugins = new HashMap<>();
 
     public JavaPlugin loadPlugin(File file) throws PluginException {
@@ -33,6 +35,11 @@ public final class PluginManager {
     public void disablePlugin(JavaPlugin plugin) {
         Core.getLogger().info("Disabling plugin " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getName() + " " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getVersion());
         plugin.setEnabled(false);
+    }
+
+    public void unloadPlugin(JavaPlugin plugin) {
+        disablePlugin(plugin);
+        plugins.remove(plugin.getClass());
     }
 }
 

@@ -29,7 +29,7 @@ import java.util.Scanner;
 public class Core {
     private static final int CONFIG_VERSION = 6;
     @Getter
-    private static EventBus Message;
+    private static EventBus Message = EventBus.getDefault();
     @Getter
     private static final Logger logger = LoggerFactory.getLogger(Core.class);
     @Getter
@@ -81,6 +81,7 @@ public class Core {
         CommandManager.register(new Reflections("cc.sfclub.polar"));
         Wrappers.clear();
         logger.info("Loading Plugins");
+        PluginManager.getPlugins().clear();
         loadPlugins();
         addBot(new SimpleWrapper());
         logger.info("All-Completed.");
@@ -96,7 +97,7 @@ public class Core {
     }
 
     private static void loadPlugins() {
-        plugins.forEach(PluginManager::disablePlugin);
+        plugins.clear();
         System.gc();
         File a = new File("./plugins");
         if (!a.exists()) {
@@ -144,8 +145,8 @@ public class Core {
     }
 
     private static void loadEventBus() {
-        Message = EventBus.getDefault();
-        Message.register(new CommandManager());
+        Message.unregister(CommandManager);
+        Message.register(CommandManager);
     }
 
     private static void waitCommand() {

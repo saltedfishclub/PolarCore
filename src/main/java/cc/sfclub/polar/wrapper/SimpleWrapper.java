@@ -12,7 +12,7 @@ public final class SimpleWrapper implements Bot {
 
     @Override
     public long sendMessage(long id, String message) {
-        Core.getLogger().info("ID: {} Msg: {} Platfrom: {}", id, message);
+        Core.getLogger().info("ID: {} Msg: {}", id, message);
         return 0L;
     }
 
