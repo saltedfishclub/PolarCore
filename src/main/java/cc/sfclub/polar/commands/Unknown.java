@@ -1,7 +1,6 @@
 package cc.sfclub.polar.commands;
 
 import cc.sfclub.polar.CommandBase;
-import cc.sfclub.polar.Core;
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.user.User;
 
@@ -23,6 +22,6 @@ public class Unknown extends CommandBase {
 
     @Override
     public void onCommand(User u, TextMessage Command) {
-        Core.getBot(Command).sendMessage(Command, "Wrong usage or unknown command.(Maybe you can try \"help\" for help)");
+        Command.getBot().sendMessage(Command, "WTF are you speaking?");
     }
 }

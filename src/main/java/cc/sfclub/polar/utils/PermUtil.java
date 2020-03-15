@@ -46,7 +46,20 @@ public final class PermUtil {
         return dao.fetch(Group.class, Cnd.where("pGroup", "=", name));
     }
 
-    public boolean compare(String orig, String target) {
-        return orig.matches(target);
+    public static Result compare(String orig, String target) {
+        Result result = Result.FAILED;
+        if (target.startsWith("-") && orig.matches(target.replaceFirst("-", ""))) {
+            result = Result.BANNED;
+        } else {
+            if (orig.matches(target)) result = Result.SUCCEED;
+        }
+        if (Core.getConf().debug) {
+            Core.getLogger().info("[DEBUG][Perm] Compare: {} , {} == {}", orig, target, result);
+        }
+        return result;
+    }
+
+    public enum Result {
+        FAILED, BANNED, SUCCEED
     }
 }

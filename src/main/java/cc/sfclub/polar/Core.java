@@ -10,6 +10,7 @@ import cc.sfclub.polar.wrapper.SimpleWrapper;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.google.gson.Gson;
 import lombok.Getter;
+import lombok.Setter;
 import org.greenrobot.eventbus.EventBus;
 import org.mve.plugin.PluginException;
 import org.mve.plugin.PluginManager;
@@ -50,29 +51,53 @@ public class Core {
     private static CommandManager CommandManager = new CommandManager();
     @Getter
     private static String DefaultGroup;
+    @Getter
     private static ArrayList<JavaPlugin> plugins = new ArrayList<>();
+    private static boolean loaded = false;
+    @Setter
+    private static LoadCallback cb;
 
     public static void main(String[] args) {
+        init();
+        waitCommand();
+        System.exit(0);
+    }
+
+    public static void init() {
         logger.info("Loading Config");
         loadConfig();
-        logger.info("Loading Databases");
-        loadDatabase();
+        if (!loaded) {
+            logger.info("Loading Databases");
+            loadDatabase();
+            loaded = true;
+        }
         logger.info("Loading User and Perm");
         PermManager = new PermUtil();
         UserManager = new UserUtil();
         logger.info("Loading Events");
         loadEventBus();
         logger.info("Loading CommandManager");
+        cc.sfclub.polar.CommandManager.getCommandMap().clear();
         CommandManager.register(new Reflections("cc.sfclub.polar"));
+        Wrappers.clear();
         logger.info("Loading Plugins");
         loadPlugins();
         addBot(new SimpleWrapper());
         logger.info("All-Completed.");
-        waitCommand();
-        System.exit(0);
+        if (cb != null) {
+            try {
+                cb.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("Failed to CallBack(SPM Notify)");
+            }
+        }
+        System.gc();
     }
 
     private static void loadPlugins() {
+        plugins.forEach(PluginManager::disablePlugin);
+        System.gc();
         File a = new File("./plugins");
         if (!a.exists()) {
             if (!a.mkdir()) {

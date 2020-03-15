@@ -9,7 +9,7 @@ import cc.sfclub.polar.user.User;
 
 import java.util.StringJoiner;
 
-@CommandFilter(alias = "aa", provider = "CLI")
+@CommandFilter(provider = "CLI")
 @Command(name = "cmds", description = "Get a list of commands", perm = "member.basic.list")
 public class List extends CommandBase {
     @Override

@@ -1,13 +1,13 @@
 package cc.sfclub.polar.user;
 
 import cc.sfclub.polar.Core;
+import cc.sfclub.polar.utils.PermUtil;
 import lombok.Getter;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Table("user")
 public class User {
@@ -33,13 +33,19 @@ public class User {
     }
 
     public boolean hasPermission(String Permission) {
-        AtomicBoolean state = new AtomicBoolean(false);
-        PermList().forEach(p -> {
-            if (Core.getPermManager().compare(Permission, p)) {
-                state.set(true);
+        boolean succeed = false;
+        boolean banned = false;
+        for (String s : PermList()) {
+            PermUtil.Result res = PermUtil.compare(Permission, s);
+            if (res == PermUtil.Result.SUCCEED) {
+                succeed = true;
             }
-        });
-        return state.get();
+            if (res == PermUtil.Result.BANNED) {
+                banned = true;
+            }
+        }
+
+        return succeed && !banned;
     }
 
     public void addPermission(String perm) {
