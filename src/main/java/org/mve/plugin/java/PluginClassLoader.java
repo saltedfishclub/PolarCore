@@ -16,21 +16,20 @@ import java.net.URLClassLoader;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public final class PluginClassLoader extends URLClassLoader
-{
+public final class PluginClassLoader extends URLClassLoader {
 	private final PluginLoader loader;
 	private final JarFile jar;
 	private final JavaPlugin plugin;
 	private final PluginDescription description;
 
 	@SuppressWarnings("all")
-	public PluginClassLoader(File file, PluginLoader loader) throws IOException
-	{
+	public PluginClassLoader(File file, PluginLoader loader) throws IOException {
 		super(new URL[]{file.toURI().toURL()});
 		this.loader = loader;
 		this.jar = new JarFile(file);
 		JarEntry pluginJsonEntry = jar.getJarEntry("plugin.json");
-		if (pluginJsonEntry == null) throw new InvalidPluginException("No plugin.json exists in plugin file "+file.getAbsolutePath());
+		if (pluginJsonEntry == null)
+			throw new InvalidPluginException("No plugin.json exists in plugin file " + file.getAbsolutePath());
 		InputStream in = this.jar.getInputStream(pluginJsonEntry);
 		JsonObject json = new JsonParser().parse(new JsonReader(new InputStreamReader(in))).getAsJsonObject();
 		in.close();

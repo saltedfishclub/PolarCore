@@ -1,9 +1,12 @@
 package org.mve.plugin.java;
 
+import lombok.Getter;
+
 import java.io.File;
 
 public abstract class JavaPlugin {
 	private boolean enabled = false;
+	@Getter
 	private final PluginLoader loader;
 	private final File DataFolder;
 

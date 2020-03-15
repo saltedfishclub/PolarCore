@@ -12,9 +12,7 @@ public abstract class CommandBase {
     @Getter
     public String Description;
     public ArrayList<String> Aliases = new ArrayList<>();
-    @Getter
     public String Provider = ".*";
-
     public abstract void onCommand(User u, TextMessage Command);
 
     public String getUsage() {

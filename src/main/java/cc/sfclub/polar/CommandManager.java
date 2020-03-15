@@ -29,7 +29,6 @@ public class CommandManager {
             }
         });
     }
-
     public void register(CommandBase cmd) {
         try {
             CommandFilter cfilter = cmd.getClass().getAnnotation(CommandFilter.class);
@@ -83,7 +82,7 @@ public class CommandManager {
         if (!m.getProvider().matches(exec.Provider)) {
             return;
         }
-        if (m.getUser().hasPermission(exec.Perm)) {
+        if (m.getUser().hasPermission(exec.getPerm())) {
             TextMessage tm;
             if (args.length > 1) {
                 tm = new TextMessage(m.getProvider(), m.getMsgID(), m.getUID(), m.getMessage().trim().replaceFirst(Core.getConf().startsWith.concat(" "), ""), m.getGroupID());
