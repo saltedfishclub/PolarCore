@@ -3,8 +3,6 @@ package cc.sfclub.polar;
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.user.Group;
 import cc.sfclub.polar.user.User;
-import cc.sfclub.polar.utils.PermUtil;
-import cc.sfclub.polar.utils.UserUtil;
 import cc.sfclub.polar.wrapper.Bot;
 import cc.sfclub.polar.wrapper.SimpleWrapper;
 import com.alibaba.druid.pool.DruidDataSource;
@@ -22,48 +20,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Core {
-    private static final int CONFIG_VERSION = 6;
     @Getter
-    private static EventBus Message = EventBus.getDefault();
+    private static Core instance = new Core();
+    private final int CONFIG_VERSION = 6;
     @Getter
     private static final Logger logger = LoggerFactory.getLogger(Core.class);
     @Getter
     private static Config conf;
     @Getter
-    private static PermUtil PermManager;
+    private EventBus Message = EventBus.getDefault();
     @Getter
-    private static PluginManager PluginManager = new PluginManager();
-    private static DruidDataSource DataSource = new DruidDataSource();
-    @Getter
-    private static Dao dao;
-    @Getter
-    private static UserUtil UserManager;
+    private PluginManager PluginManager = new PluginManager();
+    private DruidDataSource DataSource = new DruidDataSource();
     @Getter
     private static Gson Gson = new Gson();
     @Getter
-    private static HashMap<String, Bot> Wrappers = new HashMap<>();
+    private Dao dao;
     @Getter
-    private static CommandManager CommandManager = new CommandManager();
+    private HashMap<String, Bot> Wrappers = new HashMap<>();
     @Getter
-    private static String DefaultGroup;
+    private CommandManager CommandManager = new CommandManager();
     @Getter
-    private static ArrayList<JavaPlugin> plugins = new ArrayList<>();
-    private static boolean loaded = false;
+    private ArrayList<JavaPlugin> plugins = new ArrayList<>();
+    private boolean loaded = false;
     @Setter
-    private static LoadCallback cb;
+    private LoadCallback cb;
+
+    private Core() {
+    }
 
     public static void main(String[] args) {
-        init();
-        waitCommand();
+        instance.init();
+        instance.waitCommand();
         System.exit(0);
     }
 
-    public static void init() {
+    public void init() {
         logger.info("Loading Config");
         loadConfig();
         if (!loaded) {
@@ -72,16 +70,19 @@ public class Core {
             loaded = true;
         }
         logger.info("Loading User and Perm");
-        PermManager = new PermUtil();
-        UserManager = new UserUtil();
         logger.info("Loading Events");
         loadEventBus();
         logger.info("Loading CommandManager");
-        cc.sfclub.polar.CommandManager.getCommandMap().clear();
-        CommandManager.register(new Reflections("cc.sfclub.polar"));
+        CommandManager.getCommandMap().clear();
+        new Reflections("cc.sfclub.polar.commands").getSubTypesOf(CommandBase.class).forEach(a -> {
+            try {
+                CommandManager.register(a.getDeclaredConstructor().newInstance());
+            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
         Wrappers.clear();
         logger.info("Loading Plugins");
-        PluginManager.getPlugins().clear();
         loadPlugins();
         addBot(new SimpleWrapper());
         logger.info("All-Completed.");
@@ -96,13 +97,15 @@ public class Core {
         System.gc();
     }
 
-    private static void loadPlugins() {
+    private void loadPlugins() {
+        plugins.forEach(PluginManager::disablePlugin);
+        PluginManager.getPlugins().clear();
         plugins.clear();
         System.gc();
         File a = new File("./plugins");
         if (!a.exists()) {
             if (!a.mkdir()) {
-                Core.getLogger().error("Could not create plugins folder.");
+                getLogger().error("Could not create plugins folder.");
             }
             new File("./plugins/config").mkdir();
             return;
@@ -123,7 +126,7 @@ public class Core {
         }
     }
 
-    private static void loadDatabase() {
+    private void loadDatabase() {
         DataSource.setUrl("jdbc:mysql://" + conf.database.host + "/" + conf.database.database);
         DataSource.setUsername(conf.database.user);
         DataSource.setPassword(conf.database.password);
@@ -144,12 +147,12 @@ public class Core {
         logger.info("{} Groups loaded", dao.count("perm"));
     }
 
-    private static void loadEventBus() {
+    private void loadEventBus() {
         Message.unregister(CommandManager);
         Message.register(CommandManager);
     }
 
-    private static void waitCommand() {
+    private void waitCommand() {
         Scanner scanner = new Scanner(System.in);
         int i = 0;
         String command;
@@ -166,7 +169,7 @@ public class Core {
         scanner.close();
     }
 
-    private static void loadConfig() {
+    private void loadConfig() {
         File config = new File("config.json");
         if (!config.exists()) {
             conf = new Config();
@@ -183,7 +186,6 @@ public class Core {
             Group op = new Group();
             op.pGroup = "OPERATOR";
             op.nodes.add(".*");
-            op.internalID = 0L;
             Group mod = new Group();
             mod.pGroup = "MODERATOR";
             mod.nodes.add("member.mod.*");
@@ -226,12 +228,12 @@ public class Core {
             }
             conf = Gson.fromJson(confText.toString(), Config.class);
             if (conf.config_version < CONFIG_VERSION) {
-                logger.warn("WE ARE USING OUTDATED CONFIG");
-                logger.warn("YOU CAN DELETE IT FOR REGENERATION.");
+                logger.warn("YOU ARE USING OUTDATED CONFIG");
+                logger.warn("DELETE IT FOR REGENERATION.");
             }
             conf.groups.forEach(a -> {
                 if (a.isDefault) {
-                    DefaultGroup = a.pGroup;
+                    conf.defaultGroup = a.pGroup;
                 }
             });
             logger.info("Config load successfully!");
@@ -244,15 +246,15 @@ public class Core {
         }
     }
 
-    public static Bot getBot(cc.sfclub.polar.events.Message msg) {
+    public Bot getBot(cc.sfclub.polar.events.Message msg) {
         return Wrappers.get(msg.getProvider());
     }
 
-    public static Bot getBot(String Provider) {
+    public Bot getBot(String Provider) {
         return Wrappers.get(Provider);
     }
 
-    public static void addBot(Bot bot) {
+    public void addBot(Bot bot) {
         logger.info("New Provider: ".concat(bot.getPlatfrom()));
         Wrappers.put(bot.getPlatfrom(), bot);
     }

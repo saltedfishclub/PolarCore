@@ -12,4 +12,11 @@ public class TextMessage extends Message {
         this.Message = Message;
     }
 
+    public void reply(String msg) {
+        getBot().sendMessage(this, msg);
+    }
+
+    public void reply(String[] msg) {
+        getBot().sendMessage(this, msg);
+    }
 }

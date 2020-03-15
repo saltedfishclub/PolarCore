@@ -3,7 +3,7 @@ package cc.sfclub.polar.commands;
 import cc.sfclub.polar.Command;
 import cc.sfclub.polar.CommandBase;
 import cc.sfclub.polar.CommandFilter;
-import cc.sfclub.polar.CommandManager;
+import cc.sfclub.polar.Core;
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.user.User;
 
@@ -16,13 +16,13 @@ public class List extends CommandBase {
     public void onCommand(User u, TextMessage Command) {
         if (Command.getMessage().isEmpty()) {
             StringJoiner str = new StringJoiner("\n", "List of Commands:\n", "");
-            CommandManager.getCommandMap().keySet().forEach(s -> {
+            Core.getInstance().getCommandManager().getCommandMap().keySet().forEach(s -> {
                 if (s.equals("cmds") || s.equals("unknown")) {
                     return;
                 }
-                str.add(s + " ~ " + CommandManager.getCommandMap().get(s).getDescription());
+                str.add(s + " ~ " + Core.getInstance().getCommandManager().getCommandMap().get(s).getDescription());
             });
-            Command.getBot().sendMessage(Command, str.toString());
+            Command.reply(str.toString());
         }
 
     }

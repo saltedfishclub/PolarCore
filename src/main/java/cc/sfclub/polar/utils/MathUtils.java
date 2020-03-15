@@ -1,8 +1,16 @@
 package cc.sfclub.polar.utils;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 
 public class MathUtils {
+    @Getter
+    private static final MathUtils instance = new MathUtils();
+
+    private MathUtils() {
+    }
+
     public static boolean isNumeric(String str) {
         String bigStr;
         try {

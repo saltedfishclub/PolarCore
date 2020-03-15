@@ -14,8 +14,4 @@ public abstract class CommandBase {
     public ArrayList<String> Aliases = new ArrayList<>();
     public String Provider = ".*";
     public abstract void onCommand(User u, TextMessage Command);
-
-    public String getUsage() {
-        return "Try to use \"help\" for some help.";
-    }
 }

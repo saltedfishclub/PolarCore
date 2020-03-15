@@ -3,14 +3,18 @@ package cc.sfclub.polar.user;
 import cc.sfclub.polar.Core;
 import cc.sfclub.polar.utils.PermUtil;
 import lombok.Getter;
+import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @Table("user")
 public class User {
+    @Id
+    private int index;
     @Getter
     private long UID;
     public String pGroup;
@@ -60,7 +64,7 @@ public class User {
 
     public ArrayList<String> PermList() {
         ArrayList<String> tmp = new ArrayList<>();
-        tmp.addAll(Core.getPermManager().getDefaults(pGroup));
+        tmp.addAll(PermUtil.getDefaults(pGroup));
         tmp.addAll(Permissions);
         return tmp;
         /*ArrayList<String> a=new ArrayList<>();
@@ -71,6 +75,6 @@ public class User {
     }
 
     public void save() {
-        Core.getDao().update(this);
+        Core.getInstance().getDao().update(this);
     }
 }

@@ -13,7 +13,7 @@ public class LoadCallback implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        tm.getBot().sendMessage(tm, "PolarCore Reloaded!!");
+        tm.reply("PolarCore Reloaded!!");
         return 0;
     }
 }
