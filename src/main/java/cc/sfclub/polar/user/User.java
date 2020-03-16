@@ -3,7 +3,6 @@ package cc.sfclub.polar.user;
 import cc.sfclub.polar.Core;
 import cc.sfclub.polar.utils.PermUtil;
 import lombok.Getter;
-import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -13,8 +12,6 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 @Table("user")
 public class User {
-    @Id
-    private int index;
     @Getter
     private long UID;
     public String pGroup;
