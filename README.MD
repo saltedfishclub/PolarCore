@@ -6,6 +6,15 @@ Open source as LGPLv3
 A bot kernel.  
 The wonder Polar(??? Bot)'s Kernel Source!!  
 
+# Use as a lib
+```groovy
+  maven { url 'https://jitpack.io' }
+```
+then  
+`implementation 'cc.sfclub:PolarCore:1.1.1`
+If you want to use the latest build:  
+`implementation 'cc.sfclub:PolarCore:1.1.1-SNAPSHOT`
+
 # Structure
 Message Flow:  
 `Core < - > Wrapper < - > Platfrom/Provider`

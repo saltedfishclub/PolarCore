@@ -13,7 +13,7 @@ public class Version extends CommandBase {
         Command.reply(new String[]{
                 Core.getConf().name + " v" + Core.getConf().config_version,
                 "PolarCore by iceBear67",
-                "Made with THE STRONGEST HATE"
+                "https://github.com/saltedfishclub/PolarCore"
         });
     }
 }
