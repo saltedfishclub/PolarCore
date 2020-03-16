@@ -19,7 +19,7 @@ public class Config {
     public Boolean debug;
     public String startsWith;
     public boolean useWhiteList;
-    public ArrayList<String> WhiteGroups;
+    public ArrayList<String> WhiteGroups = new ArrayList<>();
     public database database = new database();
     public ArrayList<Group> groups = new ArrayList<>();
 }

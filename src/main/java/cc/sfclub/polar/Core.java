@@ -199,6 +199,7 @@ public class Core {
             conf.groups.add(op);
             conf.groups.add(mod);
             conf.groups.add(member);
+            conf.useWhiteList = false;
             logger.warn("config.json NOT FOUND");
             logger.info("trying to create..");
             try {
