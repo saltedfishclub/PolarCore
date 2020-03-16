@@ -174,14 +174,6 @@ public class Core {
         if (!config.exists()) {
             conf = new Config();
             conf.config_version = CONFIG_VERSION;
-            conf.debug = false;
-            conf.name = "Polar";
-            conf.version = "debugging-config-required";
-            conf.database.host = "172.17.0.3";
-            conf.database.password = "123456";
-            conf.database.user = "root";
-            conf.database.database = "polar";
-            conf.startsWith = "!";
             //
             Group op = new Group();
             op.pGroup = "OPERATOR";
@@ -199,7 +191,6 @@ public class Core {
             conf.groups.add(op);
             conf.groups.add(mod);
             conf.groups.add(member);
-            conf.useWhiteList = false;
             logger.warn("config.json NOT FOUND");
             logger.info("trying to create..");
             try {
