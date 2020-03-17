@@ -5,7 +5,7 @@ import cc.sfclub.polar.events.messages.TextMessage;
 import java.util.concurrent.Callable;
 
 public class LoadCallback implements Callable<Integer> {
-    TextMessage tm;
+    private TextMessage tm;
 
     public LoadCallback(TextMessage tm) {
         this.tm = tm;
