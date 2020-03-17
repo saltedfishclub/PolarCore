@@ -1,4 +1,7 @@
 # PolarCore
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cc0af3e7ffbe4ac89ed566aeae004d6c)](https://app.codacy.com/gh/saltedfishclub/PolarCore?utm_source=github.com&utm_medium=referral&utm_content=saltedfishclub/PolarCore&utm_campaign=Badge_Grade_Dashboard)
+
 Not completed yet.  
 Open source as LGPLv3
 ## What
