@@ -165,7 +165,7 @@ public class Core {
         String command;
         while (scanner.hasNextLine()) {
             command = scanner.nextLine();
-            if (command.equals("stop")) {
+            if ("stop".equals(command)) {
                 logger.info("Stopping Server...");
                 plugins.forEach(pluginManager::disablePlugin);
                 if (conf.usePolarSecurity) {

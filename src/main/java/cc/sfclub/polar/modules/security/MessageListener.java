@@ -10,10 +10,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MessageListener {
-    HashMap<String, UserMeta> chatter = new HashMap<>();
-    int busyLevel = 0;
-    int messageCount;
-    int maxSecLevel = PolarSec.getConf().getSecurityLevel();
+    private HashMap<String, UserMeta> chatter = new HashMap<>();
+    private int busyLevel = 0;
+    private int messageCount;
+    private int maxSecLevel = PolarSec.getConf().getSecurityLevel();
     Timer timer = new Timer();
 
     public MessageListener(DataStorage ds) {
@@ -80,9 +80,9 @@ public class MessageListener {
     }
 
     class MaybeWatchdog extends TimerTask {
-        int c;
-        int Counter;
-        int cC;
+        private int c;
+        private int Counter;
+        private int cC;
 
         public void run() {
             Counter++;

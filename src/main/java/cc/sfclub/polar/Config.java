@@ -4,7 +4,7 @@ import cc.sfclub.polar.user.Group;
 
 import java.util.ArrayList;
 
-class database {
+class Database {
     public String host = "localhost:3306";
     public String user = "root";
     public String password = "qaq";
@@ -19,6 +19,6 @@ public class Config {
     public Boolean debug = false;
     public String startsWith = "!p";
     public boolean usePolarSecurity = true;
-    public database database = new database();
+    public Database database = new Database();
     public ArrayList<Group> groups = new ArrayList<>();
 }
