@@ -36,7 +36,7 @@ public class User {
     public boolean hasPermission(String permission) {
         boolean succeed = false;
         boolean banned = false;
-        for (String s : PermList()) {
+        for (String s : permList()) {
             PermUtil.Result res = PermUtil.compare(permission, s);
             if (res == PermUtil.Result.SUCCEED) {
                 succeed = true;
@@ -59,7 +59,7 @@ public class User {
         return Core.getGson().toJson(this);
     }
 
-    public ArrayList<String> PermList() {
+    public ArrayList<String> permList() {
         ArrayList<String> tmp = new ArrayList<>();
         tmp.addAll(PermUtil.getDefaults(pGroup));
         tmp.addAll(permissions);

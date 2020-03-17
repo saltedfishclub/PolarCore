@@ -17,7 +17,7 @@ public class List extends CommandBase {
         if (command.getMessage().isEmpty()) {
             StringJoiner str = new StringJoiner("\n", "List of Commands:\n", "");
             Core.getInstance().getCommandManager().getCommandMap().keySet().forEach(s -> {
-                if (s.equals("cmds") || s.equals("unknown")) {
+                if ("cmds".equals(s) || "unknown".equals(s)) {
                     return;
                 }
                 str.add(s + " ~ " + Core.getInstance().getCommandManager().getCommandMap().get(s).getDescription());
