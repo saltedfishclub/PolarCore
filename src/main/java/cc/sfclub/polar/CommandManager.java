@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class CommandManager {
     @Getter
-    HashMap<String, CommandBase> commandMap = new HashMap<>();
+    private HashMap<String, CommandBase> commandMap = new HashMap<>();
     Unknown u = new Unknown();
     public void register(CommandBase cmd) {
         try {

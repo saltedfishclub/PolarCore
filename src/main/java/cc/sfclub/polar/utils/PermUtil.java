@@ -12,7 +12,6 @@ public final class PermUtil {
         ArrayList<String> str = new ArrayList<>();
         if (g != null) {
             if (g.extend != null) {
-                Group e;
                 if (getGroup(g.extend) != null) {
                     str.addAll(getDefaults(g.extend));
                     str.addAll(g.nodes);

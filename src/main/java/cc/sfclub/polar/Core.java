@@ -1,9 +1,12 @@
 package cc.sfclub.polar;
 
+import cc.sfclub.polar.events.Message;
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.modules.security.PolarSec;
 import cc.sfclub.polar.user.Group;
 import cc.sfclub.polar.user.User;
+import cc.sfclub.polar.utils.PermUtil;
+import cc.sfclub.polar.utils.UserUtil;
 import cc.sfclub.polar.wrapper.Bot;
 import cc.sfclub.polar.wrapper.SimpleWrapper;
 import com.alibaba.druid.pool.DruidDataSource;
@@ -141,13 +144,12 @@ public class Core {
             dao.create(User.class, false);
             User a = new User(0L, "CLI", "OPERATOR");
             a.userName = "CONSOLE";
-            logger.info("Added User: CONSOLE");
-            dao.insert(a);
+            UserUtil.addUser(a);
         }
         logger.info("{} User loaded!", dao.count("user"));
         if (!dao.exists("perm")) {
             dao.create(Group.class, false);
-            conf.groups.forEach(group -> dao.insert(group));
+            conf.groups.forEach(PermUtil::addGroup);
         }
         logger.info("{} Groups loaded", dao.count("perm"));
     }
@@ -247,7 +249,7 @@ public class Core {
         }
     }
 
-    public Bot getBot(cc.sfclub.polar.events.Message msg) {
+    public Bot getBot(Message msg) {
         return wrappers.get(msg.getProvider());
     }
 
