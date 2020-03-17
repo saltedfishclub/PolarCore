@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class CommandManager {
     @Getter
     private HashMap<String, CommandBase> commandMap = new HashMap<>();
-    Unknown u = new Unknown();
+    private Unknown u = new Unknown();
     public void register(CommandBase cmd) {
         try {
             CommandFilter cfilter = cmd.getClass().getAnnotation(CommandFilter.class);
