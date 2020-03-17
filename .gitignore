@@ -5,3 +5,4 @@ logs
 plugins
 config.json
 gradlew.bat
+sonar.sh

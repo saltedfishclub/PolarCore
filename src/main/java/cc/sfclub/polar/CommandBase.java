@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 public abstract class CommandBase {
     @Getter
-    public String Perm;
+    public String perm;
     @Getter
-    public String Description;
-    public ArrayList<String> Aliases = new ArrayList<>();
-    public String Provider = ".*";
-    public abstract void onCommand(User u, TextMessage Command);
+    public String description;
+    public ArrayList<String> aliases = new ArrayList<>();
+    public String provider = ".*";
+
+    public abstract void onCommand(User u, TextMessage command);
 }

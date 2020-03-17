@@ -8,23 +8,23 @@ import lombok.Getter;
 
 public class Message {
     @Getter
-    private String Provider;
+    private String provider;
     @Getter
     private long UID;
     @Getter
-    private long MsgID;
+    private long msgID;
     @Getter
-    private long GroupID;
+    private long groupID;
 
-    public Message(String Provider, long MsgID, long User, long GroupID) {
-        this.Provider = Provider;
-        this.UID = User;
-        this.MsgID = MsgID;
-        this.GroupID = GroupID;
+    public Message(String provider, long msgID, long user, long groupID) {
+        this.provider = provider;
+        this.UID = user;
+        this.msgID = msgID;
+        this.groupID = groupID;
     }
 
     public User getUser() {
-        return UserUtil.getUser(UID, Provider);
+        return UserUtil.getUser(UID, provider);
     }
 
     public Bot getBot() {

@@ -15,29 +15,29 @@ public class User {
     @Getter
     private long UID;
     public String pGroup;
-    public String UserName;
-    public String Provider;
-    public ArrayList<String> Permissions = new ArrayList<>();
+    public String userName;
+    public String provider;
+    public ArrayList<String> permissions = new ArrayList<>();
     @Name
     @Getter
-    private String UniqueID;
+    private String uniqueID;
 
     public User() {
 
     }
 
-    public User(long UID, String Provider, String Group) {
+    public User(long UID, String provider, String group) {
         this.UID = UID;
-        this.Provider = Provider;
-        this.pGroup = Group;
-        UniqueID = UUID.randomUUID().toString();
+        this.provider = provider;
+        this.pGroup = group;
+        uniqueID = UUID.randomUUID().toString();
     }
 
-    public boolean hasPermission(String Permission) {
+    public boolean hasPermission(String permission) {
         boolean succeed = false;
         boolean banned = false;
         for (String s : PermList()) {
-            PermUtil.Result res = PermUtil.compare(Permission, s);
+            PermUtil.Result res = PermUtil.compare(permission, s);
             if (res == PermUtil.Result.SUCCEED) {
                 succeed = true;
             }
@@ -50,7 +50,7 @@ public class User {
     }
 
     public void addPermission(String perm) {
-        Permissions.add(perm);
+        permissions.add(perm);
         save();
     }
 
@@ -62,7 +62,7 @@ public class User {
     public ArrayList<String> PermList() {
         ArrayList<String> tmp = new ArrayList<>();
         tmp.addAll(PermUtil.getDefaults(pGroup));
-        tmp.addAll(Permissions);
+        tmp.addAll(permissions);
         return tmp;
         /*ArrayList<String> a=new ArrayList<>();
         for (String s : dbu.Permissions.split(",")) {

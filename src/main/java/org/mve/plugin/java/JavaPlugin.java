@@ -5,11 +5,12 @@ import lombok.Getter;
 import java.io.File;
 
 public abstract class JavaPlugin {
-	private boolean enabled = false;
 	@Getter
 	private final PluginLoader loader;
 	private final File DataFolder;
+	private boolean enabled = false;
 
+	//todo read and write config.
 	public JavaPlugin() {
 		this.loader = ((PluginClassLoader) this.getClass().getClassLoader()).getLoader();
 		DataFolder = new File("./plugins/config");
@@ -24,8 +25,7 @@ public abstract class JavaPlugin {
 	public void onDisable() {
 	}
 
-	public final void setEnabled(boolean enabled)
-	{
+	public final void setEnabled(boolean enabled) {
 		if (enabled == this.enabled) return;
 		this.enabled = enabled;
 		if (enabled) this.onEnable();

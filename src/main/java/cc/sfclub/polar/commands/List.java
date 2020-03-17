@@ -13,8 +13,8 @@ import java.util.StringJoiner;
 @Command(name = "cmds", description = "Get a list of commands", perm = "member.basic.list")
 public class List extends CommandBase {
     @Override
-    public void onCommand(User u, TextMessage Command) {
-        if (Command.getMessage().isEmpty()) {
+    public void onCommand(User u, TextMessage command) {
+        if (command.getMessage().isEmpty()) {
             StringJoiner str = new StringJoiner("\n", "List of Commands:\n", "");
             Core.getInstance().getCommandManager().getCommandMap().keySet().forEach(s -> {
                 if (s.equals("cmds") || s.equals("unknown")) {
@@ -22,7 +22,7 @@ public class List extends CommandBase {
                 }
                 str.add(s + " ~ " + Core.getInstance().getCommandManager().getCommandMap().get(s).getDescription());
             });
-            Command.reply(str.toString());
+            command.reply(str.toString());
         }
 
     }

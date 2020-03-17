@@ -1,25 +1,28 @@
-
-apply plugin: 'java'
-apply plugin: 'com.github.johnrengelman.shadow'
-group 'cc.sfclub.polar'
-version '1.1.1'
-
-jar.enabled = false
-assemble.dependsOn(shadowJar)
-
-sourceCompatibility = 1.8
-repositories {
-    maven {
-        name = "mavenCentral"
-        url = "http://maven.aliyun.com/nexus/content/groups/public/"
-    }
-}
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
         classpath "com.github.jengelman.gradle.plugins:shadow:5.1.0"
+    }
+}
+plugins {
+    id "org.sonarqube" version "2.7"
+}
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+group 'cc.sfclub.polar'
+version '1.1.1'
+
+jar.enabled = false
+assemble.dependsOn(shadowJar)
+sourceCompatibility = 1.8
+
+repositories {
+    maven {
+        name = "mavenCentral"
+        url = "http://maven.aliyun.com/nexus/content/groups/public/"
     }
 }
 shadowJar {

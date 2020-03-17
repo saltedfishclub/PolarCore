@@ -5,11 +5,11 @@ import lombok.Getter;
 
 public class TextMessage extends Message {
     @Getter
-    private String Message;
+    private String message;
 
-    public TextMessage(String Provider, long MsgID, long User, String Message, long Group) {
-        super(Provider, MsgID, User, Group);
-        this.Message = Message;
+    public TextMessage(String provider, long msgID, long user, String message, long group) {
+        super(provider, msgID, user, group);
+        this.message = message;
     }
 
     public void reply(String msg) {
