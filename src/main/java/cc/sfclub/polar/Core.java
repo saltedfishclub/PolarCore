@@ -1,6 +1,7 @@
 package cc.sfclub.polar;
 
 import cc.sfclub.polar.events.messages.TextMessage;
+import cc.sfclub.polar.modules.security.PolarSec;
 import cc.sfclub.polar.user.Group;
 import cc.sfclub.polar.user.User;
 import cc.sfclub.polar.wrapper.Bot;
@@ -27,30 +28,32 @@ import java.util.Scanner;
 
 public class Core {
     @Getter
-    private static Core instance = new Core();
-    private final int CONFIG_VERSION = 6;
+    private static final Core instance = new Core();
+    private static final int CONFIG_VERSION = 6;
     @Getter
     private static final Logger logger = LoggerFactory.getLogger(Core.class);
     @Getter
     private static Config conf;
     @Getter
-    private EventBus Message = EventBus.getDefault();
+    private EventBus message = EventBus.getDefault();
     @Getter
-    private PluginManager PluginManager = new PluginManager();
-    private DruidDataSource DataSource = new DruidDataSource();
+    private PluginManager pluginManager = new PluginManager();
+    private DruidDataSource dataSource = new DruidDataSource();
     @Getter
     private static Gson Gson = new Gson();
     @Getter
     private Dao dao;
     @Getter
-    private HashMap<String, Bot> Wrappers = new HashMap<>();
+    private HashMap<String, Bot> wrappers = new HashMap<>();
     @Getter
-    private CommandManager CommandManager = new CommandManager();
+    private CommandManager commandManager = new CommandManager();
     @Getter
     private ArrayList<JavaPlugin> plugins = new ArrayList<>();
     private boolean loaded = false;
     @Setter
     private LoadCallback cb;
+    @Getter
+    private PolarSec pSec;
 
     private Core() {
     }
@@ -73,15 +76,15 @@ public class Core {
         logger.info("Loading Events");
         loadEventBus();
         logger.info("Loading CommandManager");
-        CommandManager.getCommandMap().clear();
+        commandManager.getCommandMap().clear();
         new Reflections("cc.sfclub.polar.commands").getSubTypesOf(CommandBase.class).forEach(a -> {
             try {
-                CommandManager.register(a.getDeclaredConstructor().newInstance());
+                commandManager.register(a.getDeclaredConstructor().newInstance());
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
-        Wrappers.clear();
+        wrappers.clear();
         logger.info("Loading Plugins");
         loadPlugins();
         addBot(new SimpleWrapper());
@@ -94,14 +97,17 @@ public class Core {
                 logger.error("Failed to CallBack(SPM Notify)");
             }
         }
-        System.gc();
     }
 
     private void loadPlugins() {
-        plugins.forEach(PluginManager::disablePlugin);
-        PluginManager.getPlugins().clear();
+        plugins.forEach(pluginManager::disablePlugin);
+        pluginManager.getPlugins().clear();
         plugins.clear();
-        System.gc();
+
+        if (conf.usePolarSecurity) {
+            pSec = new PolarSec();
+            pSec.onEnable();
+        }
         File a = new File("./plugins");
         if (!a.exists()) {
             if (!a.mkdir()) {
@@ -110,13 +116,12 @@ public class Core {
             new File("./plugins/config").mkdir();
             return;
         }
-        ArrayList<File> fs = new ArrayList<>();
         for (File file : a.listFiles()) {
             if (!file.isDirectory()) {
                 try {
-                    JavaPlugin jp = PluginManager.loadPlugin(file);
+                    JavaPlugin jp = pluginManager.loadPlugin(file);
                     if (jp != null) {
-                        PluginManager.enablePlugin(jp);
+                        pluginManager.enablePlugin(jp);
                         plugins.add(jp);
                     }
                 } catch (PluginException e) {
@@ -127,15 +132,15 @@ public class Core {
     }
 
     private void loadDatabase() {
-        DataSource.setUrl("jdbc:mysql://" + conf.database.host + "/" + conf.database.database);
-        DataSource.setUsername(conf.database.user);
-        DataSource.setPassword(conf.database.password);
-        dao = new NutDao(DataSource);
+        dataSource.setUrl("jdbc:mysql://" + conf.database.host + "/" + conf.database.database);
+        dataSource.setUsername(conf.database.user);
+        dataSource.setPassword(conf.database.password);
+        dao = new NutDao(dataSource);
         if (!dao.exists("user")) {
             logger.info("Creating Table: user");
             dao.create(User.class, false);
             User a = new User(0L, "CLI", "OPERATOR");
-            a.UserName = "CONSOLE";
+            a.userName = "CONSOLE";
             logger.info("Added User: CONSOLE");
             dao.insert(a);
         }
@@ -148,8 +153,10 @@ public class Core {
     }
 
     private void loadEventBus() {
-        Message.unregister(CommandManager);
-        Message.register(CommandManager);
+        if (message.isRegistered(commandManager)) {
+            message.unregister(commandManager);
+        }
+        message.register(commandManager);
     }
 
     private void waitCommand() {
@@ -160,10 +167,13 @@ public class Core {
             command = scanner.nextLine();
             if (command.equals("stop")) {
                 logger.info("Stopping Server...");
-                plugins.forEach(PluginManager::disablePlugin);
+                plugins.forEach(pluginManager::disablePlugin);
+                if (conf.usePolarSecurity) {
+                    pSec.onDisable();
+                }
                 break;
             }
-            Message.post(new TextMessage("CLI", i, 0L, command, 0));
+            message.post(new TextMessage("CLI", i, 0L, command, 0));
             i++;
         }
         scanner.close();
@@ -195,7 +205,7 @@ public class Core {
             logger.info("trying to create..");
             try {
                 byte[] bWrite = Gson.toJson(conf).getBytes();
-                OutputStream os = new FileOutputStream(config);
+                BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(config));
                 for (byte b : bWrite) {
                     os.write(b);
                 }
@@ -208,11 +218,10 @@ public class Core {
                 logger.error("Failed to write config.");
                 return;
             }
-
             return;
         }
         try {
-            InputStream f = new FileInputStream("./config.json");
+            BufferedInputStream f = new BufferedInputStream(new FileInputStream("./config.json"));
             int size = f.available();
             StringBuilder confText = new StringBuilder();
             for (int i = 0; i < size; i++) {
@@ -239,15 +248,15 @@ public class Core {
     }
 
     public Bot getBot(cc.sfclub.polar.events.Message msg) {
-        return Wrappers.get(msg.getProvider());
+        return wrappers.get(msg.getProvider());
     }
 
-    public Bot getBot(String Provider) {
-        return Wrappers.get(Provider);
+    public Bot getBot(String provider) {
+        return wrappers.get(provider);
     }
 
     public void addBot(Bot bot) {
         logger.info("New Provider: ".concat(bot.getPlatfrom()));
-        Wrappers.put(bot.getPlatfrom(), bot);
+        wrappers.put(bot.getPlatfrom(), bot);
     }
 }

@@ -27,6 +27,12 @@ public final class PluginManager {
         }
     }
 
+    public void loadPlugin(JavaPlugin p) {
+        this.plugins.put(p.getClass(), p);
+        Core.getLogger().info("Load plugin " + p.getPluginLoader().getPluginClassLoader().getDescription().getName() + " " + p.getPluginLoader().getPluginClassLoader().getDescription().getVersion());
+        p.onLoad();
+    }
+
     public void enablePlugin(JavaPlugin plugin) {
         Core.getLogger().info("Enabling plugin " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getName() + " " + plugin.getPluginLoader().getPluginClassLoader().getDescription().getVersion());
         plugin.setEnabled(true);

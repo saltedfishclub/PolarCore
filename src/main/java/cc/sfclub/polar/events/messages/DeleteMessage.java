@@ -1,7 +1,7 @@
 package cc.sfclub.polar.events.messages;
 
 public class DeleteMessage extends TextMessage {
-    public DeleteMessage(String Provider, int MsgID, long User, String Message, long Group) {
-        super(Provider, MsgID, User, Message, Group);
+    public DeleteMessage(String provider, int msgID, long user, String message, long group) {
+        super(provider, msgID, user, message, group);
     }
 }

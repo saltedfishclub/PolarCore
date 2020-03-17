@@ -13,25 +13,27 @@ import java.util.HashMap;
 
 public class CommandManager {
     @Getter
-    volatile HashMap<String, CommandBase> CommandMap = new HashMap<>();
+    HashMap<String, CommandBase> commandMap = new HashMap<>();
     Unknown u = new Unknown();
     public void register(CommandBase cmd) {
         try {
             CommandFilter cfilter = cmd.getClass().getAnnotation(CommandFilter.class);
             if (cfilter != null) {
                 String alias = cfilter.alias();
-                cmd.Provider = cfilter.provider();
+                cmd.provider = cfilter.provider();
                 String[] aliases = alias.split(",");
                 for (String s : aliases) {
-                    if (CommandMap.containsKey(s)) {
+                    if (commandMap.containsKey(s)) {
                         Core.getLogger().warn("Command OVERWRITING!! Alias: {} ,from: {}", alias, cmd.getClass().getCanonicalName());
                     }
-                    CommandMap.put(s, cmd);
-                    cmd.Aliases.add(s);
+                    commandMap.put(s, cmd);
+                    cmd.aliases.add(s);
                 }
             }
             Command c = cmd.getClass().getAnnotation(Command.class);
-            String name, desc, perm;
+            String name;
+            String desc;
+            String perm;
             if (c != null) {
                 desc = c.description();
                 perm = c.perm();
@@ -39,24 +41,24 @@ public class CommandManager {
                 if (c.name().isEmpty()) {
                     Core.getLogger().warn("{} has a empty name!!", cmd.getClass().getCanonicalName());
                 } else {
-                    cmd.Perm = perm;
-                    cmd.Description = desc;
-                    CommandMap.put(c.name().toLowerCase(), cmd);
+                    cmd.perm = perm;
+                    cmd.description = desc;
+                    commandMap.put(c.name().toLowerCase(), cmd);
                     Core.getLogger().info("Register Command: {} ~ {}", c.name().toLowerCase(), desc);
                     return;
                 }
             }
             name = cmd.getClass().getSimpleName().toLowerCase();
-            desc = cmd.Description;
-            if (desc == null || cmd.Perm == null) return;
-            CommandMap.put(cmd.getClass().getSimpleName().toLowerCase(), cmd.getClass().getDeclaredConstructor().newInstance());
+            desc = cmd.description;
+            if (desc == null || cmd.perm == null) return;
+            commandMap.put(cmd.getClass().getSimpleName().toLowerCase(), cmd.getClass().getDeclaredConstructor().newInstance());
             Core.getLogger().info("Register Command: {} ~ {}", name, desc);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.ASYNC, priority = 9)
     public final void onMessage(TextMessage m) {
         if (!m.getMessage().trim().startsWith(Core.getConf().startsWith)) return;
         String[] args = m.getMessage().trim().replaceFirst(Core.getConf().startsWith.concat(" "), "").split(" ");
@@ -64,8 +66,8 @@ public class CommandManager {
         if (!UserUtil.isUserExists(m.getUID(), m.getProvider())) {
             UserUtil.addUser(new User(m.getUID(), m.getProvider(), Core.getConf().defaultGroup));
         }
-        exec = CommandMap.getOrDefault(args[0], u);
-        if (!m.getProvider().matches(exec.Provider)) {
+        exec = commandMap.getOrDefault(args[0], u);
+        if (!m.getProvider().matches(exec.provider)) {
             return;
         }
         if (m.getUser().hasPermission(exec.getPerm())) {

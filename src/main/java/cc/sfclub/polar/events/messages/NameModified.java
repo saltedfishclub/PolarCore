@@ -9,8 +9,8 @@ public class NameModified extends Message {
     @Getter
     private String after;
 
-    public NameModified(String Provider, int MsgID, long User, long Group, String before, String after) {
-        super(Provider, MsgID, User, Group);
+    public NameModified(String provider, int msgID, long user, long group, String before, String after) {
+        super(provider, msgID, user, group);
         this.before = before;
         this.after = after;
     }
