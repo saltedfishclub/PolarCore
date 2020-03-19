@@ -7,13 +7,13 @@ buildscript {
     }
 }
 plugins {
-    id "org.sonarqube" version "2.7"
+    id "de.lukaskoerfer.gradle.delombok" version "0.2"
 }
 apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'cc.sfclub.polar'
-version '1.1.1'
+version '1.2.2'
 
 jar.enabled = false
 assemble.dependsOn(shadowJar)
@@ -24,6 +24,12 @@ repositories {
         name = "mavenCentral"
         url = "http://maven.aliyun.com/nexus/content/groups/public/"
     }
+}
+javadoc {
+    options.encoding "UTF-8"
+    options.charSet 'UTF-8'
+    source = "build/delombok/delombok"
+    failOnError = false
 }
 shadowJar {
     zip64 true

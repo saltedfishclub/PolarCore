@@ -19,9 +19,11 @@ public class Sec extends CommandBase {
         String[] args = msg.getMessage().split(" ");
         if (args.length == 4) {
             if (args[1].contains("ban")) {
-                int value = -1;
+                int value = -2;
                 if (args[1].equalsIgnoreCase("unban")) {
                     value = 4;
+                } else if (args[2].contains("temp")) {
+                    value = -1;
                 }
                 if (!MathUtils.isNumeric(args[2])) {
                     wrongArgs(msg);
