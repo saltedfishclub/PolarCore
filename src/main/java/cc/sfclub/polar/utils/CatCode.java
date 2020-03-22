@@ -4,6 +4,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CatCode {
+    /**
+     * Spilt into array.
+     * For example:
+     * x[x]xx[x]xx ->
+     * x
+     * [x]
+     * xx
+     * [x]
+     * xx
+     *
+     * @param str message contains catCode
+     * @return string array
+     */
     public static String[] spilt(String str) {
         char[] ch = str.toCharArray();
         List<String> list = new LinkedList<>();

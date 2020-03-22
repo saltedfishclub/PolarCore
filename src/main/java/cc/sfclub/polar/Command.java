@@ -6,7 +6,18 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
+    /**
+     * @return cmd name.
+     */
     String name() default "";
+
+    /**
+     * @return cmd description
+     */
     String description() default "";
+
+    /**
+     * @return cmd permissions
+     */
     String perm() default "";
 }

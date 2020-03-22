@@ -15,6 +15,12 @@ public class CommandManager {
     @Getter
     private HashMap<String, CommandBase> commandMap = new HashMap<>();
     private Unknown u = new Unknown();
+
+    /**
+     * register a command
+     *
+     * @param cmd command.
+     */
     public void register(CommandBase cmd) {
         try {
             CommandFilter cfilter = cmd.getClass().getAnnotation(CommandFilter.class);

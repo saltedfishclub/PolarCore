@@ -7,7 +7,14 @@ import java.io.File;
 public abstract class JavaPlugin {
 	@Getter
 	private final PluginLoader loader;
+	/**
+	 * get datafolder
+	 */
 	private final File DataFolder;
+	/**
+	 * @return plugin status
+	 * @deprecated
+	 */
 	private boolean enabled = false;
 
 	//todo read and write config.

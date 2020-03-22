@@ -3,6 +3,9 @@ package cc.sfclub.polar.events.messages;
 import cc.sfclub.polar.events.Message;
 import lombok.Getter;
 
+/**
+ * Member name changed Message(May will be deleted.)
+ */
 public class NameModified extends Message {
     @Getter
     private String before;

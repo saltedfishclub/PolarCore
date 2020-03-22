@@ -6,6 +6,9 @@ import lombok.Getter;
 
 import java.io.*;
 
+/**
+ * Polar Security Module.*anti-spam*
+ */
 public class PolarSec {
     public static DataStorage priority;
     @Getter
@@ -30,8 +33,6 @@ public class PolarSec {
                     saveConfig(config);
                 }
                 Core.getLogger().info("[PolarSec] Config load successfully!");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -57,7 +58,6 @@ public class PolarSec {
         } catch (IOException e) {
             e.printStackTrace();
             Core.getLogger().error("Failed to write config.");
-            return;
         }
     }
 }

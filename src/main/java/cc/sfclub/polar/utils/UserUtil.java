@@ -8,22 +8,67 @@ public class UserUtil {
     private UserUtil() {
     }
 
-    public static User getUser(long uid, String Provider) {
-        return Core.getInstance().getDao().fetch(User.class, Cnd.where("Provider", "=", Provider).and("UID", "=", uid));
+    /**
+     * nullable.get a user from database.(NO CACHE)
+     *
+     * @param uid      user id
+     * @param provider provider
+     * @return nullable user
+     */
+    public static User getUser(long uid, String provider) {
+        return Core.getInstance().getDao().fetch(User.class, Cnd.where("Provider", "=", provider).and("UID", "=", uid));
     }
 
-    public static void addUser(User u) {
-        Core.getInstance().getDao().insert(u);
-        Core.getLogger().info("New User: " + u.toString());
+    /**
+     * nullable.get a user from database.(NO CACHE)
+     *
+     * @param uniqueID polarCore user uuid
+     * @return nullable user
+     */
+    public static User getUser(String uniqueID) {
+        return Core.getInstance().getDao().fetch(User.class, Cnd.where("uniqueID", "=", uniqueID));
     }
 
-    public static boolean isUserExists(long UID, String Provider) {
-        return getUser(UID, Provider) != null;
+    /**
+     * add a user
+     *
+     * @param user user
+     */
+    public static void addUser(User user) {
+        Core.getInstance().getDao().insert(user);
+        Core.getLogger().info("New User: " + user.toString());
     }
 
-    public static void delUser(long uid, String Provider) {
-        if (isUserExists(uid, Provider)) {
-            Core.getInstance().getDao().clear(User.class, Cnd.where("UniqueID", "=", getUser(uid, Provider).getUniqueID()));
+    /**
+     * check user exists.
+     *
+     * @param UID      uid
+     * @param provider provider
+     * @return result
+     */
+    public static boolean isUserExists(long UID, String provider) {
+        return getUser(UID, provider) != null;
+    }
+
+    /**
+     * check user exists.
+     *
+     * @param uniqueID polarCore user uuid
+     * @return nullable user
+     */
+    public static boolean isUserExists(String uniqueID) {
+        return getUser(uniqueID) != null;
+    }
+
+    /**
+     * Delete user.
+     *
+     * @param uid      user id
+     * @param provider provider
+     */
+    public static void delUser(long uid, String provider) {
+        if (isUserExists(uid, provider)) {
+            Core.getInstance().getDao().clear(User.class, Cnd.where("UniqueID", "=", getUser(uid, provider).getUniqueID()));
         }
     }
 }

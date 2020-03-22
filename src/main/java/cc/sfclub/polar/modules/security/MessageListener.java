@@ -21,6 +21,9 @@ public class MessageListener {
         timer.schedule(new MaybeWatchdog(), 0, 500);
     }
 
+    /*
+        Message Filter.
+     */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 10)
     public void onMessage(TextMessage m) {
         if (m.getProvider().equals("CLI")) return; //ignore console
@@ -37,6 +40,9 @@ public class MessageListener {
         messageCount++;
     }
 
+    /*
+        Action Analyzer.use async may cause some error
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAsyncMsg(TextMessage m) {
         if (m.getProvider().equals("CLI")) return; //ignore console
@@ -80,6 +86,10 @@ public class MessageListener {
         return (busyLevel + (3 - PolarSec.getConf().getSecurityLevel())) * 128 + PolarSec.getConf().getAdditionDelay();
     }
 
+    /*
+    It looks like a watchdog.resets user that priority=-1.
+    also control busyLevel
+     */
     class MaybeWatchdog extends TimerTask {
         private int c;
         private int Counter;

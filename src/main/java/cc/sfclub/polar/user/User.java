@@ -9,15 +9,36 @@ import org.nutz.dao.entity.annotation.Table;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * User object also a sql table.
+ */
 @SuppressWarnings("unused")
 @Table("user")
 public class User {
+    /**
+     * User group.
+     */
+    public String pGroup;
+    /**
+     * User Name
+     */
+    public String userName;
+    /**
+     * User provider
+     */
+    public String provider;
+    /**
+     * Special permissions
+     */
+    public ArrayList<String> permissions = new ArrayList<>();
+    /**
+     * User id
+     */
     @Getter
     private long UID;
-    public String pGroup;
-    public String userName;
-    public String provider;
-    public ArrayList<String> permissions = new ArrayList<>();
+    /**
+     * User Unique ID.For identify convenient
+     */
     @Name
     @Getter
     private String uniqueID;
@@ -33,6 +54,12 @@ public class User {
         uniqueID = UUID.randomUUID().toString();
     }
 
+    /**
+     * check permission
+     *
+     * @param permission Permission
+     * @return result
+     */
     public boolean hasPermission(String permission) {
         boolean succeed = false;
         boolean banned = false;
@@ -49,16 +76,27 @@ public class User {
         return succeed && !banned;
     }
 
+    /**
+     * add a special permission
+     *
+     * @param perm special permission
+     */
     public void addPermission(String perm) {
         permissions.add(perm);
         save();
     }
 
+    /**
+     * @return json
+     */
     @Override
     public String toString() {
         return Core.getGson().toJson(this);
     }
 
+    /**
+     * @return special permissions
+     */
     public ArrayList<String> permList() {
         ArrayList<String> tmp = new ArrayList<>();
         tmp.addAll(PermUtil.getDefaults(pGroup));
@@ -71,6 +109,9 @@ public class User {
         return a;*/
     }
 
+    /**
+     * save to database.
+     */
     public void save() {
         Core.getInstance().getDao().update(this);
     }
