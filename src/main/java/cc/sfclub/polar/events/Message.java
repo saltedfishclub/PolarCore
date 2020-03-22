@@ -6,13 +6,28 @@ import cc.sfclub.polar.utils.UserUtil;
 import cc.sfclub.polar.wrapper.Bot;
 import lombok.Getter;
 
+/**
+ * Base Message
+ */
 public class Message {
+    /***get message provider
+     * @return provider
+     */
     @Getter
     private String provider;
+    /***get user id(in message provider
+     * @return uid
+     */
     @Getter
     private long UID;
+    /***get message id(in message provider
+     * @return MessageID
+     */
     @Getter
     private long msgID;
+    /***get group id
+     * @return group id
+     */
     @Getter
     private long groupID;
 
@@ -23,10 +38,18 @@ public class Message {
         this.groupID = groupID;
     }
 
+    /**
+     * get User~from UserUtil
+     *
+     * @return User
+     */
     public User getUser() {
         return UserUtil.getUser(UID, provider);
     }
 
+    /**
+     * @return provider
+     */
     public Bot getBot() {
         return Core.getInstance().getBot(this);
     }

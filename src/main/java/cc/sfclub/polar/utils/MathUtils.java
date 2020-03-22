@@ -11,6 +11,12 @@ public class MathUtils {
     private MathUtils() {
     }
 
+    /**
+     * return true if str is number.
+     *
+     * @param str string
+     * @return result
+     */
     public static boolean isNumeric(String str) {
         String bigStr;
         try {

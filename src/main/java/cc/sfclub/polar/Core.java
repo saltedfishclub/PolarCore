@@ -30,31 +30,70 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Core {
+    /**
+     * @return Core
+     */
     @Getter
     private static final Core instance = new Core();
+    /**
+     * @return latest config version
+     */
     private static final int CONFIG_VERSION = 6;
+    /**
+     * @return logger
+     */
     @Getter
     private static final Logger logger = LoggerFactory.getLogger(Core.class);
+    /**
+     * @return config
+     */
     @Getter
     private static Config conf;
-    @Getter
-    private EventBus message = EventBus.getDefault();
-    @Getter
-    private PluginManager pluginManager = new PluginManager();
-    private DruidDataSource dataSource = new DruidDataSource();
+    /**
+     * @return GSon
+     */
     @Getter
     private static Gson Gson = new Gson();
+    /**
+     * @return Message EventBus
+     */
+    @Getter
+    private EventBus message = EventBus.getDefault();
+    private DruidDataSource dataSource = new DruidDataSource();
+    /**
+     * @return PluginManager
+     */
+    @Getter
+    private PluginManager pluginManager = new PluginManager();
+    /**
+     * @return DAO
+     */
     @Getter
     private Dao dao;
+    /**
+     * @return Wrappers Map(ProviderName->Bot(Wrapper))
+     */
     @Getter
     private HashMap<String, Bot> wrappers = new HashMap<>();
+    /**
+     * @return CommandManager
+     */
     @Getter
     private CommandManager commandManager = new CommandManager();
+    /**
+     * @return plugins
+     */
     @Getter
     private ArrayList<JavaPlugin> plugins = new ArrayList<>();
     private boolean loaded = false;
+    /**
+     * callback when core-loading finished
+     */
     @Setter
     private LoadCallback cb;
+    /**
+     * PolarSec
+     */
     @Getter
     private PolarSec pSec;
 
@@ -67,6 +106,9 @@ public class Core {
         System.exit(0);
     }
 
+    /**
+     * init.
+     */
     public void init() {
         logger.info("Loading Config");
         loadConfig();
@@ -249,14 +291,31 @@ public class Core {
         }
     }
 
+    /**
+     * get a bot by a message
+     *
+     * @param msg Message
+     * @return Bot
+     */
     public Bot getBot(Message msg) {
         return wrappers.get(msg.getProvider());
     }
 
+    /**
+     * get a bot by provider name
+     *
+     * @param provider provider name
+     * @return Bot
+     */
     public Bot getBot(String provider) {
         return wrappers.get(provider);
     }
 
+    /**
+     * add a bot
+     *
+     * @param bot bot
+     */
     public void addBot(Bot bot) {
         logger.info("New Provider: ".concat(bot.getPlatfrom()));
         wrappers.put(bot.getPlatfrom(), bot);
