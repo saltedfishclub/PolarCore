@@ -53,7 +53,7 @@ public class PolarSec {
             for (byte b : bWrite) {
                 os.write(b);
             }
-            Core.getLogger().info("[PolarSec] Config created.");
+            Core.getLogger().info("[PolarSec] Config saved.");
             os.close();
         } catch (IOException e) {
             e.printStackTrace();
