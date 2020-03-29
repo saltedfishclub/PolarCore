@@ -15,4 +15,9 @@ public @interface CommandFilter {
      * @return command aliases(spilt by ',')
      */
     String alias() default "";
+
+    /**
+     * @return parent command
+     */
+    String parent() default "";
 }
