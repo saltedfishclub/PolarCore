@@ -250,9 +250,8 @@ public class Core {
             try {
                 byte[] bWrite = Gson.toJson(conf).getBytes();
                 BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(config));
-                for (byte b : bWrite) {
-                    os.write(b);
-                }
+                os.write(bWrite);
+                os.flush();
                 logger.info("Config created.");
                 logger.warn("Edit the config and restart application.");
                 System.exit(0);
