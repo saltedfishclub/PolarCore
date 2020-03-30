@@ -63,10 +63,11 @@ public class Sec extends CommandBase {
     public void showHelp(TextMessage Command) {
         Command.reply(new String[]{
                 "Polar Security by iceBear67.",
-                "psec ban <UID> <Platfrom/this>",
-                "psec unban <UID> <Platfrom/this>",
+                "psec ban <UID> <Platform/this>",
+                "psec unban <UID> <Platform/this>",
+                "psec tempban <UID> <Platform/this>",
                 "psec query <UID> <Platform/this> --Query status",
-                "psec me --Get your priority."
+                "psec me --Get your info."
         });
     }
 
