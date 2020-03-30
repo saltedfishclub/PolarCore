@@ -18,7 +18,7 @@ public class MessageListener {
     public MessageListener(DataStorage ds) {
         PolarSec.priority = ds;
         Timer timer = new Timer();
-        timer.schedule(new MaybeWatchdog(), 0, 500);
+        timer.schedule(new MaybeWatchdog(), 0, 500 * 1000);
     }
 
     /*
