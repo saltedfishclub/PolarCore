@@ -14,7 +14,7 @@ apply plugin: 'maven'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'cc.sfclub.polar'
-version '2.0'
+version '2.1'
 
 jar.enabled = false
 assemble.dependsOn(shadowJar)
