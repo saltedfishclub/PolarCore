@@ -19,6 +19,7 @@ version '2.1'
 jar.enabled = false
 assemble.dependsOn(shadowJar)
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     maven {
@@ -35,11 +36,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     //classifier = 'javadoc'
     from javadoc.destinationDir
 }
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
 javadoc {
     options.encoding "UTF-8"
     options.charSet 'UTF-8'
@@ -53,6 +49,8 @@ shadowJar {
     }
 }
 artifacts {
+    //archives sourcesJar
+    archives javadocJar
     archives shadowJar
 }
 dependencies {
