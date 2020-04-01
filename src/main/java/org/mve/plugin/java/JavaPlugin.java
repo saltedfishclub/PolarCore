@@ -10,17 +10,20 @@ public abstract class JavaPlugin {
 	/**
 	 * get datafolder
 	 */
-	private final File DataFolder;
+	public File DataFolder;
 	/**
 	 * @return plugin status
 	 * @deprecated
 	 */
 	private boolean enabled = false;
 
+	/**
+	 * @return Plugin Config
+	 */
+
 	//todo read and write config.
 	public JavaPlugin() {
 		this.loader = ((PluginClassLoader) this.getClass().getClassLoader()).getLoader();
-		DataFolder = new File("./plugins/config");
 	}
 
 	public void onLoad() {
