@@ -19,12 +19,10 @@ import org.mve.plugin.PluginManager;
 import org.mve.plugin.java.JavaPlugin;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
-import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -38,7 +36,7 @@ public class Core {
     /**
      * @return latest config version
      */
-    private static final int CONFIG_VERSION = 6;
+    private static final int CONFIG_VERSION = 7;
     /**
      * @return logger
      */
@@ -122,13 +120,6 @@ public class Core {
         loadEventBus();
         logger.info("Loading CommandManager");
         commandManager.getCommandMap().clear();
-        new Reflections("cc.sfclub.polar.commands").getSubTypesOf(CommandBase.class).forEach(a -> {
-            try {
-                commandManager.register(a.getDeclaredConstructor().newInstance());
-            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
         wrappers.clear();
         logger.info("Loading Plugins");
         loadPlugins();

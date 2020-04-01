@@ -1,6 +1,5 @@
 package cc.sfclub.polar;
 
-import cc.sfclub.polar.commands.Unknown;
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.user.User;
 import cc.sfclub.polar.utils.UserUtil;
