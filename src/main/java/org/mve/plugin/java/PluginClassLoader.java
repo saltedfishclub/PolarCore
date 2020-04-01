@@ -48,6 +48,8 @@ public final class PluginClassLoader extends URLClassLoader {
 		{
 			clazz = Class.forName(main, true, this);
 			plugin = (JavaPlugin) clazz.getDeclaredConstructor().newInstance();
+			plugin.DataFolder = new File("./plugins/" + name);
+			plugin.DataFolder.mkdir();
 		}
 		catch (Throwable e) {
 			throw new InvalidPluginException("Could not load plugin " + file.getAbsolutePath(), e);
