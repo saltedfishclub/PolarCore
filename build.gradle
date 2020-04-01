@@ -53,8 +53,6 @@ shadowJar {
     }
 }
 artifacts {
-    archives sourcesJar
-    archives javadocJar
     archives shadowJar
 }
 dependencies {
