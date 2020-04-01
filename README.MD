@@ -13,9 +13,9 @@ The wonder Polar(QQ Bot)'s Kernel Source!!
   maven { url 'https://jitpack.io' }
 ```
 then  
-`implementation 'cc.sfclub:PolarCore:1.1.1`  
+`implementation 'cc.sfclub:PolarCore:2.1`  
 If you want to use the latest build:  
-`implementation 'cc.sfclub:PolarCore:1.1.1-SNAPSHOT`
+`implementation 'cc.sfclub:PolarCore:-SNAPSHOT`
 
 ## Structure
 Message Flow:  
