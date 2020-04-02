@@ -18,7 +18,7 @@ public class MessageListener {
     public MessageListener(DataStorage ds) {
         PolarSec.priority = ds;
         Timer timer = new Timer();
-        timer.schedule(new MaybeWatchdog(), 0, 500 * 1000);
+        timer.schedule(new MaybeWatchdog(), 0, 1000);
     }
 
     /*
@@ -98,7 +98,7 @@ public class MessageListener {
         public void run() {
             Counter++;
             cC++;
-            if (cC > 100) {
+            if (cC > 60) {
                 PolarSec.priority.getPriority().keySet().forEach(a -> {
                     if (PolarSec.priority.getPriority().get(a) == -1) {
                         PolarSec.priority.getPriority().put(a, 2);
@@ -108,7 +108,7 @@ public class MessageListener {
             }
             if (Counter > 6) {
                 Counter = 0;
-                if (messageCount > PolarSec.getConf().getSecurityLevel() * 5) {
+                if (messageCount > PolarSec.getConf().getSecurityLevel() * 25) {
                     messageCount = 0;
                     c = 0;
                     if (busyLevel != 5) {
