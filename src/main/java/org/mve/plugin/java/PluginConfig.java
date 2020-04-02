@@ -1,12 +1,11 @@
 package org.mve.plugin.java;
 
-import com.google.gson.Gson;
+import cc.sfclub.polar.Core;
 
 import java.io.*;
 
 public class PluginConfig {
     private transient JavaPlugin plugin;
-    private transient Gson gson = new Gson();
 
     public PluginConfig(JavaPlugin p) {
         plugin = p;
@@ -21,7 +20,7 @@ public class PluginConfig {
      */
     public void saveConfig() {
         try {
-            byte[] bWrite = gson.toJson(this).getBytes();
+            byte[] bWrite = Core.getGson().toJson(this).getBytes();
             File conf = new File(plugin.getDataFolder().getAbsolutePath() + "/" + getConfigName());
             BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(conf));
             os.write(bWrite);
@@ -43,7 +42,9 @@ public class PluginConfig {
             for (int i = 0; i < size; i++) {
                 confText.append((char) f.read());
             }
-            return gson.fromJson(confText.toString(), this.getClass());
+            PluginConfig pluginConfig = Core.getGson().fromJson(confText.toString(), this.getClass());
+            pluginConfig.plugin = plugin;
+            return pluginConfig;
         } catch (IOException e) {
             e.printStackTrace();
         }
