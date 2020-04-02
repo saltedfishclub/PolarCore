@@ -11,14 +11,19 @@ import java.util.TimerTask;
 
 public class MessageListener {
     private HashMap<String, UserMeta> chatter = new HashMap<>();
-    private int busyLevel = 0;
+    private PolarSec psec;
     private int messageCount;
+    private Timer timer;
     private int maxSecLevel = PolarSec.getConf().getSecurityLevel();
 
-    public MessageListener(DataStorage ds) {
-        PolarSec.priority = ds;
-        Timer timer = new Timer();
+    public MessageListener(PolarSec psec) {
+        this.psec = psec;
+        timer = new Timer();
         timer.schedule(new MaybeWatchdog(), 0, 1000);
+    }
+
+    public void destory() {
+        timer.cancel();
     }
 
     /*
@@ -28,12 +33,12 @@ public class MessageListener {
     public void onMessage(TextMessage m) {
         if (m.getProvider().equals("CLI")) return; //ignore console
         if (m.getUser() == null) return;
-        if (!PolarSec.priority.getPriority().containsKey(m.getUser().getUniqueID()))
-            PolarSec.priority.getPriority().put(m.getUser().getUniqueID(), PolarSec.priority.getInitialPriority());
-        if (PolarSec.priority.getPriority().get(m.getUser().getUniqueID()) < busyLevel) {
+        if (!PolarSec.getConf().getPriority().containsKey(m.getUser().getUniqueID()))
+            PolarSec.getConf().getPriority().put(m.getUser().getUniqueID(), PolarSec.getConf().getInitialPriority());
+        if (PolarSec.getConf().getPriority().get(m.getUser().getUniqueID()) < psec.busyLevel) {
             UserMeta um = chatter.get(m.getUser().getUniqueID());
             if (Core.getConf().debug)
-                Core.getLogger().info("[PolarSec] Capture!! User: {} ,Priority: {}/{} ,Delay: {}", m.getUser().getUniqueID(), PolarSec.priority.getPriority().get(m.getUser().getUniqueID()), busyLevel, um.getDelay());
+                Core.getLogger().info("[PolarSec] Capture!! User: {} ,Priority: {}/{} ,Delay: {}", m.getUser().getUniqueID(), PolarSec.getConf().getPriority().get(m.getUser().getUniqueID()), psec.busyLevel, um.getDelay());
             Core.getInstance().getMessage().cancelEventDelivery(m);
             return;
         }
@@ -48,8 +53,8 @@ public class MessageListener {
         if (m.getProvider().equals("CLI")) return; //ignore console
         if (m.getUser() == null) return;
         String UUID = m.getUser().getUniqueID();
-        if (!PolarSec.priority.getPriority().containsKey(UUID))
-            PolarSec.priority.getPriority().put(UUID, PolarSec.priority.getInitialPriority());
+        if (!PolarSec.getConf().getPriority().containsKey(UUID))
+            PolarSec.getConf().getPriority().put(UUID, PolarSec.getConf().getInitialPriority());
         if (!chatter.containsKey(UUID)) {
             chatter.put(UUID, new UserMeta());
             return;
@@ -76,18 +81,18 @@ public class MessageListener {
                 Core.getLogger().info("[PolarSec] UUID {} detected! (simliar: {})", UUID, um.checkSimliar(m.getMessage().hashCode()));
         }
         if (secLvl >= maxSecLevel) {
-            PolarSec.priority.getPriority().put(UUID, PolarSec.priority.getPriority().get(UUID) - 1);
+            PolarSec.getConf().getPriority().put(UUID, PolarSec.getConf().getPriority().get(UUID) - 1);
             if (debug)
-                Core.getLogger().info("[PolarSec] Priority Changed: {} ~ {}", UUID, PolarSec.priority.getPriority().get(UUID));
+                Core.getLogger().info("[PolarSec] Priority Changed: {} ~ {}", UUID, PolarSec.getConf().getPriority().get(UUID));
         }
     }
 
     public int getDelay() {
-        return (busyLevel + (3 - PolarSec.getConf().getSecurityLevel())) * 128 + PolarSec.getConf().getAdditionDelay();
+        return (psec.busyLevel + (3 - PolarSec.getConf().getSecurityLevel())) * 128 + PolarSec.getConf().getAdditionDelay();
     }
 
     /*
-    It looks like a watchdog.resets user that priority=-1.
+    It looks like a watchdog.resets user that.getConf()=-1.
     also control busyLevel
      */
     class MaybeWatchdog extends TimerTask {
@@ -99,9 +104,9 @@ public class MessageListener {
             Counter++;
             cC++;
             if (cC > 60) {
-                PolarSec.priority.getPriority().keySet().forEach(a -> {
-                    if (PolarSec.priority.getPriority().get(a) == -1) {
-                        PolarSec.priority.getPriority().put(a, 2);
+                PolarSec.getConf().getPriority().keySet().forEach(a -> {
+                    if (PolarSec.getConf().getPriority().get(a) == -1) {
+                        PolarSec.getConf().getPriority().put(a, 2);
                     }
                 });
                 cC = 0;
@@ -111,17 +116,17 @@ public class MessageListener {
                 if (messageCount > PolarSec.getConf().getSecurityLevel() * 25) {
                     messageCount = 0;
                     c = 0;
-                    if (busyLevel != 5) {
-                        busyLevel++;
-                        if (Core.getConf().debug) Core.getLogger().info("[PolarSec] busyLevel Up: {}", busyLevel);
+                    if (psec.busyLevel != 5) {
+                        psec.busyLevel++;
+                        if (Core.getConf().debug) Core.getLogger().info("[PolarSec] busyLevel Up: {}", psec.busyLevel);
                     } else {
                         Core.getLogger().warn("[PolarSec] busyLevel MAX!!");
                     }
                 } else {
                     messageCount = 0;
                     c++;
-                    if (c > 4 && busyLevel != 0) {
-                        busyLevel--;
+                    if (c > 4 && psec.busyLevel != 0) {
+                        psec.busyLevel--;
                     }
                 }
             }
