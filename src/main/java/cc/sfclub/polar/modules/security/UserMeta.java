@@ -39,7 +39,7 @@ public class UserMeta {
      */
     public int checkSimliar(int i) {
         if (nearbyChats.size() >= PolarSec.getConf().getMax_cache()) {
-            if (Collections.frequency(nearbyChats, i) > 2) {
+            if (Collections.frequency(nearbyChats, i) > (PolarSec.getConf().getMax_cache() / 2) + 1) {
                 return 1;
             } else {
                 return 0;
