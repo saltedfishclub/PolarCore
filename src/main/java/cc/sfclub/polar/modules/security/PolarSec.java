@@ -10,9 +10,12 @@ import java.io.*;
  * Polar Security Module.*anti-spam*
  */
 public class PolarSec {
-    public static DataStorage priority;
     @Getter
     private static DataStorage conf = new DataStorage();
+    @Getter
+    protected int busyLevel = 0;
+    @Getter
+    private MessageListener ml;
     private Gson Gson = new Gson();
 
     public void onEnable() {
@@ -37,11 +40,13 @@ public class PolarSec {
                 e.printStackTrace();
             }
         }
-        Core.getInstance().getMessage().register(new MessageListener(conf));
+        ml = new MessageListener(this);
+        Core.getInstance().getMessage().register(ml);
         Core.getInstance().getCommandManager().register(new Sec());
     }
 
     public void onDisable() {
+        ml.destory();
         File config = new File("sec.json");
         saveConfig(config);
     }
