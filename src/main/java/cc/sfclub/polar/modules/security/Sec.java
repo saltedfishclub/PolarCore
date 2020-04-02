@@ -34,7 +34,7 @@ public class Sec extends CommandBase {
                     msg.reply("User not found.");
                     return;
                 }
-                PolarSec.priority.getPriority().put(usr.getUniqueID(), value);
+                PolarSec.getConf().getPriority().put(usr.getUniqueID(), value);
                 msg.reply(usr.getUniqueID() + "'s priority has set to " + value);
                 return;
             } else if (args[1].equalsIgnoreCase("query")) {
@@ -49,14 +49,14 @@ public class Sec extends CommandBase {
                 }
                 msg.reply(new String[]{
                         "User " + usr.getUniqueID(),
-                        "Priority: " + PolarSec.priority.getPriority().get(usr.getUniqueID())
+                        "Priority: " + PolarSec.getConf().getPriority().get(usr.getUniqueID())
                 });
                 return;
             }
         }
         msg.reply(new String[]{
                 "User " + u.getUniqueID(),
-                "Priority: " + PolarSec.priority.getPriority().get(u.getUniqueID())
+                "Priority: " + PolarSec.getConf().getPriority().get(u.getUniqueID())
         });
     }
 
