@@ -20,6 +20,7 @@ public class PolarSec {
 
     public void onEnable() {
         File config = new File("sec.json");
+        //todo use PluginConfig
         if (!config.exists()) {
             saveConfig(config);
         } else {
