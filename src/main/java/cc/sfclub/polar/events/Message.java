@@ -53,4 +53,11 @@ public class Message {
     public Bot getBot() {
         return Core.getInstance().getBot(this);
     }
+
+    /**
+     * Send message directly.
+     */
+    public void sendMsg(String msg) {
+        getBot().sendMessage(groupID, msg);
+    }
 }
