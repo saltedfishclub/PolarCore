@@ -49,7 +49,7 @@ shadowJar {
     }
 }
 artifacts {
-    //archives sourcesJar
+    archives sourcesJar
     archives javadocJar
     archives shadowJar
 }
