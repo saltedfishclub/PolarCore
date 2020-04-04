@@ -4,25 +4,6 @@ import cc.sfclub.polar.user.Group;
 
 import java.util.ArrayList;
 
-class Database {
-    /**
-     * host. (host:port)
-     */
-    public String host = "localhost:3306";
-    /**
-     * username
-     */
-    public String user = "root";
-    /**
-     * password
-     */
-    public String password = "qaq";
-    /**
-     * database.
-     */
-    public String database = "polar";
-}
-
 public class Config {
     /**
      * default permission group(pGroup)
@@ -60,4 +41,23 @@ public class Config {
      * permission groups(pGroup)
      */
     public ArrayList<Group> groups = new ArrayList<>();
+
+    class Database {
+        /**
+         * host. (host:port)
+         */
+        public String host = "localhost:3306";
+        /**
+         * username
+         */
+        public String user = "root";
+        /**
+         * password
+         */
+        public String password = "qaq";
+        /**
+         * database.
+         */
+        public String database = "polar";
+    }
 }
