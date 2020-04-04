@@ -2,6 +2,8 @@ package cc.sfclub.polar;
 
 import cc.sfclub.polar.events.messages.TextMessage;
 import cc.sfclub.polar.user.User;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,17 +14,17 @@ public class ChainCommand {
         return true;
     };
     public List<ChainCommand> subChain;
-    public String perm;
-    public String name;
-    public String desc;
-    public Executor callback;
-    public Executor fallback = DEFAULT_FALLBACK;
-
-    public ChainCommand(String cmd, String perm, Executor callback) {
-        this.name = cmd;
-        this.callback = callback;
-        this.perm = perm;
-    }
+    @Getter
+    private String perm;
+    @Getter
+    private String name;
+    @Getter
+    private String desc;
+    @Getter
+    private Executor callback;
+    @Setter
+    @Getter
+    private Executor fallback = DEFAULT_FALLBACK;
 
     public ChainCommand(String cmd, String perm, CommandBase callback) {
         this.name = cmd;
@@ -34,12 +36,6 @@ public class ChainCommand {
         this.name = cmd;
         this.callback = fallback;
         this.perm = perm;
-    }
-
-    public ChainCommand then(String cmd, String perm, Executor callback) {
-        ChainCommand chainCommand = new ChainCommand(cmd, perm, callback);
-        subChain.add(chainCommand);
-        return chainCommand;
     }
 
     public ChainCommand then(String cmd, String perm, CommandBase callback) {
@@ -54,12 +50,12 @@ public class ChainCommand {
         return chainCommand;
     }
 
-    public ChainCommand setFallback(Executor fb) {
+    public ChainCommand fallback(Executor fb) {
         this.fallback = fb;
         return this;
     }
 
-    public ChainCommand setDescription(String desc) {
+    public ChainCommand description(String desc) {
         this.desc = desc;
         return this;
     }
@@ -72,6 +68,16 @@ public class ChainCommand {
             }
         });
         return state.get();
+    }
+
+    public ChainCommand execute(Executor executor) {
+        this.callback = executor;
+        return this;
+    }
+
+    public ChainCommand execute(CommandBase executor) {
+        this.callback = executor::onCommand;
+        return this;
     }
 
     @FunctionalInterface
