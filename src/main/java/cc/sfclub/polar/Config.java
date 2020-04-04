@@ -1,29 +1,11 @@
 package cc.sfclub.polar;
 
 import cc.sfclub.polar.user.Group;
+import org.mve.plugin.java.PluginConfig;
 
 import java.util.ArrayList;
 
-class Database {
-    /**
-     * host. (host:port)
-     */
-    public String host = "localhost:3306";
-    /**
-     * username
-     */
-    public String user = "root";
-    /**
-     * password
-     */
-    public String password = "qaq";
-    /**
-     * database.
-     */
-    public String database = "polar";
-}
-
-public class Config {
+public class Config extends PluginConfig {
     /**
      * default permission group(pGroup)
      */
@@ -60,4 +42,27 @@ public class Config {
      * permission groups(pGroup)
      */
     public ArrayList<Group> groups = new ArrayList<>();
+
+    public Config(String rootDir) {
+        super(rootDir);
+    }
+
+    public class Database {
+        /**
+         * host. (host:port)
+         */
+        public String host = "localhost:3306";
+        /**
+         * username
+         */
+        public String user = "root";
+        /**
+         * password
+         */
+        public String password = "qaq";
+        /**
+         * database.
+         */
+        public String database = "polar";
+    }
 }
