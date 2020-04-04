@@ -13,7 +13,12 @@ import java.util.HashMap;
 public class CommandManager {
     @Getter
     private HashMap<String, CommandBase> commandMap = new HashMap<>();
-    public static final Unknown FALLBACK = new Unknown();
+    private Unknown u = new Unknown();
+    @Getter
+    private static CommandManager instance = new CommandManager();
+
+    private CommandManager() {
+    }
 
     /**
      * register a command
@@ -53,29 +58,14 @@ public class CommandManager {
                     return;
                 }
             }
-            if (!(cmd.name == null)) {
-                name = cmd.name;
-            } else {
-                name = cmd.getClass().getSimpleName().toLowerCase();
-            }
-
+            name = cmd.getClass().getSimpleName().toLowerCase();
             desc = cmd.description;
             if (desc == null || cmd.perm == null) return;
-            commandMap.put(name, cmd.getClass().getDeclaredConstructor().newInstance());
+            commandMap.put(cmd.getClass().getSimpleName().toLowerCase(), cmd.getClass().getDeclaredConstructor().newInstance());
             Core.getLogger().info("Register Command: {} ~ {}", name, desc);
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Register a chain-command
-     *
-     * @param chainCommand
-     */
-    public void register(ChainCommand chainCommand) {
-        RootCommandTemplate template = new RootCommandTemplate(chainCommand);
-        register(template);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC, priority = 9)
@@ -86,7 +76,7 @@ public class CommandManager {
         if (!UserUtil.isUserExists(m.getUID(), m.getProvider())) {
             UserUtil.addUser(new User(m.getUID(), m.getProvider(), Core.getConf().defaultGroup));
         }
-        exec = commandMap.getOrDefault(args[0], FALLBACK);
+        exec = commandMap.getOrDefault(args[0], u);
         if (!m.getProvider().matches(exec.provider)) {
             return;
         }
