@@ -1,10 +1,11 @@
 package cc.sfclub.polar;
 
 import cc.sfclub.polar.user.Group;
+import org.mve.plugin.java.PluginConfig;
 
 import java.util.ArrayList;
 
-public class Config {
+public class Config extends PluginConfig {
     /**
      * default permission group(pGroup)
      */
@@ -42,7 +43,11 @@ public class Config {
      */
     public ArrayList<Group> groups = new ArrayList<>();
 
-    class Database {
+    public Config(String rootDir) {
+        super(rootDir);
+    }
+
+    public class Database {
         /**
          * host. (host:port)
          */
