@@ -50,6 +50,11 @@ public class ChainCommand {
         return chainCommand;
     }
 
+    public ChainCommand branch(ChainCommand chainCommand) {
+        subChain.add(chainCommand);
+        return this;
+    }
+
     public ChainCommand fallback(Executor fb) {
         this.fallback = fb;
         return this;

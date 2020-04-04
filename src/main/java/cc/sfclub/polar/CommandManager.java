@@ -14,10 +14,21 @@ public class CommandManager {
     @Getter
     private HashMap<String, CommandBase> commandMap = new HashMap<>();
     private Unknown u = new Unknown();
+    public static final Unknown FALLBACK = new Unknown();
     @Getter
     private static CommandManager instance = new CommandManager();
 
     private CommandManager() {
+    }
+
+    /**
+     * Register a chain-command
+     *
+     * @param chainCommand CommandChain
+     */
+    public void register(ChainCommand chainCommand) {
+        RootCommandTemplate template = new RootCommandTemplate(chainCommand);
+        register(template);
     }
 
     /**
