@@ -14,6 +14,11 @@ public class CommandManager {
     @Getter
     private HashMap<String, CommandBase> commandMap = new HashMap<>();
     private Unknown u = new Unknown();
+    @Getter
+    private static CommandManager instance = new CommandManager();
+
+    private CommandManager() {
+    }
 
     /**
      * register a command
