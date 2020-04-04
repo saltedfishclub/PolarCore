@@ -50,6 +50,10 @@ public class ChainCommand {
         return chainCommand;
     }
 
+    public ChainCommand then(String cmd) {
+        return then(cmd, this.perm);
+    }
+
     public ChainCommand branch(ChainCommand chainCommand) {
         subChain.add(chainCommand);
         return this;
