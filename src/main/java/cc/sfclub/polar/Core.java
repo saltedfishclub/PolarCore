@@ -76,7 +76,7 @@ public class Core {
      * @return CommandManager
      */
     @Getter
-    private CommandManager commandManager = new CommandManager();
+    private CommandManager commandManager = CommandManager.getInstance();
     /**
      * @return plugins
      */
