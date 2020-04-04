@@ -10,26 +10,26 @@ public class RootCommandTemplate extends CommandBase {
 
     public RootCommandTemplate(ChainCommand chainCommand) {
         this.chainCommand = chainCommand;
-        super.name = chainCommand.name;
-        super.perm = chainCommand.perm;
-        super.description = chainCommand.desc;
+        super.name = chainCommand.getName();
+        super.perm = chainCommand.getPerm();
+        super.description = chainCommand.getDesc();
     }
 
     @Override
     public boolean onCommand(User u, TextMessage command) {
         String[] args = command.getMessage().trim().replaceFirst(super.name + " ", "").split(" ");
-        if (args.length == 0) return chainCommand.fallback.onCommand(u, command);
+        if (args.length == 0) return chainCommand.getFallback().onCommand(u, command);
         int round = 0;
         ChainCommand now = chainCommand;
         while (now.checkExists(args[0]) != -1) {
             round++;
             now = now.subChain.get(now.checkExists(args[0]));
             if (round == args.length) {
-                if (!now.callback.onCommand(u, command)) now.fallback.onCommand(u, command);
+                if (!now.getCallback().onCommand(u, command)) now.getFallback().onCommand(u, command);
                 return true;
             }
         }
-        if (!now.callback.onCommand(u, command)) now.fallback.onCommand(u, command);
+        if (!now.getCallback().onCommand(u, command)) now.getFallback().onCommand(u, command);
         return false;
     }
 }
