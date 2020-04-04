@@ -12,7 +12,6 @@ import cc.sfclub.polar.wrapper.SimpleWrapper;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.google.gson.Gson;
 import lombok.Getter;
-import lombok.Setter;
 import org.greenrobot.eventbus.EventBus;
 import org.mve.plugin.PluginException;
 import org.mve.plugin.PluginManager;
@@ -85,11 +84,6 @@ public class Core {
     private ArrayList<JavaPlugin> plugins = new ArrayList<>();
     private boolean loaded = false;
     /**
-     * callback when core-loading finished
-     */
-    @Setter
-    private LoadCallback cb;
-    /**
      * PolarSec
      */
     @Getter
@@ -125,14 +119,6 @@ public class Core {
         loadPlugins();
         addBot(new SimpleWrapper());
         logger.info("All-Completed.");
-        if (cb != null) {
-            try {
-                cb.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.error("Failed to CallBack(SPM Notify)");
-            }
-        }
     }
 
     private void loadPlugins() {
