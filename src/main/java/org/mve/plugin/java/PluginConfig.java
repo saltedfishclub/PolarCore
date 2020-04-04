@@ -5,10 +5,14 @@ import cc.sfclub.polar.Core;
 import java.io.*;
 
 public class PluginConfig {
-    private transient JavaPlugin plugin;
+    private transient String root;
 
     public PluginConfig(JavaPlugin p) {
-        plugin = p;
+        root = p.getDataFolder().getAbsolutePath();
+    }
+
+    public PluginConfig(String rootDir) {
+        root = rootDir;
     }
 
     public String getConfigName() {
@@ -21,7 +25,7 @@ public class PluginConfig {
     public void saveConfig() {
         try {
             byte[] bWrite = Core.getGson().toJson(this).getBytes();
-            File conf = new File(plugin.getDataFolder().getAbsolutePath() + "/" + getConfigName());
+            File conf = new File(root + "/" + getConfigName());
             BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(conf));
             os.write(bWrite);
             os.flush();
@@ -36,14 +40,14 @@ public class PluginConfig {
      */
     public PluginConfig reloadConfig() {
         try {
-            BufferedInputStream f = new BufferedInputStream(new FileInputStream(plugin.getDataFolder().getAbsolutePath() + "/" + getConfigName()));
+            BufferedInputStream f = new BufferedInputStream(new FileInputStream(root + "/" + getConfigName()));
             int size = f.available();
             StringBuilder confText = new StringBuilder();
             for (int i = 0; i < size; i++) {
                 confText.append((char) f.read());
             }
             PluginConfig pluginConfig = Core.getGson().fromJson(confText.toString(), this.getClass());
-            pluginConfig.plugin = plugin;
+            pluginConfig.root = root;
             return pluginConfig;
         } catch (IOException e) {
             e.printStackTrace();
