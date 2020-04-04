@@ -77,12 +77,22 @@ public class User {
     }
 
     /**
-     * add a special permission
+     * give a special permission
      *
      * @param perm special permission
      */
     public void addPermission(String perm) {
         permissions.add(perm);
+        save();
+    }
+
+    /**
+     * remove a special permission
+     *
+     * @param perm special permission
+     */
+    public void delPermission(String perm) {
+        permissions.remove(perm);
         save();
     }
 

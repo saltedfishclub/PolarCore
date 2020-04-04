@@ -1,5 +1,7 @@
 package cc.sfclub.polar.user;
 
+import cc.sfclub.polar.Core;
+import lombok.Getter;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
@@ -14,6 +16,7 @@ public class Group {
     /**
      * Permission nodes
      */
+    @Getter
     public ArrayList<String> nodes = new ArrayList<>();
     /**
      * Group Name
@@ -33,4 +36,11 @@ public class Group {
      */
     @Id
     private transient int index;
+
+    /**
+     * save to database
+     */
+    public void save() {
+        Core.getInstance().getDao().update(this);
+    }
 }

@@ -22,7 +22,7 @@ import org.nutz.dao.impl.NutDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -217,7 +217,7 @@ public class Core {
     private void loadConfig() {
         File config = new File("config.json");
         if (!config.exists()) {
-            conf = new Config();
+            conf = new Config("./");
             conf.config_version = CONFIG_VERSION;
             //
             Group op = new Group();
@@ -238,30 +238,13 @@ public class Core {
             conf.groups.add(member);
             logger.warn("config.json NOT FOUND");
             logger.info("trying to create..");
-            try {
-                byte[] bWrite = Gson.toJson(conf).getBytes();
-                BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(config));
-                os.write(bWrite);
-                os.flush();
-                logger.info("Config created.");
-                logger.warn("Edit the config and restart application.");
-                System.exit(0);
-                os.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                logger.error("Failed to write config.");
-                return;
-            }
+            conf.saveConfig();
+            logger.info("Config created.");
+            logger.warn("Edit the config and restart application.");
+            System.exit(0);
             return;
         }
-        try {
-            BufferedInputStream f = new BufferedInputStream(new FileInputStream("./config.json"));
-            int size = f.available();
-            StringBuilder confText = new StringBuilder();
-            for (int i = 0; i < size; i++) {
-                confText.append((char) f.read());
-            }
-            conf = Gson.fromJson(confText.toString(), Config.class);
+        conf = (Config) new Config("./").reloadConfig();
             if (conf.config_version < CONFIG_VERSION) {
                 logger.warn("YOU ARE USING OUTDATED CONFIG");
                 logger.warn("DELETE IT FOR REGENERATION.");
@@ -272,13 +255,6 @@ public class Core {
                 }
             });
             logger.info("Config load successfully!");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            logger.error("Unknown Error.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("IOException.");
-        }
     }
 
     /**
