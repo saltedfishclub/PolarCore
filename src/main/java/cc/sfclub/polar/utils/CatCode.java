@@ -1,5 +1,9 @@
 package cc.sfclub.polar.utils;
 
+import cc.sfclub.polar.entity.At;
+import cc.sfclub.polar.entity.Image;
+import org.nutz.repo.Base64;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,4 +51,53 @@ public class CatCode {
         return strs;
     }
 
+    public static At parseAt(String strAt) {
+        if (!(strAt.startsWith("[") && strAt.endsWith("]"))) {
+            return null;
+        }
+        String str = strAt.replaceFirst("\\[", "");
+        str = str.replaceAll("]", "");
+        if ("AtAll".equals(str)) {
+            At at = new At();
+            at.all = true;
+            return at;
+        }
+        String[] args = str.split(",");
+        At at = new At();
+        long usrId;
+        String[] a;
+        if (args.length == 0) {
+            a = str.split(":");
+        } else {
+            a = args[0].split(":");
+        }
+        if (!MathUtils.isNumeric(a[1])) {
+            return null;
+        }
+        usrId = Long.parseLong(a[1]);
+        at.userId = usrId;
+        return at;
+    }
+
+    public static Image parseImg(String strImg) {
+        if (!(strImg.startsWith("[") && strImg.endsWith("]"))) {
+            return null;
+        }
+        String str = strImg.replaceFirst("\\[", "");
+        str = str.replaceAll("]", "");
+        String[] args = str.split(",");
+        Image img = new Image();
+        String[] a;
+        if (args.length == 0) {
+            a = str.split(":");
+        } else {
+            a = args[0].split(":");
+        }
+        if (a[1].endsWith(".jpg") || a[1].endsWith(".png")) {
+            img.ID = a[1];
+            return img;
+        }
+        img.URI = Base64.URLSafe.decode(a[1]);
+        return img;
+    }
 }

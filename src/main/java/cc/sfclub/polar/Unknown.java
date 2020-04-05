@@ -20,7 +20,8 @@ public class Unknown extends CommandBase {
     }
 
     @Override
-    public void onCommand(User u, TextMessage command) {
+    public boolean onCommand(User u, TextMessage command) {
         command.reply("WTF are you speaking?");
+        return true;
     }
 }

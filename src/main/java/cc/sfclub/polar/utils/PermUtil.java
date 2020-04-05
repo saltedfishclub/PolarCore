@@ -7,6 +7,12 @@ import org.nutz.dao.Cnd;
 import java.util.ArrayList;
 
 public final class PermUtil {
+    /**
+     * get default permission nodes for a group
+     *
+     * @param group
+     * @return nodes
+     */
     public static ArrayList<String> getDefaults(String group) {
         Group g = getGroup(group);
         ArrayList<String> str = new ArrayList<>();
@@ -26,6 +32,9 @@ public final class PermUtil {
         }
     }
 
+    /**
+     * @param group
+     */
     public static void addGroup(Group group) {
         Core.getInstance().getDao().insert(group);
         Core.getLogger().info(group.pGroup + " has been added to DB.");

@@ -16,6 +16,11 @@ public abstract class CommandBase {
     @Getter
     public String perm;
     /**
+     * @return Command Name
+     */
+    @Getter
+    public String name;
+    /**
      * @return command description
      */
     @Getter
@@ -35,5 +40,5 @@ public abstract class CommandBase {
      * @param u       user
      * @param command command (cmd head deleted)
      */
-    public abstract void onCommand(User u, TextMessage command);
+    public abstract boolean onCommand(User u, TextMessage command);
 }
