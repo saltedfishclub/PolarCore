@@ -11,10 +11,10 @@ import cc.sfclub.polar.utils.UserUtil;
 public class Sec extends CommandBase {
 
     @Override
-    public void onCommand(User u, TextMessage msg) {
+    public boolean onCommand(User u, TextMessage msg) {
         if (msg.getMessage().isEmpty()) {
             showHelp(msg);
-            return;
+            return true;
         }
         String[] args = msg.getMessage().split(" ");
         if (args.length == 4) {
@@ -27,37 +27,38 @@ public class Sec extends CommandBase {
                 }
                 if (!MathUtils.isNumeric(args[2])) {
                     wrongArgs(msg);
-                    return;
+                    return true;
                 }
                 User usr = UserUtil.getUser(Long.parseLong(args[2]), args[3].replace("this", msg.getProvider()));
                 if (usr == null) {
                     msg.reply("User not found.");
-                    return;
+                    return true;
                 }
                 PolarSec.getConf().getPriority().put(usr.getUniqueID(), value);
                 msg.reply(usr.getUniqueID() + "'s priority has set to " + value);
-                return;
+                return true;
             } else if (args[1].equalsIgnoreCase("query")) {
                 if (!MathUtils.isNumeric(args[2])) {
                     wrongArgs(msg);
-                    return;
+                    return true;
                 }
                 User usr = UserUtil.getUser(Long.parseLong(args[2]), args[3].replace("this", msg.getProvider()));
                 if (usr == null) {
                     msg.reply("User not found.");
-                    return;
+                    return true;
                 }
                 msg.reply(new String[]{
                         "User " + usr.getUniqueID(),
                         "Priority: " + PolarSec.getConf().getPriority().get(usr.getUniqueID())
                 });
-                return;
+                return true;
             }
         }
         msg.reply(new String[]{
                 "User " + u.getUniqueID(),
                 "Priority: " + PolarSec.getConf().getPriority().get(u.getUniqueID())
         });
+        return true;
     }
 
     public void showHelp(TextMessage Command) {
