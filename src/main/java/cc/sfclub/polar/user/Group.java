@@ -1,6 +1,7 @@
 package cc.sfclub.polar.user;
 
 import cc.sfclub.polar.Core;
+import cc.sfclub.polar.utils.PermUtil;
 import lombok.Getter;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Name;
@@ -42,5 +43,54 @@ public class Group {
      */
     public void save() {
         Core.getInstance().getDao().update(this);
+    }
+
+    public boolean hasPermission(String permission) {
+        boolean succeed = false;
+        boolean banned = false;
+        for (String s : permList()) {
+            PermUtil.Result res = PermUtil.compare(permission, s);
+            if (res == PermUtil.Result.SUCCEED) {
+                succeed = true;
+            }
+            if (res == PermUtil.Result.BANNED) {
+                banned = true;
+            }
+        }
+
+        return succeed && !banned;
+    }
+
+    /**
+     * give a special permission
+     *
+     * @param perm special permission
+     */
+    public void addPermission(String perm) {
+        nodes.add(perm);
+        save();
+    }
+
+    /**
+     * remove a special permission
+     *
+     * @param perm special permission
+     */
+    public void delPermission(String perm) {
+        nodes.remove(perm);
+        save();
+    }
+
+    /**
+     * @return special permissions
+     */
+    public ArrayList<String> permList() {
+        if (extend.isEmpty()) {
+            return nodes;
+        }
+        ArrayList<String> tmp = new ArrayList<>();
+        tmp.addAll(PermUtil.getDefaults(extend));
+        tmp.addAll(nodes);
+        return tmp;
     }
 }
