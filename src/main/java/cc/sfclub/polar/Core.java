@@ -120,7 +120,6 @@ public class Core {
         addBot(new SimpleWrapper());
         logger.info("All-Completed.");
     }
-
     private void loadPlugins() {
         plugins.forEach(pluginManager::disablePlugin);
         pluginManager.getPlugins().clear();
