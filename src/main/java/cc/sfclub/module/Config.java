@@ -1,17 +1,13 @@
-package org.mve.plugin.java;
+package cc.sfclub.module;
 
-import cc.sfclub.polar.Core;
+import cc.sfclub.core.modules.Core;
 
 import java.io.*;
 
-public class PluginConfig {
+public class Config {
     private transient String root;
 
-    public PluginConfig(JavaPlugin p) {
-        root = p.getDataFolder().getAbsolutePath();
-    }
-
-    public PluginConfig(String rootDir) {
+    public Config(String rootDir) {
         root = rootDir;
     }
 
@@ -38,7 +34,7 @@ public class PluginConfig {
     /**
      * Reload Config
      */
-    public PluginConfig reloadConfig() {
+    public Config reloadConfig() {
         try {
             BufferedInputStream f = new BufferedInputStream(new FileInputStream(root + "/" + getConfigName()));
             int size = f.available();
@@ -46,7 +42,7 @@ public class PluginConfig {
             for (int i = 0; i < size; i++) {
                 confText.append((char) f.read());
             }
-            PluginConfig pluginConfig = Core.getGson().fromJson(confText.toString(), this.getClass());
+            Config pluginConfig = Core.getGson().fromJson(confText.toString(), this.getClass());
             pluginConfig.root = root;
             return pluginConfig;
         } catch (IOException e) {
