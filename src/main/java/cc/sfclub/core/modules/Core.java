@@ -23,7 +23,7 @@ public class Core extends Module {
     public static final int CONFIG_VERSION = 1;
     @Getter
     private static final Gson gson = new Gson();
-    e@Getter
+    @Getter
     private static final Logger logger = LoggerFactory.getLogger(Initialzer.c
     @Gtter
     private final CoreCfg config;
