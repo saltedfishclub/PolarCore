@@ -70,6 +70,6 @@ dependencies {
     compile group: 'org.nutz', name: 'nutz', version: '1.r.68.v20200427'
     //Utils
     implementation 'org.reflections:reflections:0.9.12'
-    compile 'com.github.iceBear67:Util:e5585a5492'
+    compile 'com.github.iceBear67:Util:7ea8a01a88'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }

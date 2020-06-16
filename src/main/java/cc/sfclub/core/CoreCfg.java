@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class CoreCfg extends JsonConfig {
     private final String commandPrefix = "!p";
+    private final String locale = "en_US";
     private final int config_version = Core.CONFIG_VERSION;
     private final boolean debug = false;
     private final String name = "Polar";

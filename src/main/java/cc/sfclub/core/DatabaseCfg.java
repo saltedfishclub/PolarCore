@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class DatabaseCfg extends JsonConfig {
-    public String host = "localhost:3306";
-    public String user = "root";
-    public String password = "qaq";
-    public String database = "polar";
+    private final String jdbcUrl = "jdbc:sqlite:data.db"; //Mysql: jdbc:mysql://localhost:3306/XX
+    private final String driver = "org.sqlite.JDBC";
+    private final String user = "";
+    private final String password = "";
 
     public DatabaseCfg() {
         super(".");

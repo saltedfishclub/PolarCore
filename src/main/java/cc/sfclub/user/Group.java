@@ -5,36 +5,47 @@ import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Getter
-@Table("group")
-@RequiredArgsConstructor
+@Table("userGroup")
 public class Group implements Permissible {
-    public static final Group DEFAULT = new Group("_", null, Collections.emptyList());
+    public static final Group DEFAULT = new Group("_");
     @Name
     private final String name;
     @NonNull
-    private final List<Perm> permList;
+    private final List<Perm> permList = new ArrayList<>();
     @Setter
-    @NonNull
     private String extend;
+
+    /**
+     * Only for ORM Initial.(NoArgConstructor required)
+     */
+    @Deprecated
+    public Group() {
+        name = null;
+    }
+
+    public Group(String name, Perm... InitialPerms) {
+        permList.addAll(Arrays.asList(InitialPerms));
+        this.name = name;
+    }
 
     public static Optional<Group> getGroup(String name) {
         if (name == null) return Optional.empty();
-        return Optional.ofNullable(Core.getCore().getORM().fetch(Group.class, Cnd.where("name", "=", name)));
+        return Optional.ofNullable(Core.get().ORM().fetch(Group.class, Cnd.where("name", "=", name)));
     }
 
     public static Group getDefault() {
-        return getGroup(Core.getCore().getPermCfg().getDefaultGroup()).orElse(DEFAULT);
+        return getGroup(Core.get().permCfg().getDefaultGroup()).orElse(DEFAULT);
     }
 
     @Override

@@ -15,30 +15,35 @@ import java.util.UUID;
 @Table
 public class User implements Permissible {
     private final String UniqueID = UUID.randomUUID().toString();
-    private final String group;
+    @Setter
+    private String userGroup;
     private final List<Perm> permList = new ArrayList<>();
     @Setter
     private String userName;
 
+    public User() {
+
+    }
+
     public User(String Group) {
-        group = Group;
+        userGroup = Group;
     }
 
     public User(String group, Perm... InitialPermissions) {
-        this.group = group;
+        this.userGroup = group;
         permList.addAll(Arrays.asList(InitialPermissions));
     }
 
     @Override
     public boolean hasPermission(Perm perm) {
-        if (Group.getGroup(getGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
+        if (Group.getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
             return true;
         } else return permList.contains(perm);
     }
 
     @Override
     public boolean hasPermission(String perm) {
-        if (Group.getGroup(getGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
+        if (Group.getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
             return true;
         } else return permList.contains(perm);
     }
