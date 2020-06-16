@@ -8,7 +8,7 @@ import cc.sfclub.util.Since;
  */
 @Since("4.0")
 public class PrivateMessageReceivedEvent extends MessageReceivedEvent {
-    public PrivateMessageReceivedEvent(String userID, String message) {
-        super(userID, message);
+    public PrivateMessageReceivedEvent(String userID, String message, String transform, long messageID) {
+        super(userID, message, transform, messageID);
     }
 }

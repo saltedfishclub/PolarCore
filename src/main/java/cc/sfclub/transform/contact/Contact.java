@@ -1,16 +1,19 @@
 package cc.sfclub.transform.contact;
 
 import cc.sfclub.util.Since;
+import lombok.Getter;
 
 @Since("4.0")
-public interface Contact {
+public class Contact {
+
     /**
      * e.g Telegram User ID,WeChat user id
      *
      * @return Transform id
      */
     @Since("4.0")
-    long getTID();
+    @Getter
+    private long TID;
 
     /**
      * PolarCore UserID
@@ -18,5 +21,6 @@ public interface Contact {
      * @return UserID
      */
     @Since("4.0")
-    String getUID();
+    @Getter
+    private String UID;
 }

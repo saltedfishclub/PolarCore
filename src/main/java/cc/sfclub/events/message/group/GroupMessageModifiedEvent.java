@@ -10,8 +10,8 @@ public class GroupMessageModifiedEvent extends MessageModifiedEvent {
     @Getter
     private final long group;
 
-    public GroupMessageModifiedEvent(String userID, String message, long group) {
-        super(userID, message);
+    public GroupMessageModifiedEvent(String userID, String message, long group, String transform, long messageID) {
+        super(userID, message, transform, messageID);
         this.group = group;
     }
 }

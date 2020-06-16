@@ -1,11 +1,14 @@
 package cc.sfclub.transform.contact;
 
-public interface Profile {
-    String getNickName();
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    String getRealName();
-
-    Level getLevel();
+@Getter
+@AllArgsConstructor
+public class Profile {
+    private final String nickName;
+    private final String realName;
+    private final Level level;
 
     enum Level {
         NORMAL, ADMIN
