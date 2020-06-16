@@ -45,7 +45,7 @@ public class Core {
     private final User CONSOLE;
     private final CommandDispatcher<GroupMessageReceivedEvent> dispatcher = new CommandDispatcher<>();
     private Map<String, Bot> bots = new HashMap<>();
-    public static final String CORE_VERSION = "V4.0.0";
+    public static final String CORE_VERSION = "V4.1.2";
     @Getter
     private static final PluginManager pluginManager = new DefaultPluginManager(new File("./plugins").toPath());
 

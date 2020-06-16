@@ -13,7 +13,7 @@ apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'cc.sfclub.polar'
-version '4.1.1'
+version '4.1.2'
 
 jar.enabled = false
 assemble.dependsOn(shadowJar)
@@ -71,7 +71,7 @@ dependencies {
     compile group: 'org.nutz', name: 'nutz', version: '1.r.68.v20200427'
     //Utils
     implementation 'org.reflections:reflections:0.9.12'
-    compile 'com.github.iceBear67:Util:b0b7a67330'
+    compile 'com.github.iceBear67:Util:96b6e38669'
     compile 'com.mojang:brigadier:1.0.17'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }
