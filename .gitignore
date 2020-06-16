@@ -8,3 +8,5 @@ gradlew.bat
 sonar.sh
 /database.json
 /groups.json
+locale
+*.db

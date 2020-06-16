@@ -16,7 +16,7 @@ public class Perm {
         } else {
             if (orig.matches(target)) result = Result.SUCCEED;
         }
-        if (Core.getCore().getConfig().isDebug()) {
+        if (Core.get().config().isDebug()) {
             Core.getLogger().info("[DEBUG][Perm] Compare: {} , {} == {}", orig, target, result);
         }
         return result;

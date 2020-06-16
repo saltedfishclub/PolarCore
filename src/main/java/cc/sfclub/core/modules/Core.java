@@ -6,6 +6,7 @@ import cc.sfclub.events.server.ServerStartingEvent;
 import cc.sfclub.module.Module;
 import com.google.gson.Gson;
 import lombok.Getter;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.nutz.dao.Dao;
@@ -15,11 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 
-/**
- * Core controlled database,orm,utils,etc.
- */
 public class Core extends Module {
-    @Getter
     private static Core core;
 
     public static final int CONFIG_VERSION = 1;
@@ -27,11 +24,8 @@ public class Core extends Module {
     private static final Gson gson = new Gson();
     @Getter
     private static final Logger logger = LoggerFactory.getLogger("Core");
-    @Getter
     private final CoreCfg config;
-    @Getter
     private final PermCfg permCfg;
-    @Getter
     private final Dao ORM;
     public static final String CORE_VERSION = "V4.0.0";
 
@@ -40,10 +34,27 @@ public class Core extends Module {
         this.config = config;
         this.permCfg = permCfg;
         this.ORM = new NutDao(ds);
+        EventBus.getDefault().register(this);
+    }
+
+    public static Core get() {
+        return core;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStarting(ServerStartingEvent evt) {
 
+    }
+
+    public Dao ORM() {
+        return ORM;
+    }
+
+    public PermCfg permCfg() {
+        return permCfg;
+    }
+
+    public CoreCfg config() {
+        return this.config;
     }
 }
