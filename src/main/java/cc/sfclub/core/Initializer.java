@@ -2,7 +2,6 @@ package cc.sfclub.core;
 
 import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import cc.sfclub.events.server.ServerStartedEvent;
-import cc.sfclub.events.server.ServerStartingEvent;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
 import cc.sfclub.user.perm.Perm;
@@ -12,6 +11,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.SneakyThrows;
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class Initializer {
@@ -32,8 +32,10 @@ public class Initializer {
         Core.getLogger().info(I18N.get().server.STARTING, Core.CORE_VERSION);
         Core.getLogger().info(I18N.get().server.LOADING_MODULES);
         loadCore();
+        Core.getPluginManager().loadPlugins();
+        new File("plugins").mkdir();
+        Core.getPluginManager().startPlugins();
         Core.getLogger().info(I18N.get().server.LOADED_MODULE);
-        EventBus.getDefault().post(new ServerStartingEvent());
         EventBus.getDefault().post(new ServerStartedEvent());
         waitCommand();
 
