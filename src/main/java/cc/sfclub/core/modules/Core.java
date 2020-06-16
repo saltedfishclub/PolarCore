@@ -2,12 +2,14 @@ package cc.sfclub.core.modules;
 
 import cc.sfclub.core.CoreCfg;
 import cc.sfclub.core.PermCfg;
+import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import cc.sfclub.events.server.ServerStartingEvent;
 import cc.sfclub.module.Description;
 import cc.sfclub.module.Module;
 import cc.sfclub.transform.Bot;
 import cc.sfclub.user.User;
 import com.google.gson.Gson;
+import com.mojang.brigadier.CommandDispatcher;
 import lombok.Getter;
 import lombok.NonNull;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,6 +46,7 @@ public class Core extends Module {
     private final PermCfg permCfg;
     private final Dao ORM;
     private final User CONSOLE;
+    private final CommandDispatcher<GroupMessageReceivedEvent> dispatcher = new CommandDispatcher<>();
     private HashMap<String, Bot> bots;
     public static final String CORE_VERSION = "V4.0.0";
 
@@ -67,7 +70,6 @@ public class Core extends Module {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStarting(ServerStartingEvent evt) {
-
     }
 
     public void registerBot(@NonNull Bot bot) {
@@ -112,5 +114,12 @@ public class Core extends Module {
      */
     public User console() {
         return this.CONSOLE;
+    }
+
+    /**
+     * @return command dispatcher
+     */
+    public CommandDispatcher dispatcher() {
+        return this.dispatcher;
     }
 }
