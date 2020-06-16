@@ -59,6 +59,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.2.0'
     compileOnly 'org.projectlombok:lombok:1.18.12'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+    compile group: 'org.pf4j', name: 'pf4j', version: '3.3.1'
     //Loggers
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'

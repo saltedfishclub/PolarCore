@@ -10,3 +10,4 @@ sonar.sh
 /groups.json
 locale
 *.db
+/plugins/
