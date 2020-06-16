@@ -1,19 +1,12 @@
-package cc.sfclub.core.modules;
+package cc.sfclub.core;
 
-import cc.sfclub.core.CoreCfg;
-import cc.sfclub.core.PermCfg;
 import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
-import cc.sfclub.events.server.ServerStartingEvent;
-import cc.sfclub.module.Description;
-import cc.sfclub.module.Module;
 import cc.sfclub.transform.Bot;
 import cc.sfclub.user.User;
 import com.google.gson.Gson;
 import com.mojang.brigadier.CommandDispatcher;
 import lombok.Getter;
 import lombok.NonNull;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
@@ -24,7 +17,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class Core extends Module {
+public class Core {
     private static Core core;
 
     public static final int CONFIG_VERSION = 1;
@@ -51,7 +44,6 @@ public class Core extends Module {
     public static final String CORE_VERSION = "V4.0.0";
 
     public Core(CoreCfg config, PermCfg permCfg, DataSource ds) {
-        this.description = new Description("Core", CORE_VERSION, this.getClass().getName());
         core = this;
         this.config = config;
         this.permCfg = permCfg;
@@ -67,11 +59,7 @@ public class Core extends Module {
     public static Core get() {
         return core;
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onStarting(ServerStartingEvent evt) {
-    }
-
+    
     public void registerBot(@NonNull Bot bot) {
         bots.put(bot.getTransform().getName(), bot);
     }

@@ -1,6 +1,5 @@
 package cc.sfclub.core;
 
-import cc.sfclub.core.modules.Core;
 import cc.sfclub.util.common.JsonConfig;
 import lombok.Getter;
 
