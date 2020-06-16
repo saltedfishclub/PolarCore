@@ -1,10 +1,8 @@
 package cc.sfclub.core;
 
-import cc.sfclub.core.modules.Core;
 import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import cc.sfclub.events.server.ServerStartedEvent;
 import cc.sfclub.events.server.ServerStartingEvent;
-import cc.sfclub.module.Manager;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
 import cc.sfclub.user.perm.Perm;
@@ -83,7 +81,7 @@ public class Initializer {
         dataSource.setPassword(dbCfg.getPassword());
         if (cfg.getConfig_version() != Core.CONFIG_VERSION)
             Core.getLogger().warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
-        Manager.getInst().addModule(new Core(cfg, permCfg, dataSource));
+        new Core(cfg, permCfg, dataSource);
         if (!Core.get().ORM().exists(User.class)) {
             Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, User.class.getName());
             Core.get().ORM().create(User.class, false);

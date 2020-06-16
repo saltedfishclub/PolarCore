@@ -1,6 +1,6 @@
 package cc.sfclub.user;
 
-import cc.sfclub.core.modules.Core;
+import cc.sfclub.core.Core;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
 import lombok.Getter;
