@@ -5,9 +5,11 @@ import cc.sfclub.core.PermCfg;
 import cc.sfclub.events.server.ServerStartingEvent;
 import cc.sfclub.module.Description;
 import cc.sfclub.module.Module;
+import cc.sfclub.transform.Bot;
 import cc.sfclub.user.User;
 import com.google.gson.Gson;
 import lombok.Getter;
+import lombok.NonNull;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.nutz.dao.Cnd;
@@ -17,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Optional;
 
 public class Core extends Module {
     private static Core core;
@@ -40,6 +44,7 @@ public class Core extends Module {
     private final PermCfg permCfg;
     private final Dao ORM;
     private final User CONSOLE;
+    private HashMap<String, Bot> bots;
     public static final String CORE_VERSION = "V4.0.0";
 
     public Core(CoreCfg config, PermCfg permCfg, DataSource ds) {
@@ -63,6 +68,14 @@ public class Core extends Module {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStarting(ServerStartingEvent evt) {
 
+    }
+
+    public void registerBot(@NonNull Bot bot) {
+        bots.put(bot.getTransform().getName(), bot);
+    }
+
+    public Optional<Bot> bot(@NonNull String name) {
+        return Optional.ofNullable(bots.get(name));
     }
 
     /**
