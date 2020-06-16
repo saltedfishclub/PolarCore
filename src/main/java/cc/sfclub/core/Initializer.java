@@ -1,15 +1,19 @@
 package cc.sfclub.core;
 
 import cc.sfclub.core.modules.Core;
-import cc.sfclub.core.modules.I18N;
+import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import cc.sfclub.events.server.ServerStartedEvent;
 import cc.sfclub.events.server.ServerStartingEvent;
+import cc.sfclub.module.Manager;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.util.common.SimpleFile;
 import com.alibaba.druid.pool.DruidDataSource;
+import lombok.SneakyThrows;
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.Scanner;
 
 public class Initializer {
     private static final CoreCfg cfg = (CoreCfg) new CoreCfg().saveDefaultOrLoad();
@@ -17,6 +21,7 @@ public class Initializer {
     private Initializer() {
     }
 
+    @SneakyThrows
     public static void main(String[] args) {
         loadLang();
         System.out.println("\n" + "________      ______             _________                  \n" +
@@ -27,13 +32,31 @@ public class Initializer {
                 "                                                            \n");
         Core.getLogger().info(I18N.get().server.STARTING, Core.CORE_VERSION);
         Core.getLogger().info(I18N.get().server.LOADING_MODULES);
-        Core.getLogger().info(I18N.get().server.LOAD_MODULE, "Core", Core.CORE_VERSION);
-        Core.getLogger().info(I18N.get().server.LOADED_MODULE);
         loadCore();
+        Core.getLogger().info(I18N.get().server.LOADED_MODULE);
         EventBus.getDefault().post(new ServerStartingEvent());
         EventBus.getDefault().post(new ServerStartedEvent());
+        waitCommand();
+
     }
 
+    private static void waitCommand() {
+        Scanner scanner = new Scanner(System.in);
+        int i = 0;
+        String command;
+        while (scanner.hasNextLine()) {
+            command = scanner.nextLine();
+            if ("stop".equals(command)) {
+                Core.getLogger().info(I18N.get().server.STOPPING_SERVER);
+                break;
+            }
+            EventBus.getDefault().post(new GroupMessageReceivedEvent(Core.get().console().getUniqueID(), command, 0));
+            i++;
+        }
+        scanner.close();
+    }
+
+    @SneakyThrows
     private static void loadCore() {
         //Load Configs
         boolean firstLoad = false;
@@ -54,7 +77,7 @@ public class Initializer {
         dataSource.setPassword(dbCfg.getPassword());
         if (cfg.getConfig_version() != Core.CONFIG_VERSION)
             Core.getLogger().warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
-        new Core(cfg, permCfg, dataSource);
+        Manager.getInst().addModule(new Core(cfg, permCfg, dataSource));
         if (!Core.get().ORM().exists(User.class)) {
             Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, User.class.getName());
             Core.get().ORM().create(User.class, false);
