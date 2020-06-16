@@ -14,11 +14,17 @@ public class MessageEvent extends Event implements Cancellable {
     private final String UserID;
     @Getter
     private final String message;
+    @Getter
+    private final long messageID;
+    @Getter
+    private final String transform;
     private boolean cancelled = false;
 
-    public MessageEvent(String userID, String message) {
+    public MessageEvent(String userID, String message, String transform, long messageID) {
         this.UserID = userID;
         this.message = message;
+        this.transform = transform;
+        this.messageID = messageID;
     }
 
     @Override

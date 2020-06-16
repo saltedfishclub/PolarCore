@@ -20,6 +20,7 @@ public class I18N extends JsonConfig {
     private final int confVer = CONFIG_VERSION;
     public Server server = new Server();
     public Exceptions exceptions = new Exceptions();
+    public Misc misc = new Misc();
     /**
      * @return lang name
      */
@@ -54,6 +55,10 @@ public class I18N extends JsonConfig {
         public String LOADED_MODULE = "Modules Loaded.";
         public String FIRST_START = "Go to edit your config first :D";
         public String STOPPING_SERVER = "Stopping server..";
+    }
+
+    public class Misc {
+        public String UNKNOWN_OPERATOR = "Unknown Command.";
     }
 
     public class Exceptions {

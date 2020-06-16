@@ -8,7 +8,7 @@ import cc.sfclub.util.Since;
 @Since("4.0")
 public class MessageReceivedEvent extends MessageEvent {
 
-    public MessageReceivedEvent(String userID, String message) {
-        super(userID, message);
+    public MessageReceivedEvent(String userID, String message, String transform, long messageID) {
+        super(userID, message, transform, messageID);
     }
 }

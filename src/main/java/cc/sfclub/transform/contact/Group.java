@@ -1,5 +1,6 @@
 package cc.sfclub.transform.contact;
 
+import cc.sfclub.transform.Status;
 import cc.sfclub.transform.Talkable;
 import cc.sfclub.util.Since;
 
@@ -17,5 +18,5 @@ public interface Group extends Talkable {
     Profile getProfile(Contact contact);
 
     @Since("4.0")
-    Contact getContact(long TID);
+    Status.Message reply(long MessageID, String text);
 }
