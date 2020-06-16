@@ -6,12 +6,23 @@ import lombok.Setter;
 
 public class I18N extends JsonConfig {
     public static final int CONFIG_VERSION = 1;
+    /**
+     * Set lang
+     */
     @Setter
     private static transient I18N inst = new I18N("en_US");
+    /**
+     * a version number for check outdated config.
+     *
+     * @return config version
+     */
     @Getter
     private final int confVer = CONFIG_VERSION;
     public Server server = new Server();
     public Exceptions exceptions = new Exceptions();
+    /**
+     * @return lang name
+     */
     @Getter
     private final transient String locale;
 
@@ -26,6 +37,11 @@ public class I18N extends JsonConfig {
         return locale + ".json";
     }
 
+    /**
+     * get I18N
+     *
+     * @return instance of i18n
+     */
     public static I18N get() {
         return inst;
     }

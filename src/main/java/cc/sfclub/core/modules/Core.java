@@ -20,8 +20,18 @@ public class Core extends Module {
     private static Core core;
 
     public static final int CONFIG_VERSION = 1;
+    /**
+     * Get a public GSON
+     *
+     * @return GSOn
+     */
     @Getter
     private static final Gson gson = new Gson();
+    /**
+     * get a logger
+     *
+     * @return logger
+     */
     @Getter
     private static final Logger logger = LoggerFactory.getLogger("Core");
     private final CoreCfg config;
@@ -37,6 +47,11 @@ public class Core extends Module {
         EventBus.getDefault().register(this);
     }
 
+    /**
+     * Get core
+     *
+     * @return Core
+     */
     public static Core get() {
         return core;
     }
@@ -46,14 +61,29 @@ public class Core extends Module {
 
     }
 
+    /**
+     * Get ORM
+     *
+     * @return ORM
+     */
     public Dao ORM() {
         return ORM;
     }
 
+    /**
+     * get config about permission groups
+     *
+     * @return PermCfg
+     */
     public PermCfg permCfg() {
         return permCfg;
     }
 
+    /**
+     * get config
+     *
+     * @return config
+     */
     public CoreCfg config() {
         return this.config;
     }

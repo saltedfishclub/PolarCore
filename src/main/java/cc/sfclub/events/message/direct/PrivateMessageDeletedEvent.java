@@ -1,9 +1,14 @@
 package cc.sfclub.events.message.direct;
 
 import cc.sfclub.events.message.MessageReceivedEvent;
+import cc.sfclub.util.Since;
 
+/**
+ * When a private message was deleted
+ */
+@Since("4.0")
 public class PrivateMessageDeletedEvent extends MessageReceivedEvent {
-    public PrivateMessageDeletedEvent(String userID, String transform, String message) {
-        super(userID, transform, message);
+    public PrivateMessageDeletedEvent(String userID, String message) {
+        super(userID, message);
     }
 }

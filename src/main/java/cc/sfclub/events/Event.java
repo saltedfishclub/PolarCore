@@ -1,4 +1,10 @@
 package cc.sfclub.events;
 
-public class Event {
+import cc.sfclub.util.Since;
+
+/**
+ * Event
+ */
+@Since("4.0")
+public abstract class Event {
 }
