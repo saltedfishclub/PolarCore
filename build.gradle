@@ -68,8 +68,8 @@ dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.31.1'
     implementation group: 'com.alibaba', name: 'druid', version: '1.1.21'
     compile group: 'org.nutz', name: 'nutz', version: '1.r.68.v20200427'
-    //Utilies for Plugin <3
+    //Utils
     implementation 'org.reflections:reflections:0.9.12'
-    compile 'com.github.iceBear67:Util:14327dcaa8'
+    compile 'com.github.iceBear67:Util:e5585a5492'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }

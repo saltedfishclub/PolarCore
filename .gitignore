@@ -6,3 +6,5 @@ plugins
 config.json
 gradlew.bat
 sonar.sh
+/database.json
+/groups.json
