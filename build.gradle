@@ -10,7 +10,6 @@ plugins {
     id "de.lukaskoerfer.gradle.delombok" version "0.2"
 }
 apply plugin: 'java'
-apply plugin: 'maven'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'cc.sfclub.polar'
