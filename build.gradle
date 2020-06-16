@@ -27,6 +27,7 @@ repositories {
         name = "mavenCentral"
         url = "http://maven.aliyun.com/nexus/content/groups/public/"
     }
+    maven {    url "https://libraries.minecraft.net"}
 }
 task sourcesJar(type: Jar, dependsOn: classes) {
     //classifier = 'sources'
@@ -71,5 +72,6 @@ dependencies {
     //Utils
     implementation 'org.reflections:reflections:0.9.12'
     compile 'com.github.iceBear67:Util:7ea8a01a88'
+    compile 'com.mojang:brigadier:1.0.17'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }
