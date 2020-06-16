@@ -10,10 +10,13 @@ import lombok.NonNull;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
+import org.pf4j.DefaultPluginManager;
+import org.pf4j.PluginManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -42,6 +45,8 @@ public class Core {
     private final CommandDispatcher<GroupMessageReceivedEvent> dispatcher = new CommandDispatcher<>();
     private HashMap<String, Bot> bots;
     public static final String CORE_VERSION = "V4.0.0";
+    @Getter
+    private static final PluginManager pluginManager = new DefaultPluginManager(new File("./plugins").toPath());
 
     public Core(CoreCfg config, PermCfg permCfg, DataSource ds) {
         core = this;
@@ -59,7 +64,7 @@ public class Core {
     public static Core get() {
         return core;
     }
-    
+
     public void registerBot(@NonNull Bot bot) {
         bots.put(bot.getTransform().getName(), bot);
     }
