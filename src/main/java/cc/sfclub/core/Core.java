@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class Core {
@@ -43,7 +44,7 @@ public class Core {
     private final Dao ORM;
     private final User CONSOLE;
     private final CommandDispatcher<GroupMessageReceivedEvent> dispatcher = new CommandDispatcher<>();
-    private HashMap<String, Bot> bots = new HashMap<>();
+    private Map<String, Bot> bots = new HashMap<>();
     public static final String CORE_VERSION = "V4.0.0";
     @Getter
     private static final PluginManager pluginManager = new DefaultPluginManager(new File("./plugins").toPath());
@@ -112,7 +113,7 @@ public class Core {
     /**
      * @return command dispatcher
      */
-    public CommandDispatcher dispatcher() {
+    public CommandDispatcher<GroupMessageReceivedEvent> dispatcher() {
         return this.dispatcher;
     }
 }
