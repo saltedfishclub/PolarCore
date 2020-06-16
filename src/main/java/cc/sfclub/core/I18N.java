@@ -1,4 +1,4 @@
-package cc.sfclub.core.modules;
+package cc.sfclub.core;
 
 import cc.sfclub.util.common.JsonConfig;
 import lombok.Getter;
@@ -53,6 +53,7 @@ public class I18N extends JsonConfig {
         public String LOADING_MODULES = "Loading Modules..";
         public String LOADED_MODULE = "Modules Loaded.";
         public String FIRST_START = "Go to edit your config first :D";
+        public String STOPPING_SERVER = "Stopping server..";
     }
 
     public class Exceptions {

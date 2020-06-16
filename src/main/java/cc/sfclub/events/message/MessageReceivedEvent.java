@@ -3,7 +3,7 @@ package cc.sfclub.events.message;
 import cc.sfclub.util.Since;
 
 /**
- * When a group message was received
+ * When message was received
  */
 @Since("4.0")
 public class MessageReceivedEvent extends MessageEvent {

@@ -1,5 +1,7 @@
 package cc.sfclub.module;
 
+import cc.sfclub.core.I18N;
+import cc.sfclub.core.modules.Core;
 import cc.sfclub.module.exceptions.NameAlreadyLoaded;
 import lombok.Getter;
 import org.greenrobot.eventbus.EventBus;
@@ -16,14 +18,15 @@ public class Manager {
     }
 
     public boolean addModule(Module module) throws NameAlreadyLoaded {
-        if (module.getDescription() == null) {
+        if (module.description == null) {
             return false;
         }
-        if (modules.containsKey(module.getDescription().name)) {
-            throw new NameAlreadyLoaded(module.getDescription().name);
+        if (modules.containsKey(module.description.name)) {
+            throw new NameAlreadyLoaded(module.description.name);
         }
-        modules.put(module.getDescription().name, module);
-        EventBus.getDefault().register(inst);
+        modules.put(module.description.name, module);
+        EventBus.getDefault().register(module);
+        Core.getLogger().info(I18N.get().server.LOAD_MODULE, module.description.name, module.description.version);
         return true;
     }
 

@@ -3,12 +3,14 @@ package cc.sfclub.core.modules;
 import cc.sfclub.core.CoreCfg;
 import cc.sfclub.core.PermCfg;
 import cc.sfclub.events.server.ServerStartingEvent;
+import cc.sfclub.module.Description;
 import cc.sfclub.module.Module;
+import cc.sfclub.user.User;
 import com.google.gson.Gson;
 import lombok.Getter;
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
 import org.slf4j.Logger;
@@ -37,14 +39,16 @@ public class Core extends Module {
     private final CoreCfg config;
     private final PermCfg permCfg;
     private final Dao ORM;
+    private final User CONSOLE;
     public static final String CORE_VERSION = "V4.0.0";
 
     public Core(CoreCfg config, PermCfg permCfg, DataSource ds) {
+        this.description = new Description("Core", CORE_VERSION, this.getClass().getName());
         core = this;
         this.config = config;
         this.permCfg = permCfg;
         this.ORM = new NutDao(ds);
-        EventBus.getDefault().register(this);
+        this.CONSOLE = ORM.fetch(User.class, Cnd.where("userName", "=", "CONSOLE"));
     }
 
     /**
@@ -86,5 +90,14 @@ public class Core extends Module {
      */
     public CoreCfg config() {
         return this.config;
+    }
+
+    /**
+     * get console user
+     *
+     * @return console
+     */
+    public User console() {
+        return this.CONSOLE;
     }
 }
