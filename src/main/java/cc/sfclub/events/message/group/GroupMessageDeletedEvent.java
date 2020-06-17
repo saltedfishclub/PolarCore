@@ -1,13 +1,12 @@
 package cc.sfclub.events.message.group;
 
 import cc.sfclub.events.message.MessageDeletedEvent;
-import cc.sfclub.util.Since;
 import lombok.Getter;
 
 /**
  * When a group message was received
  */
-@Since("4.0")
+
 public class GroupMessageDeletedEvent extends MessageDeletedEvent {
     @Getter
     private final long group;

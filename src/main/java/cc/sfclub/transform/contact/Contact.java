@@ -1,9 +1,8 @@
 package cc.sfclub.transform.contact;
 
-import cc.sfclub.util.Since;
 import lombok.Getter;
 
-@Since("4.0")
+
 public class Contact {
 
     /**
@@ -11,7 +10,7 @@ public class Contact {
      *
      * @return Transform id
      */
-    @Since("4.0")
+
     @Getter
     private long TID;
 
@@ -20,7 +19,7 @@ public class Contact {
      *
      * @return UserID
      */
-    @Since("4.0")
+
     @Getter
     private String UID;
 }
