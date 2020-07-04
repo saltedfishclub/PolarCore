@@ -1,27 +1,46 @@
 package cc.sfclub.transform;
 
-import cc.sfclub.transform.contact.Contact;
-import cc.sfclub.transform.contact.Group;
-import cc.sfclub.transform.contact.Profile;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public abstract class Bot {
+    private static final Map<Long, ChatGroup> groupCache = new HashMap<>();
+    private static final Map<Long, Contact> contactCache = new HashMap<>();
 
-    public abstract Group getGroup(long GroupID);
-
-
-    public abstract Transform getTransform();
-
-
-    public Status.Message sendGroupMessage(long GroupID, String message) {
-        return getGroup(GroupID).sendMessage(message);
+    /**
+     * Add a group to simple cache.
+     *
+     * @param group     group
+     * @param overwrite
+     */
+    public void addGroup(ChatGroup group, boolean overwrite) {
+        if (overwrite) {
+            groupCache.remove(group.getID());
+        }
+        if (!groupCache.containsKey(group.getID())) {
+            groupCache.put(group.getID(), group);
+        }
     }
 
-
-    public abstract Contact getContact(long TID);
-
-
-    public Profile getProfile(long GroupID, long TID) {
-        return getGroup(GroupID).getProfile(getContact(TID));
+    /**
+     * get a group reference.
+     *
+     * @param id group id
+     * @return group
+     */
+    public Optional<ChatGroup> getGroup(long id) {
+        return Optional.ofNullable(groupCache.get(id));
     }
+
+    /**
+     * get a contact reference
+     *
+     * @param id uid
+     * @return contact
+     */
+    public Optional<Contact> getContact(long id) {
+        return Optional.ofNullable(contactCache.get(id));
+    }
+    //todo addcontact 合理性
 }
