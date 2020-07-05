@@ -7,6 +7,7 @@ import java.util.Optional;
 public abstract class Bot {
     private static final Map<Long, ChatGroup> groupCache = new HashMap<>();
     private static final Map<Long, Contact> contactCache = new HashMap<>();
+    public abstract String getName();
 
     /**
      * Add a group to simple cache.
@@ -14,7 +15,7 @@ public abstract class Bot {
      * @param group     group
      * @param overwrite
      */
-    private void addGroup(ChatGroup group, boolean overwrite) {
+    public void addGroup(ChatGroup group, boolean overwrite) {
         if (overwrite) {
             groupCache.remove(group.getID());
         }
@@ -51,7 +52,7 @@ public abstract class Bot {
      * @param contact
      * @param overwrite
      */
-    private void addContact(Contact contact, boolean overwrite) {
+    public void addContact(Contact contact, boolean overwrite) {
         if (overwrite) {
             contactCache.remove(contact.getID());
         }

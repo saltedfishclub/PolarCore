@@ -2,12 +2,12 @@ package cc.sfclub.core;
 
 import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import cc.sfclub.events.server.ServerStartedEvent;
+import cc.sfclub.transform.internal.ConsoleBot;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.util.common.SimpleFile;
 import com.alibaba.druid.pool.DruidDataSource;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.SneakyThrows;
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,6 +35,7 @@ public class Initializer {
         Core.getPluginManager().loadPlugins();
         new File("plugins").mkdir();
         Core.getPluginManager().startPlugins();
+        Core.get().registerBot(new ConsoleBot());
         Core.getLogger().info(I18N.get().server.LOADED_MODULE);
         EventBus.getDefault().post(new ServerStartedEvent());
         waitCommand();
@@ -51,12 +52,7 @@ public class Initializer {
                 Core.getLogger().info(I18N.get().server.STOPPING_SERVER);
                 break;
             }
-            //EventBus.getDefault().post(new GroupMessageReceivedEvent(Core.get().console().getUniqueID(), command, 0,));
-            try {
-                Core.get().dispatcher().execute(command, new GroupMessageReceivedEvent(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
-            } catch (CommandSyntaxException e) {
-                Core.getLogger().warn(e.getMessage());
-            }
+            EventBus.getDefault().post(new GroupMessageReceivedEvent(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
             i++;
         }
         scanner.close();
