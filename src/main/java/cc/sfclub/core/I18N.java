@@ -30,7 +30,6 @@ public class I18N extends JsonConfig {
     public I18N(String locale) {
         super("./locale");
         this.locale = locale;
-        inst = this;
     }
 
     @Override
@@ -46,7 +45,6 @@ public class I18N extends JsonConfig {
     public static I18N get() {
         return inst;
     }
-
     public class Server {
         public String STARTING = "PolarCore {} starting..";
         public String STARTED = "Server Started.";

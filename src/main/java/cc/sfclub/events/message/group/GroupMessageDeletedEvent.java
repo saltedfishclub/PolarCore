@@ -20,11 +20,7 @@ public class GroupMessageDeletedEvent extends MessageDeletedEvent {
         this.groupId = group;
         this.group = Core.get()
                 .bot(getTransform())
-                .orElseThrow(() -> {
-                    throw new NullPointerException("Bot with transform " + getTransform() + "not found!");
-                })
-                .getGroup(groupId).orElseThrow(() -> {
-                    throw new NullPointerException("Unknown error happened.(Group not found)");
-                });
+                .orElseThrow(() -> new NullPointerException("Bot with transform " + getTransform() + "not found!"))
+                .getGroup(groupId).orElseThrow(() -> new NullPointerException("Unknown error happened.(Group not found)"));
     }
 }

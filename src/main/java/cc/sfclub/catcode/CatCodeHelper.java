@@ -4,11 +4,13 @@ import cc.sfclub.catcode.entities.At;
 import cc.sfclub.catcode.entities.Image;
 import org.nutz.repo.Base64;
 
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
-public class CatCode {
+public class CatCodeHelper {
+    private static final Pattern number = Pattern.compile("^([-+])?\\d+(\\.\\d+)?E?$");
+
     /**
      * Spilt into array.
      * For example:
@@ -55,7 +57,7 @@ public class CatCode {
     /**
      * Parse "at" to a entity.
      *
-     * @param strAt CatCode
+     * @param strAt CatCodeHelper
      * @return At
      */
     public static At parseAt(String strAt) {
@@ -121,12 +123,6 @@ public class CatCode {
      * @return result
      */
     public static boolean isNumeric(String str) {
-        String bigStr;
-        try {
-            bigStr = new BigDecimal(str).toString();
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+        return number.matcher(str).matches();
     }
 }
