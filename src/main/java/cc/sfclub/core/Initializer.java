@@ -11,7 +11,6 @@ import com.alibaba.druid.pool.DruidDataSource;
 import lombok.SneakyThrows;
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
 import java.util.Scanner;
 
 public class Initializer {
@@ -32,9 +31,6 @@ public class Initializer {
         Core.getLogger().info(I18N.get().server.STARTING, Core.CORE_VERSION);
         Core.getLogger().info(I18N.get().server.LOADING_MODULES);
         loadCore();
-        Core.getPluginManager().loadPlugins();
-        new File("plugins").mkdir();
-        Core.getPluginManager().startPlugins();
         Core.get().registerBot(new ConsoleBot());
         Core.getLogger().info(I18N.get().server.LOADED_MODULE);
         EventBus.getDefault().post(new ServerStartedEvent());
