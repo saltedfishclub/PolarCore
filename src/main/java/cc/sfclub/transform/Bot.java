@@ -14,7 +14,7 @@ public abstract class Bot {
      * @param group     group
      * @param overwrite
      */
-    public void addGroup(ChatGroup group, boolean overwrite) {
+    private void addGroup(ChatGroup group, boolean overwrite) {
         if (overwrite) {
             groupCache.remove(group.getID());
         }
@@ -42,5 +42,19 @@ public abstract class Bot {
     public Optional<Contact> getContact(long id) {
         return Optional.ofNullable(contactCache.get(id));
     }
-    //todo addcontact 合理性
+
+    /**
+     * Add a contact to cache
+     *
+     * @param contact
+     * @param overwrite
+     */
+    public void addContact(Contact contact, boolean overwrite) {
+        if (overwrite) {
+            contactCache.remove(contact.getID());
+        }
+        if (!contactCache.containsKey(contact.getID())) {
+            contactCache.put(contact.getID(), contact);
+        }
+    }
 }
