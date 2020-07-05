@@ -17,11 +17,7 @@ public class PrivateMessageReceivedEvent extends MessageReceivedEvent {
         super(userID, message, transform, messageID);
         this.contact = Core.get()
                 .bot(getTransform())
-                .orElseThrow(() -> {
-                    throw new NullPointerException("Bot with transform " + getTransform() + "not found!");
-                })
-                .asContact(userID).orElseThrow(() -> {
-                    throw new NullPointerException("Unknown error happened.(Contact not found)");
-                });
+                .orElseThrow(() -> new NullPointerException("Bot with transform " + getTransform() + "not found!"))
+                .asContact(userID).orElseThrow(() -> new NullPointerException("Unknown error happened.(Contact not found)"));
     }
 }

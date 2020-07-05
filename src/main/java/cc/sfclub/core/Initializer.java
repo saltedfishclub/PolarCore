@@ -40,7 +40,6 @@ public class Initializer {
 
     private static void waitCommand() {
         Scanner scanner = new Scanner(System.in);
-        int i = 0;
         String command;
         while (scanner.hasNextLine()) {
             command = scanner.nextLine();
@@ -49,7 +48,6 @@ public class Initializer {
                 break;
             }
             EventBus.getDefault().post(new GroupMessageReceivedEvent(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
-            i++;
         }
         scanner.close();
     }
@@ -75,7 +73,7 @@ public class Initializer {
         dataSource.setPassword(dbCfg.getPassword());
         if (cfg.getConfig_version() != Core.CONFIG_VERSION)
             Core.getLogger().warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
-        new Core(cfg, permCfg, dataSource);
+        Core.setCore(new Core(cfg, permCfg, dataSource));
         if (!Core.get().ORM().exists(User.class)) {
             Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, User.class.getName());
             Core.get().ORM().create(User.class, false);

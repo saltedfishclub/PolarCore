@@ -45,7 +45,6 @@ public class Core {
     public static final String CORE_VERSION = "V4.1.2";
 
     public Core(CoreCfg config, PermCfg permCfg, DataSource ds) {
-        core = this;
         this.config = config;
         this.permCfg = permCfg;
         this.ORM = new NutDao(ds);
@@ -61,10 +60,26 @@ public class Core {
         return core;
     }
 
+    protected static void setCore(Core core) {
+        Core.core = core;
+    }
+
+    /**
+     * Register a bot
+     *
+     * @param bot bot
+     */
+
     public void registerBot(@NonNull Bot bot) {
         bots.put(bot.getName(), bot);
     }
 
+    /**
+     * get a bot
+     *
+     * @param name bot name
+     * @return nullable bot
+     */
     public Optional<Bot> bot(@NonNull String name) {
         return Optional.ofNullable(bots.get(name));
     }
