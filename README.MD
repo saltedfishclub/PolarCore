@@ -22,5 +22,5 @@ Message Flow:
 
 ## Demo
 Polar :3325273573 (QQ UIN)
-(Interaction should be in a Group,like `443098623(QQ)`)
+(Interaction should be in a Group,e.g `443098623(QQ)`)
 keep running on latest PolarCore.
