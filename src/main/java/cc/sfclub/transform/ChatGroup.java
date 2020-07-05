@@ -49,9 +49,7 @@ public abstract class ChatGroup implements IReceiver {
      * @return honor
      */
     public String honorOf(long id) throws IllegalArgumentException {
-        return honorOf(searchContact(id).orElseThrow(() -> {
-            throw new IllegalArgumentException("ID not exists");
-        }));
+        return honorOf(searchContact(id).orElseThrow(() -> new IllegalArgumentException("ID not exists")));
     }
 
     /**
@@ -62,9 +60,7 @@ public abstract class ChatGroup implements IReceiver {
      * @return nickname
      */
     public String nickOf(long id) throws IllegalArgumentException {
-        return nickOf(searchContact(id).orElseThrow(() -> {
-            throw new IllegalArgumentException("ID not exists");
-        }));
+        return nickOf(searchContact(id).orElseThrow(() -> new IllegalArgumentException("ID not exists")));
     }
 
     /**
