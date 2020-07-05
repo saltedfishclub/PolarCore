@@ -13,7 +13,6 @@ public abstract class ChatGroup implements IReceiver {
     private final long ID;
     /**
      * all members from the group.
-     *
      * @return member set
      */
     @Getter

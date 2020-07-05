@@ -1,5 +1,7 @@
 package cc.sfclub.events.message;
 
+import cc.sfclub.events.MessageEvent;
+
 /**
  * When message was modified
  */

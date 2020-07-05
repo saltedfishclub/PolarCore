@@ -1,6 +1,8 @@
 package cc.sfclub.events.message.group;
 
+import cc.sfclub.core.Core;
 import cc.sfclub.events.message.MessageModifiedEvent;
+import cc.sfclub.transform.ChatGroup;
 import lombok.Getter;
 
 /**
@@ -8,10 +10,20 @@ import lombok.Getter;
  */
 public class GroupMessageModifiedEvent extends MessageModifiedEvent {
     @Getter
-    private final long group;
+    private final long groupId;
+    @Getter
+    private final ChatGroup group;
 
     public GroupMessageModifiedEvent(String userID, String message, long group, String transform, long messageID) {
         super(userID, message, transform, messageID);
-        this.group = group;
+        this.groupId = group;
+        this.group = Core.get()
+                .bot(getTransform())
+                .orElseThrow(() -> {
+                    throw new NullPointerException("Bot with transform " + getTransform() + "not found!");
+                })
+                .getGroup(groupId).orElseThrow(() -> {
+                    throw new NullPointerException("Unknown error happened.(Group not found)");
+                });
     }
 }
