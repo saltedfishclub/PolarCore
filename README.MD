@@ -22,5 +22,5 @@ Message Flow:
 
 ## Demo
 Polar :0 (??? UIN)
-(Interaction should be in a Group,like `0(???)`)
+(Interaction should be in a Group,e.g `0(???)`)
 keep running on latest PolarCore.
