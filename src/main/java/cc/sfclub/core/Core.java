@@ -1,6 +1,6 @@
 package cc.sfclub.core;
 
-import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
+import cc.sfclub.command.Source;
 import cc.sfclub.transform.Bot;
 import cc.sfclub.user.User;
 import com.google.gson.Gson;
@@ -43,7 +43,7 @@ public class Core {
     private final PermCfg permCfg;
     private final Dao ORM;
     private final User CONSOLE;
-    private final CommandDispatcher<GroupMessageReceivedEvent> dispatcher = new CommandDispatcher<>();
+    private final CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
     private Map<String, Bot> bots = new HashMap<>();
     public static final String CORE_VERSION = "V4.1.2";
     @Getter
@@ -67,7 +67,7 @@ public class Core {
     }
 
     public void registerBot(@NonNull Bot bot) {
-        bots.put(bot.getTransform().getName(), bot);
+        bots.put(bot.getName(), bot);
     }
 
     public Optional<Bot> bot(@NonNull String name) {
@@ -113,7 +113,7 @@ public class Core {
     /**
      * @return command dispatcher
      */
-    public CommandDispatcher<GroupMessageReceivedEvent> dispatcher() {
+    public CommandDispatcher<Source> dispatcher() {
         return this.dispatcher;
     }
 }
