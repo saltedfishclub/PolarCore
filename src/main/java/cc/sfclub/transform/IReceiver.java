@@ -14,5 +14,5 @@ public interface IReceiver {
      * @param messageId target
      * @param message   message
      */
-    void reply(int messageId, String message);
+    void reply(long messageId, String message);
 }

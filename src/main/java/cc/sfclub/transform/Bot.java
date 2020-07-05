@@ -43,13 +43,15 @@ public abstract class Bot {
         return Optional.ofNullable(contactCache.get(id));
     }
 
+    public abstract Optional<Contact> asContact(String UserID);
+
     /**
      * Add a contact to cache
      *
      * @param contact
      * @param overwrite
      */
-    public void addContact(Contact contact, boolean overwrite) {
+    private void addContact(Contact contact, boolean overwrite) {
         if (overwrite) {
             contactCache.remove(contact.getID());
         }

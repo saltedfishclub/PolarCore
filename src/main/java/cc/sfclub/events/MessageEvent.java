@@ -1,7 +1,5 @@
-package cc.sfclub.events.message;
+package cc.sfclub.events;
 
-import cc.sfclub.events.Cancellable;
-import cc.sfclub.events.Event;
 import lombok.Getter;
 
 /**

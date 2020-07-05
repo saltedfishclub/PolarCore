@@ -1,6 +1,4 @@
-package cc.sfclub.events.member;
-
-import cc.sfclub.events.Event;
+package cc.sfclub.events;
 
 /**
  * Events about member.
