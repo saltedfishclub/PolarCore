@@ -57,10 +57,14 @@ public class I18N extends JsonConfig {
 
     public class Misc {
         public String UNKNOWN_OPERATOR = "Unknown Command.";
+        public String COULD_NOT_LOAD_PLUGIN = "Could not load plugin: {}";
+        public String LOADED_PLUGINS = "Loaded plugins({}): {}";
     }
 
     public class Exceptions {
         public String TABLE_NOT_FOUND = "Table of \"{}\" Not Found!! Auto-creating..";
         public String CONFIG_OUTDATED = "CONFIG \"{}\" IS OUTDATED! TRY TO DELETE IT FOR A REGENERATION.";
+        public String PLUGIN_NOT_SUBSCRIBER = "Plugin {} didn't subscribe any event!";
+        public String PLUGIN_DEPENDS_ILLEGAL = "Could not load dependencies for plugin(s): {}";
     }
 }
