@@ -3,22 +3,23 @@
 v4 refactored.
 
 Not completed yet.
-Open source as LGPLv3
+Open source as Apache2.0 License
 ## What
 A bot kernel.
+Permissible User system,Multi-platfrom message wrapper,Or such a plugin framework...
+lots of things that it can be.
 
 ## Use as a lib
 ```groovy
   maven { url 'https://jitpack.io' }
 ```
 then
-`implementation 'com.github.saltedfishclub:PolarCore:{{ VERSION }}`
+`compileOnly 'com.github.saltedfishclub:PolarCore:{{ VERSION }}`
 If you want to use the latest build:
-`implementation 'com.github.saltedfishclub:-SNAPSHOT`
+`compileOnly 'com.github.saltedfishclub:-SNAPSHOT`
 
 ## Structure
-Message Flow:
-`Core < - > Wrapper < - > Transform`
+User Messages <-> Wrappers (Convert to CatCodes) <-> PolarCore
 
 ## Demo
 Polar :3325273573 (QQ UIN)
