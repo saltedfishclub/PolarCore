@@ -2,6 +2,8 @@ package cc.sfclub.core;
 
 import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import cc.sfclub.events.server.ServerStartedEvent;
+import cc.sfclub.plugin.Plugin;
+import cc.sfclub.plugin.PluginManager;
 import cc.sfclub.transform.internal.ConsoleBot;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
@@ -11,7 +13,9 @@ import com.alibaba.druid.pool.DruidDataSource;
 import lombok.SneakyThrows;
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Scanner;
+import java.io.File;
+import java.util.*;
+import java.util.jar.JarFile;
 
 public class Initializer {
     private static final CoreCfg cfg = (CoreCfg) new CoreCfg().saveDefaultOrLoad();
@@ -32,12 +36,11 @@ public class Initializer {
         Core.getLogger().info(I18N.get().server.LOADING_MODULES);
         loadCore();
         Core.get().registerBot(new ConsoleBot());
+        loadPlugins();
         Core.getLogger().info(I18N.get().server.LOADED_MODULE);
         EventBus.getDefault().post(new ServerStartedEvent());
         waitCommand();
-
     }
-
     private static void waitCommand() {
         Scanner scanner = new Scanner(System.in);
         String command;
@@ -50,6 +53,48 @@ public class Initializer {
             EventBus.getDefault().post(new GroupMessageReceivedEvent(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
         }
         scanner.close();
+    }
+
+    @SneakyThrows
+    @SuppressWarnings("all")
+    private static void loadPlugins() {
+        File plugins = new File("./plugins");
+        if (!plugins.exists()) {
+            plugins.mkdir();
+        }
+        HashMap<String, List<String>> depended = new HashMap<>();
+        for (File _plugin : Objects.requireNonNull(plugins.listFiles())) {
+            if (!_plugin.getName().endsWith(".jar")) {
+                continue;
+            }
+            JarFile jarFile = new JarFile(_plugin);
+            Optional<Plugin> plugin = PluginManager.getInst().loadPlugin(_plugin, jarFile);
+            String dependencies = jarFile.getManifest().getMainAttributes().getValue("Plugin-Depend");
+            plugin.ifPresent(p -> {
+                if (dependencies == null) return;
+                String[] depends = dependencies.split(",");
+                if (depends.length < 1) {
+                    Core.getLogger().warn(I18N.get().exceptions.PLUGIN_DEPENDS_ILLEGAL, p.getDescription().getName());
+                }
+                for (String depend : depends) {
+                    if (!depended.containsKey(depend)) {
+                        depended.put(depend, Collections.singletonList(p.getDescription().getName()));
+                        continue;
+                    }
+                    List<String> names = depended.get(depend);
+                    names.add(p.getDescription().getName());
+                    depended.put(depend, names);
+                }
+            });
+        }
+        //Check dependencies
+        depended.forEach((k, v) -> {
+            if (PluginManager.getInst().isLoaded(k)) {
+                Core.getLogger().warn(I18N.get().exceptions.PLUGIN_DEPENDS_ILLEGAL, "");
+                v.forEach(p -> Core.getLogger().warn("- {}", p));
+            }
+        });
+        Core.getLogger().info(I18N.get().misc.LOADED_PLUGINS, PluginManager.getInst().getPlugins().size(), PluginManager.getInst().getPluginNames());
     }
 
     @SneakyThrows
