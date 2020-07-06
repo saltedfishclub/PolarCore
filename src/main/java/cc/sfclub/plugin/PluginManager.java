@@ -35,15 +35,15 @@ public class PluginManager {
         Plugin plugin = (Plugin) urlClassLoader.loadClass(main).getDeclaredConstructor().newInstance();
         File datadir = new File("./plugins/" + name + "/");
         plugin.setDataFolder(datadir);
+        datadir.mkdir();
         SimpleConfig simpleConfig = new SimpleConfig("./plugins/" + name);
-        simpleConfig = (SimpleConfig) simpleConfig.saveDefaultOrLoad();
         plugin.setSimpleConfig(simpleConfig);
         Description desc = new Description(name, version);
         plugin.setDescription(desc);
         boolean hasSubscriber = false;
         for (Method method : plugin.getClass().getDeclaredMethods()) {
             for (Annotation a : method.getDeclaredAnnotations()) {
-                if (a.getClass().getName().equals(org.greenrobot.eventbus.Subscribe.class.getName())) {
+                if (a.annotationType().getCanonicalName().equals("org.greenrobot.eventbus.Subscribe")) {
                     hasSubscriber = true;
                     break;
                 }
