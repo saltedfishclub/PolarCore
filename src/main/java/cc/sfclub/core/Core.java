@@ -42,7 +42,7 @@ public class Core {
     private final User CONSOLE;
     private final CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
     private Map<String, Bot> bots = new HashMap<>();
-    public static final String CORE_VERSION = "V4.3.1";
+    public static final String CORE_VERSION = "V4.3.3";
 
     public Core(CoreCfg config, PermCfg permCfg, DataSource ds) {
         this.config = config;
