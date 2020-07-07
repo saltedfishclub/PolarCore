@@ -13,7 +13,7 @@ apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'com.github.saltedfishclub'
-version '4.3.2'
+version '4.3.3'
 
 assemble.dependsOn(shadowJar)
 sourceCompatibility = 1.8
@@ -45,7 +45,7 @@ javadoc {
 shadowJar {
     zip64 true
     manifest {
-        attributes 'Main-Class': 'cc.sfclub.core.Initialzer'
+        attributes 'Main-Class': 'cc.sfclub.core.Initializer'
     }
 }
 artifacts {
