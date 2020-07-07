@@ -39,7 +39,7 @@ public class Core {
     private final CoreCfg config;
     private final PermCfg permCfg;
     private final Dao ORM;
-    private final User CONSOLE;
+    private User CONSOLE;
     private final CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
     private Map<String, Bot> bots = new HashMap<>();
     public static final String CORE_VERSION = "V4.3.3";
@@ -48,7 +48,6 @@ public class Core {
         this.config = config;
         this.permCfg = permCfg;
         this.ORM = new NutDao(ds);
-        this.CONSOLE = ORM.fetch(User.class, Cnd.where("userName", "=", "CONSOLE"));
     }
 
     /**
@@ -58,6 +57,10 @@ public class Core {
      */
     public static Core get() {
         return core;
+    }
+
+    protected void loadConsole() {
+        this.CONSOLE = ORM.fetch(User.class, Cnd.where("userName", "=", "CONSOLE"));
     }
 
     protected static void setCore(Core core) {
