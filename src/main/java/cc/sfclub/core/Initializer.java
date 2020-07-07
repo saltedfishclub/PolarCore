@@ -123,6 +123,7 @@ public class Initializer {
             console.setUserName("CONSOLE");
             Core.get().ORM().insert(console);
         }
+        Core.get().loadConsole();
         if (!Core.get().ORM().exists(Group.class)) {
             Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, Group.class.getName());
             Core.get().ORM().create(Group.class, false);
@@ -131,6 +132,7 @@ public class Initializer {
     }
 
     private static void loadLang() {
+        new File("locale").mkdir();
         I18N i18N = new I18N(cfg.getLocale());
         I18N.setInst((I18N) i18N.saveDefaultOrLoad());
         if (i18N.getConfVer() != I18N.CONFIG_VERSION) {
