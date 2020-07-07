@@ -20,9 +20,6 @@ import java.util.jar.JarFile;
 public class Initializer {
     private static final CoreCfg cfg = (CoreCfg) new CoreCfg().saveDefaultOrLoad();
 
-    private Initializer() {
-    }
-
     @SneakyThrows
     public static void main(String[] args) {
         loadLang();
