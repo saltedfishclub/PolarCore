@@ -2,6 +2,7 @@ package cc.sfclub.core;
 
 import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import cc.sfclub.events.server.ServerStartedEvent;
+import cc.sfclub.events.server.ServerStoppingEvent;
 import cc.sfclub.plugin.Plugin;
 import cc.sfclub.plugin.PluginManager;
 import cc.sfclub.transform.internal.ConsoleBot;
@@ -45,6 +46,7 @@ public class Initializer {
             command = scanner.nextLine();
             if ("stop".equals(command)) {
                 Core.getLogger().info(I18N.get().server.STOPPING_SERVER);
+                EventBus.getDefault().post(new ServerStoppingEvent());
                 break;
             }
             EventBus.getDefault().post(new GroupMessageReceivedEvent(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
