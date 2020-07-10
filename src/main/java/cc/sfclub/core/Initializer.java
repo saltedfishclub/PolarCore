@@ -1,5 +1,6 @@
 package cc.sfclub.core;
 
+import cc.sfclub.command.CommandListener;
 import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import cc.sfclub.events.server.ServerStartedEvent;
 import cc.sfclub.events.server.ServerStoppingEvent;
@@ -41,6 +42,7 @@ public class Initializer {
     }
     private static void waitCommand() {
         Scanner scanner = new Scanner(System.in);
+        EventBus.getDefault().register(new CommandListener());
         String command;
         while (scanner.hasNextLine()) {
             command = scanner.nextLine();
