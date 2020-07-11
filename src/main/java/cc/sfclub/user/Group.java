@@ -20,7 +20,11 @@ import java.util.Optional;
 public class Group implements Permissible {
     public static final Group DEFAULT = new Group("_");
     @Name
+    @Deprecated
+    @Setter
     private String name;
+    @Deprecated
+    @Setter
     @NonNull
     private List<Perm> permList = new ArrayList<>();
     @Setter

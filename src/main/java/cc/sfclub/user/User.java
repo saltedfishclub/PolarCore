@@ -4,7 +4,7 @@ import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
 import lombok.Getter;
 import lombok.Setter;
-import org.nutz.dao.entity.annotation.Table;
+import org.nutz.dao.entity.annotation.Name;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,11 +12,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-@Table
 public class User implements Permissible {
-    private String UniqueID = UUID.randomUUID().toString();
+    @Deprecated
+    @Name
+    @Setter
+    private String uniqueID = UUID.randomUUID().toString();
     @Setter
     private String userGroup;
+    @Deprecated
+    @Setter
     private List<Perm> permList = new ArrayList<>();
     @Setter
     private String userName;
