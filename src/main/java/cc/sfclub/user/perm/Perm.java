@@ -1,13 +1,19 @@
 package cc.sfclub.user.perm;
 
 import cc.sfclub.core.Core;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+@Data
 public class Perm {
-    private final String node;
+    private String node;
+
+    public Perm(String node) {
+        this.node = node;
+    }
+
+    public Perm() {
+
+    }
 
     public static Result compare(String orig, String target) {
         Result result = Result.FAILED;
