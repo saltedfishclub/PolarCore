@@ -5,6 +5,7 @@ import cc.sfclub.user.perm.Permissible;
 import lombok.Getter;
 import lombok.Setter;
 import org.nutz.dao.entity.annotation.Name;
+import org.nutz.dao.entity.annotation.Table;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
+@Table
 public class User implements Permissible {
     @Deprecated
     @Name

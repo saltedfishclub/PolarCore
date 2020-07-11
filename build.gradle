@@ -13,7 +13,7 @@ apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'com.github.saltedfishclub'
-version '4.3.4'
+version '4.3.5'
 
 assemble.dependsOn(shadowJar)
 sourceCompatibility = 1.8
@@ -27,15 +27,6 @@ repositories {
     }
     maven {    url "https://libraries.minecraft.net"}
 }
-task sourcesJar(type: Jar, dependsOn: classes) {
-    //classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    //classifier = 'javadoc'
-    from javadoc.destinationDir
-}
 javadoc {
     options.encoding "UTF-8"
     options.charSet 'UTF-8'
@@ -47,11 +38,6 @@ shadowJar {
     manifest {
         attributes 'Main-Class': 'cc.sfclub.core.Initializer'
     }
-}
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-    archives shadowJar
 }
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
