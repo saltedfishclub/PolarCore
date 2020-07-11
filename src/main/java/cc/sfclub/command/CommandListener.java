@@ -9,7 +9,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class CommandListener {
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.ASYNC, sticky = true)
     public void onMessage(MessageEvent event) {
         if (event.getMessage() != null && event.getMessage().startsWith(Core.get().config().getCommandPrefix() + " ")) {
             String command = event.getMessage().substring((Core.get().config().getCommandPrefix() + " ").length());
