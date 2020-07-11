@@ -14,10 +14,10 @@ import java.util.UUID;
 @Getter
 @Table
 public class User implements Permissible {
-    private final String UniqueID = UUID.randomUUID().toString();
+    private String UniqueID = UUID.randomUUID().toString();
     @Setter
     private String userGroup;
-    private final List<Perm> permList = new ArrayList<>();
+    private List<Perm> permList = new ArrayList<>();
     @Setter
     private String userName;
 

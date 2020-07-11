@@ -20,9 +20,9 @@ import java.util.Optional;
 public class Group implements Permissible {
     public static final Group DEFAULT = new Group("_");
     @Name
-    private final String name;
+    private String name;
     @NonNull
-    private final List<Perm> permList = new ArrayList<>();
+    private List<Perm> permList = new ArrayList<>();
     @Setter
     private String extend;
 
