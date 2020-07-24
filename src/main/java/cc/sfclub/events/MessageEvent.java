@@ -33,4 +33,8 @@ public class MessageEvent extends Event implements Cancellable {
     public void setCancelled(boolean status) {
         cancelled = status;
     }
+
+    public void reply(long msgId, String message) {
+        throw new IllegalArgumentException("REPLY IS NOT SUPPORTED");
+    }
 }

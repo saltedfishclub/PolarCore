@@ -20,4 +20,9 @@ public class PrivateMessageReceivedEvent extends MessageReceivedEvent {
                 .orElseThrow(() -> new NullPointerException("Bot with transform " + getTransform() + "not found!"))
                 .asContact(userID).orElseThrow(() -> new NullPointerException("Unknown error happened.(Contact not found)"));
     }
+
+    @Override
+    public void reply(long msgId, String message) {
+        contact.reply(msgId, message);
+    }
 }
