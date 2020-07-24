@@ -23,4 +23,9 @@ public class GroupMessageReceivedEvent extends MessageReceivedEvent {
                 .orElseThrow(() -> new NullPointerException("Bot with transform " + getTransform() + "not found!"))
                 .getGroup(groupId).orElseThrow(() -> new NullPointerException("Unknown error happened.(Group not found)"));
     }
+
+    @Override
+    public void reply(long msgId, String message) {
+        group.reply(msgId, message);
+    }
 }
