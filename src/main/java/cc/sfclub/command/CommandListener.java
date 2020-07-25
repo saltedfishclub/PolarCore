@@ -2,8 +2,6 @@ package cc.sfclub.command;
 
 import cc.sfclub.core.Core;
 import cc.sfclub.events.MessageEvent;
-import cc.sfclub.events.message.direct.PrivateMessageReceivedEvent;
-import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -16,11 +14,7 @@ public class CommandListener {
             try {
                 Core.get().dispatcher().execute(command, new Source(event));
             } catch (CommandSyntaxException exception) {
-                if (event instanceof GroupMessageReceivedEvent) {
-                    ((GroupMessageReceivedEvent) event).getGroup().reply(event.getMessageID(), exception.getMessage());
-                } else if (event instanceof PrivateMessageReceivedEvent) {
-                    ((PrivateMessageReceivedEvent) event).getContact().reply(event.getMessageID(), exception.getMessage());
-                }
+                event.reply(event.getMessageID(), exception.getMessage());
             }
         }
     }
