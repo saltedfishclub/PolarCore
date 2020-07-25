@@ -17,10 +17,10 @@ public class Perm {
 
     public static Result compare(String orig, String target) {
         Result result = Result.FAILED;
-        if (target.startsWith("-") && orig.matches(target.replaceFirst("-", ""))) {
+        if (target.startsWith("-") && target.matches(orig.replaceFirst("-", ""))) {
             result = Result.BANNED;
         } else {
-            if (orig.matches(target)) result = Result.SUCCEED;
+            if (target.matches(orig)) result = Result.SUCCEED;
         }
         if (Core.get().config().isDebug()) {
             Core.getLogger().info("[DEBUG][Perm] Compare: {} , {} == {}", orig, target, result);
