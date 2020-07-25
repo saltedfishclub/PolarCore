@@ -1,9 +1,11 @@
 package cc.sfclub.user;
 
+import cc.sfclub.core.Core;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
 import lombok.Getter;
 import lombok.Setter;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -40,6 +42,14 @@ public class User implements Permissible {
         permList.addAll(Arrays.asList(InitialPermissions));
     }
 
+    public static User byName(String userName) {
+        return Core.get().ORM().fetch(User.class, Cnd.where("userName", "=", userName));
+    }
+
+    public static User byUUID(String userId) {
+        return Core.get().ORM().fetch(User.class, Cnd.where("uniqueID", "=", userId));
+    }
+
     @Override
     public boolean hasPermission(Perm perm) {
         if (Group.getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
@@ -51,7 +61,13 @@ public class User implements Permissible {
     public boolean hasPermission(String perm) {
         if (Group.getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
             return true;
-        } else return permList.contains(perm);
+        }
+        for (Perm perm1 : permList) {
+            if (perm1.equals(perm)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
