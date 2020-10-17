@@ -8,4 +8,12 @@ import lombok.Getter;
 @Getter
 public class Source {
     private final MessageEvent messageEvent;
+
+    public String getMessage() {
+        return messageEvent.getMessage();
+    }
+
+    public String getSender() {
+        return messageEvent.getUserID();
+    }
 }
