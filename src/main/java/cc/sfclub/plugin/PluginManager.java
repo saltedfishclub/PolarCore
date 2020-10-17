@@ -18,13 +18,31 @@ public class PluginManager {
     @Getter
     private static final PluginManager inst = new PluginManager();
     private Map<String, Plugin> pluginMap = new HashMap<>();
+    private Method addUrl;
+    private URLClassLoader cl;
 
     private PluginManager() {
     }
 
     @SneakyThrows
+    private void init() {
+        cl = new URLClassLoader(new URL[]{});
+        for (Method method : cl.getClass().getDeclaredMethods()) {
+            if (method.getName().equals("addURL")) {
+                method.setAccessible(true);
+                addUrl = method;
+                break;
+            }
+        }
+        if (addUrl == null) {
+            Core.getLogger().error("Can't find addURL in URLCL!!");
+        }
+    }
+
+    @SneakyThrows
     public Optional<Plugin> loadPlugin(File file, JarFile jarFile) {
-        URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{file.toURI().toURL()});
+        if (cl == null || addUrl == null) init();
+        addUrl.invoke(cl, file.toURI().toURL());
         String main = jarFile.getManifest().getMainAttributes().getValue("Main-Class");
         String name = jarFile.getManifest().getMainAttributes().getValue("Plugin-Name");
         String version = jarFile.getManifest().getMainAttributes().getValue("Plugin-Ver");
@@ -32,7 +50,7 @@ public class PluginManager {
             Core.getLogger().warn(I18N.get().misc.COULD_NOT_LOAD_PLUGIN, file.toString());
             return Optional.empty();
         }
-        Plugin plugin = (Plugin) urlClassLoader.loadClass(main).getDeclaredConstructor().newInstance();
+        Plugin plugin = (Plugin) cl.loadClass(main).getDeclaredConstructor().newInstance();
         File datadir = new File("./plugins/" + name + "/");
         plugin.setDataFolder(datadir);
         datadir.mkdir();

@@ -22,7 +22,7 @@ public class Perm {
         } else {
             if (target.matches(orig)) result = Result.SUCCEED;
         }
-        if (Core.get().config().isDebug()) {
+        if (Core.get() != null && Core.get().config().isDebug()) {
             Core.getLogger().info("[DEBUG][Perm] Compare: {} , {} == {}", orig, target, result);
         }
         return result;
@@ -43,7 +43,6 @@ public class Perm {
         }
         return false;
     }
-
     public enum Result {
         FAILED, BANNED, SUCCEED
     }
