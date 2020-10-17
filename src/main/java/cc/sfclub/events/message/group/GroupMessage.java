@@ -1,7 +1,7 @@
 package cc.sfclub.events.message.group;
 
 import cc.sfclub.core.Core;
-import cc.sfclub.events.message.MessageReceivedEvent;
+import cc.sfclub.events.message.Message;
 import cc.sfclub.transform.ChatGroup;
 import lombok.Getter;
 
@@ -9,13 +9,13 @@ import lombok.Getter;
  * When a group message was received
  */
 
-public class GroupMessageReceivedEvent extends MessageReceivedEvent {
+public class GroupMessage extends Message {
     @Getter
     private final long groupId;
     @Getter
     private final ChatGroup group;
 
-    public GroupMessageReceivedEvent(String userID, String message, long group, String transform, long messageID) {
+    public GroupMessage(String userID, String message, long group, String transform, long messageID) {
         super(userID, message, transform, messageID);
         this.groupId = group;
         this.group = Core.get()
