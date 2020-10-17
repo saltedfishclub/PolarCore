@@ -24,6 +24,10 @@ javadoc {
     source = "build/delombok/delombok"
     failOnError = false
 }
+task ("install"){
+
+}
+install.dependsOn shadowJar
 shadowJar {
     zip64 true
     manifest {
