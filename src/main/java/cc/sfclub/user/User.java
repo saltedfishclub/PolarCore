@@ -42,7 +42,11 @@ public class User implements Permissible {
     /**
      * 来源平台
      */
-    private String platfrom;
+    private String platform;
+    /**
+     * 来源平台分配的ID
+     */
+    private String platformId;
     /**
      * 在进行权限判断，信息获取的时候会跳转到这个变量索引的User。
      * 用于进行跨平台同步一用户。使用UUID
@@ -62,8 +66,8 @@ public class User implements Permissible {
         permList.addAll(Arrays.asList(InitialPermissions));
     }
 
-    public User(String Group, String platfrom) {
-        this.platfrom = platfrom;
+    public User(String Group, String platform) {
+        this.platform = platform;
         userGroup = Group;
     }
 
@@ -73,6 +77,10 @@ public class User implements Permissible {
 
     public static User byUUID(String userId) {
         return Core.get().ORM().fetch(User.class, Cnd.where("uniqueID", "=", userId));
+    }
+
+    public static User byPlatformID(String platfrom, String id) {
+        return Core.get().ORM().fetch(User.class, Cnd.where("platform", "=", platfrom).and("platformId", "=", id));
     }
 
     public static User register(String group, String platfrom) {
