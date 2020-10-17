@@ -66,7 +66,8 @@ public class User implements Permissible {
         permList.addAll(Arrays.asList(InitialPermissions));
     }
 
-    public User(String Group, String platform) {
+    public User(String Group, String platform, String platformId) {
+        this.platformId = platformId;
         this.platform = platform;
         userGroup = Group;
     }
@@ -79,12 +80,12 @@ public class User implements Permissible {
         return Core.get().ORM().fetch(User.class, Cnd.where("uniqueID", "=", userId));
     }
 
-    public static User byPlatformID(String platfrom, String id) {
-        return Core.get().ORM().fetch(User.class, Cnd.where("platform", "=", platfrom).and("platformId", "=", id));
+    public static User byPlatformID(String platform, String id) {
+        return Core.get().ORM().fetch(User.class, Cnd.where("platform", "=", platform).and("platformId", "=", id));
     }
 
-    public static User register(String group, String platfrom) {
-        User user = new User(group, platfrom);
+    public static User register(String group, String platform, String id) {
+        User user = new User(group, platform, id);
         Core.get().ORM().insert(user);
         return user;
     }
