@@ -43,6 +43,16 @@ public class Group implements Permissible {
         this.name = name;
     }
 
+    public static Group register(String name, Perm... InitialPerms) {
+        Optional<Group> i = getGroup(name);
+        if (i.isPresent()) {
+            return i.get();
+        }
+        Group group = new Group(name, InitialPerms);
+        Core.get().ORM().insert(group);
+        return group;
+    }
+
     public static Optional<Group> getGroup(String name) {
         if (name == null) return Optional.empty();
         return Optional.ofNullable(Core.get().ORM().fetch(Group.class, Cnd.where("name", "=", name)));

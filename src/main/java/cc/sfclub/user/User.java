@@ -75,6 +75,18 @@ public class User implements Permissible {
         return Core.get().ORM().fetch(User.class, Cnd.where("uniqueID", "=", userId));
     }
 
+    public static User register(String group, String platfrom) {
+        User user = new User(group, platfrom);
+        Core.get().ORM().insert(user);
+        return user;
+    }
+
+    public static User register(String group, Perm... initialPermissions) {
+        User user = new User(group, initialPermissions);
+        Core.get().ORM().insert(user);
+        return user;
+    }
+
     @Override
     public boolean hasPermission(Perm perm) {
         if (redirectTo == null) {
