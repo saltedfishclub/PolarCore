@@ -62,23 +62,8 @@ public class Group implements Permissible {
     }
 
     @Override
-    public boolean hasPermission(String perm) {
-        for (Perm perm1 : permList) {
-            if (perm1.equals(perm)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public void addPermission(Perm perm) {
         permList.add(perm);
-    }
-
-    @Override
-    public void delPermission(String perm) {
-        delPermission(new Perm(perm));
     }
 
     @Override

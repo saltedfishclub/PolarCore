@@ -1,7 +1,7 @@
 package cc.sfclub.core;
 
 import cc.sfclub.command.CommandListener;
-import cc.sfclub.events.message.group.GroupMessageReceivedEvent;
+import cc.sfclub.events.message.group.GroupMessage;
 import cc.sfclub.events.server.ServerStartedEvent;
 import cc.sfclub.events.server.ServerStoppingEvent;
 import cc.sfclub.plugin.Plugin;
@@ -51,7 +51,7 @@ public class Initializer {
                 EventBus.getDefault().post(new ServerStoppingEvent());
                 break;
             }
-            EventBus.getDefault().post(new GroupMessageReceivedEvent(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
+            EventBus.getDefault().post(new GroupMessage(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
         }
         scanner.close();
     }

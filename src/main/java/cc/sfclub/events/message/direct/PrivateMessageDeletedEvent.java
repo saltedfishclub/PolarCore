@@ -1,7 +1,7 @@
 package cc.sfclub.events.message.direct;
 
 import cc.sfclub.core.Core;
-import cc.sfclub.events.message.MessageReceivedEvent;
+import cc.sfclub.events.message.Message;
 import cc.sfclub.transform.Contact;
 import lombok.Getter;
 
@@ -9,7 +9,7 @@ import lombok.Getter;
  * When a private message was deleted
  */
 
-public class PrivateMessageDeletedEvent extends MessageReceivedEvent {
+public class PrivateMessageDeletedEvent extends Message {
     @Getter
     private final Contact contact;
 
