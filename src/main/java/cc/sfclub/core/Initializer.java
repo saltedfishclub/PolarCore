@@ -7,9 +7,6 @@ import cc.sfclub.events.server.ServerStoppingEvent;
 import cc.sfclub.plugin.Plugin;
 import cc.sfclub.plugin.PluginManager;
 import cc.sfclub.transform.internal.ConsoleBot;
-import cc.sfclub.user.Group;
-import cc.sfclub.user.User;
-import cc.sfclub.user.perm.Perm;
 import cc.sfclub.util.common.SimpleFile;
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.SneakyThrows;
@@ -119,20 +116,7 @@ public class Initializer {
         dataSource.setPassword(dbCfg.getPassword());
         if (cfg.getConfig_version() != Core.CONFIG_VERSION)
             Core.getLogger().warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
-        Core.setCore(new Core(cfg, permCfg, dataSource));
-        if (!Core.get().ORM().exists(User.class)) {
-            Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, User.class.getName());
-            Core.get().ORM().create(User.class, false);
-            User console = new User(null, new Perm(".*"));
-            console.setUserName("CONSOLE");
-            Core.get().ORM().insert(console);
-        }
-        Core.get().loadConsole();
-        if (!Core.get().ORM().exists(Group.class)) {
-            Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, Group.class.getName());
-            Core.get().ORM().create(Group.class, false);
-            permCfg.getGroupList().forEach(Core.get().ORM()::insert);
-        }
+        Core.setDefaultCore(new Core(cfg, permCfg, dataSource));
     }
 
     private static void loadLang() {

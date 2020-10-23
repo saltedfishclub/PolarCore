@@ -2,12 +2,13 @@ package cc.sfclub.core;
 
 import cc.sfclub.command.Source;
 import cc.sfclub.transform.Bot;
+import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
+import cc.sfclub.user.perm.Perm;
 import com.google.gson.Gson;
 import com.mojang.brigadier.CommandDispatcher;
 import lombok.Getter;
 import lombok.NonNull;
-import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
 import org.slf4j.Logger;
@@ -48,6 +49,19 @@ public class Core {
         this.config = config;
         this.permCfg = permCfg;
         this.ORM = new NutDao(ds);
+        if (!ORM().exists(User.class)) {
+            Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, User.class.getName());
+            ORM().create(User.class, false);
+            User console = new User(null, new Perm(".*"));
+            console.setUserName("CONSOLE");
+            ORM().insert(console);
+        }
+        this.CONSOLE = User.byName("CONSOLE");
+        if (!Core.get().ORM().exists(Group.class)) {
+            Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, Group.class.getName());
+            Core.get().ORM().create(Group.class, false);
+            permCfg.getGroupList().forEach(Core.get().ORM()::insert);
+        }
     }
 
     /**
@@ -59,11 +73,7 @@ public class Core {
         return core;
     }
 
-    protected void loadConsole() {
-        this.CONSOLE = ORM.fetch(User.class, Cnd.where("userName", "=", "CONSOLE"));
-    }
-
-    protected static void setCore(Core core) {
+    protected static void setDefaultCore(Core core) {
         Core.core = core;
     }
 
