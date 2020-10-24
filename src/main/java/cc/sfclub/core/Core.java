@@ -5,16 +5,14 @@ import cc.sfclub.transform.Bot;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
 import cc.sfclub.user.perm.Perm;
+import com.dieselpoint.norm.Database;
 import com.google.gson.Gson;
 import com.mojang.brigadier.CommandDispatcher;
 import lombok.Getter;
 import lombok.NonNull;
-import org.nutz.dao.Dao;
-import org.nutz.dao.impl.NutDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -22,7 +20,7 @@ import java.util.Optional;
 public class Core {
     private static Core core;
 
-    public static final int CONFIG_VERSION = 1;
+    public static final int CONFIG_VERSION = 2;
     /**
      * Get a public GSON
      *
@@ -39,31 +37,45 @@ public class Core {
     private static final Logger logger = LoggerFactory.getLogger("Core");
     private final CoreCfg config;
     private final PermCfg permCfg;
-    private final Dao ORM;
+    private final DatabaseCfg dbcfg;
     private User CONSOLE;
     private final CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
     private Map<String, Bot> bots = new HashMap<>();
     public static final String CORE_VERSION = "V4.3.7";
+    private Database ORM;
 
-    public Core(CoreCfg config, PermCfg permCfg, DataSource ds) {
+    public Core(CoreCfg config, PermCfg permCfg, DatabaseCfg dbcfg) {
         this.config = config;
         this.permCfg = permCfg;
-        this.ORM = new NutDao(ds);
-        if (!ORM().exists(User.class)) {
-            Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, User.class.getName());
-            ORM().create(User.class, false);
+        this.dbcfg = dbcfg;
+    }
+
+    public void loadDatabase() {
+        ORM = new Database();
+        ORM.setJdbcUrl(dbcfg.getJdbcUrl());
+        ORM.setUser(dbcfg.getUser());
+        ORM.setPassword(dbcfg.getPassword());
+        //load user table
+        Core.getLogger().info("Loading Database..");
+        if (config.isResetDatabase()) {
+            ORM().createTable(User.class);
+            Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, "user");
+            if (ORM().table("userGroup") == null) {
+                ORM().createTable(Group.class);
+            }
+            Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, Group.class.getName());
+            config.setResetDatabase(false);
+            config.saveConfig();
+        }
+        if (!User.existsName("CONSOLE")) {
             User console = new User(null, new Perm(".*"));
             console.setUserName("CONSOLE");
+            //todo Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (table User has no column named permList)
             ORM().insert(console);
         }
         this.CONSOLE = User.byName("CONSOLE");
-        if (!Core.get().ORM().exists(Group.class)) {
-            Core.getLogger().warn(I18N.get().exceptions.TABLE_NOT_FOUND, Group.class.getName());
-            Core.get().ORM().create(Group.class, false);
-            permCfg.getGroupList().forEach(Core.get().ORM()::insert);
-        }
+        permCfg.getGroupList().forEach(Core.get().ORM()::insert);
     }
-
     /**
      * Get core
      *
@@ -102,7 +114,10 @@ public class Core {
      *
      * @return ORM
      */
-    public Dao ORM() {
+    public Database ORM() {
+        if (ORM == null) {
+            getLogger().error("DATABASE IS MISSING");
+        }
         return ORM;
     }
 
