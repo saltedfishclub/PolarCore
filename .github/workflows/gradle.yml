@@ -27,4 +27,4 @@ jobs:
         with:
           name: "Core"
           # Directory containing files to upload
-          path: ../build/libs
+          path: build/libs
