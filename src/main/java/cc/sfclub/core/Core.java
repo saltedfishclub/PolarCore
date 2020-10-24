@@ -60,9 +60,7 @@ public class Core {
         if (config.isResetDatabase()) {
             ORM().createTable(User.class);
             Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, "user");
-            if (ORM().table("userGroup") == null) {
-                ORM().createTable(Group.class);
-            }
+            ORM().createTable(Group.class);
             Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, Group.class.getName());
             config.setResetDatabase(false);
             config.saveConfig();
