@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
 @Entity(name = "user")
 //@Table(name="user")
 public class User implements Permissible {
@@ -29,32 +28,38 @@ public class User implements Permissible {
     /**
      * 用户组名
      */
+    @Getter
     @Setter
     private String userGroup;
     /**
      * UID
      */
+    @Getter
     @Setter
     private String uniqueID = UUID.randomUUID().toString();
     /**
      * 用户名
      */
+    @Getter
     @Setter
     private String userName;
     /**
      * 来源平台
      */
+    @Getter
     @Setter
     private String platform;
     /**
      * 来源平台分配的ID
      */
+    @Getter
     @Setter
     private String platformId;
     /**
      * 在进行权限判断，信息获取的时候会跳转到这个变量索引的User。
      * 用于进行跨平台同步一用户。使用UUID
      */
+    @Getter
     @Setter
     private String redirectTo;
 
@@ -95,7 +100,7 @@ public class User implements Permissible {
 
     public static boolean existsName(String userName) {
 
-        return Core.get().ORM().table("User").where("userName=?", userName) == null;
+        return Core.get().ORM().table("User").where("userName=?", userName).results(User.class).size() != 0;
     }
 
     public static Query addRaw(User u) {
@@ -136,11 +141,19 @@ public class User implements Permissible {
             byUUID(redirectTo).addPermission(perm);
         }
     }
+
     @Override
     public void delPermission(Perm perm) {
         if (redirectTo != null) byUUID(redirectTo).addPermission(perm);
         else {
             permList.remove(perm);
         }
+    }
+
+    public String asFormattedName() {
+        if (userName == null) {
+            return uniqueID;
+        }
+        return userName + "(" + uniqueID + ")";
     }
 }

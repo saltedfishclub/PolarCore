@@ -1,6 +1,8 @@
 package cc.sfclub.test;
 
+import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.database.converter.StrListConverter;
+import cc.sfclub.user.perm.Perm;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +15,7 @@ public class ListConverterTest {
      ,
      a*/
     private final String complexListAsString = "\\\\" + "," + "\\," + "," + "a";
-
+    private final String specialListAsString = ".*";
     @Test
     public void on() {
         StrListConverter strListConverter = new StrListConverter();
@@ -21,9 +23,12 @@ public class ListConverterTest {
         Assert.assertEquals(strListConverter.convertToDatabaseColumn(simpleList), simpleListAsString);
         Assert.assertEquals(simpleList, strListConverter.convertToEntityAttribute(simpleListAsString));
 
-        System.out.println(complexListAsString);
         List<String> complexList = Arrays.asList("\\", ",", "a");
         Assert.assertEquals(strListConverter.convertToDatabaseColumn(complexList), complexListAsString);
         Assert.assertEquals(complexList, strListConverter.convertToEntityAttribute(complexListAsString));
+
+        List<Perm> specialList = Arrays.asList(Perm.of(".*"));
+        PermListConverter permListConverter = new PermListConverter();
+        Assert.assertEquals(permListConverter.convertToEntityAttribute(".*"), specialList);
     }
 }

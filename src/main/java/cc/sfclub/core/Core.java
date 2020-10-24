@@ -66,10 +66,9 @@ public class Core {
             config.saveConfig();
         }
         if (!User.existsName("CONSOLE")) {
-            User console = new User(null, new Perm(".*"));
+            User console = new User(null, Perm.of(".*"));
             console.setUserName("CONSOLE");
-            //todo Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (table User has no column named permList)
-            ORM().insert(console);
+            User.addRaw(console);
         }
         this.CONSOLE = User.byName("CONSOLE");
         permCfg.getGroupList().forEach(Core.get().ORM()::insert);

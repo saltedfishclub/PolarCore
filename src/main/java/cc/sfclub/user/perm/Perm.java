@@ -51,15 +51,21 @@ public class Perm {
         }
         if (obj instanceof String) {
             String perm = (String) obj;
-            return compare(node, perm) == Result.SUCCEED;
+            return compare(perm, node) == Result.SUCCEED;
         }
         if (obj instanceof Perm) {
             Perm perm = (Perm) obj;
-            return compare(node, perm.node) == Result.SUCCEED;
+            return compare(perm.node, node) == Result.SUCCEED;
         }
         return false;
     }
+
     public enum Result {
         FAILED, BANNED, SUCCEED
+    }
+
+    @Override
+    public String toString() {
+        return node;
     }
 }
