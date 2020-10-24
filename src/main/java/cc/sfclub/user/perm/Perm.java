@@ -1,9 +1,11 @@
 package cc.sfclub.user.perm;
 
 import cc.sfclub.core.Core;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class Perm {
     private String node;
 

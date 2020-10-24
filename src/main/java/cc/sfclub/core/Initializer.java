@@ -1,6 +1,8 @@
 package cc.sfclub.core;
 
 import cc.sfclub.command.CommandListener;
+import cc.sfclub.command.Source;
+import cc.sfclub.command.internal.Me;
 import cc.sfclub.events.message.group.GroupMessage;
 import cc.sfclub.events.server.ServerStartedEvent;
 import cc.sfclub.events.server.ServerStoppingEvent;
@@ -8,7 +10,7 @@ import cc.sfclub.plugin.Plugin;
 import cc.sfclub.plugin.PluginManager;
 import cc.sfclub.transform.internal.ConsoleBot;
 import cc.sfclub.util.common.SimpleFile;
-import com.alibaba.druid.pool.DruidDataSource;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import lombok.SneakyThrows;
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,7 +20,6 @@ import java.util.jar.JarFile;
 
 public class Initializer {
     private static final CoreCfg cfg = (CoreCfg) new CoreCfg().saveDefaultOrLoad();
-
     @SneakyThrows
     public static void main(String[] args) {
         loadLang();
@@ -40,13 +41,14 @@ public class Initializer {
     private static void waitCommand() {
         Scanner scanner = new Scanner(System.in);
         EventBus.getDefault().register(new CommandListener());
+        Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("me").executes(new Me()));
         String command;
         while (scanner.hasNextLine()) {
             command = scanner.nextLine();
             if ("stop".equals(command)) {
                 Core.getLogger().info(I18N.get().server.STOPPING_SERVER);
                 EventBus.getDefault().post(new ServerStoppingEvent());
-                break;
+                System.exit(0);
             }
             EventBus.getDefault().post(new GroupMessage(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
         }
@@ -110,13 +112,10 @@ public class Initializer {
             Core.getLogger().info(I18N.get().server.FIRST_START);
             System.exit(0);
         }
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl(dbCfg.getJdbcUrl());
-        dataSource.setUsername(dbCfg.getUser());
-        dataSource.setPassword(dbCfg.getPassword());
         if (cfg.getConfig_version() != Core.CONFIG_VERSION)
             Core.getLogger().warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
-        Core.setDefaultCore(new Core(cfg, permCfg, dataSource));
+        Core.setDefaultCore(new Core(cfg, permCfg, dbCfg));
+        Core.get().loadDatabase();
     }
 
     private static void loadLang() {

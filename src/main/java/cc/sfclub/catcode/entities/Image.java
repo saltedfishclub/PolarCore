@@ -1,6 +1,6 @@
 package cc.sfclub.catcode.entities;
 
-import org.nutz.repo.Base64;
+import cc.sfclub.catcode.Base64;
 
 public class Image {
     public String URI;

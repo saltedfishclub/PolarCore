@@ -1,43 +1,43 @@
 package cc.sfclub.user;
 
 import cc.sfclub.core.Core;
+import cc.sfclub.database.converter.StrListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
-import lombok.Data;
+import com.dieselpoint.norm.Query;
+import lombok.Getter;
 import lombok.Setter;
-import org.nutz.dao.Cnd;
-import org.nutz.dao.entity.annotation.Name;
-import org.nutz.dao.entity.annotation.Table;
 
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@Table
-
+@Getter
+@Entity(name = "user")
+//@Table(name="user")
 public class User implements Permissible {
     /**
-     * UID，Setter仅提供给ORM使用
+     * 权限列表
      */
-    @Deprecated
-    @Name
-    @Setter
-    private String uniqueID = UUID.randomUUID().toString();
+    @Column(name = "permList")
+    @Convert(converter = StrListConverter.class)
+    public List<Perm> permList = new LinkedList<>();
     /**
      * 用户组名
      */
     private String userGroup;
     /**
-     * Setter仅提供给ORM使用，权限列表
+     * UID
      */
-    @Deprecated
-    @Setter
-    private List<Perm> permList = new ArrayList<>();
+    private String uniqueID = UUID.randomUUID().toString();
     /**
      * 用户名
      */
+    @Setter
     private String userName;
     /**
      * 来源平台
@@ -73,15 +73,32 @@ public class User implements Permissible {
     }
 
     public static User byName(String userName) {
-        return Core.get().ORM().fetch(User.class, Cnd.where("userName", "=", userName));
+        return Core.get().ORM().where("userName=?", userName).first(User.class);
     }
 
     public static User byUUID(String userId) {
-        return Core.get().ORM().fetch(User.class, Cnd.where("uniqueID", "=", userId));
+        return Core.get().ORM().where("uniqueId=?", userId).first(User.class);
     }
 
     public static User byPlatformID(String platform, String id) {
-        return Core.get().ORM().fetch(User.class, Cnd.where("platform", "=", platform).and("platformId", "=", id));
+        return Core.get().ORM().where("platform=? AND platformId=?", platform, id).first(User.class);
+    }
+
+    public static boolean existsId(String userId) {
+        return Core.get().ORM().where("uniqueID=?", userId) == null;
+    }
+
+    public static boolean existsName(String userName) {
+
+        return Core.get().ORM().table("User").where("userName=?", userName) == null;
+    }
+
+    public static Query addRaw(User u) {
+        return Core.get().ORM().insert(u);
+    }
+
+    public static Query update(User u) {
+        return Core.get().ORM().update(u);
     }
 
     public static User register(String group, String platform, String id) {

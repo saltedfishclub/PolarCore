@@ -62,7 +62,7 @@ public class I18N extends JsonConfig {
     }
 
     public class Exceptions {
-        public String TABLE_NOT_FOUND = "Table of \"{}\" Not Found!! Auto-creating..";
+        public String TABLE_LOADING = "Loading Table \"{}\"..";
         public String CONFIG_OUTDATED = "CONFIG \"{}\" IS OUTDATED! TRY TO DELETE IT FOR A REGENERATION.";
         public String PLUGIN_NOT_SUBSCRIBER = "Plugin {} didn't subscribe any event!";
         public String PLUGIN_DEPENDS_ILLEGAL = "Could not load dependencies for plugin(s): {}";

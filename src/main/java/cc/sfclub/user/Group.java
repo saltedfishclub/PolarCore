@@ -6,20 +6,17 @@ import cc.sfclub.user.perm.Permissible;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import org.nutz.dao.Cnd;
-import org.nutz.dao.entity.annotation.Name;
-import org.nutz.dao.entity.annotation.Table;
 
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Getter
-@Table("userGroup")
+@Table(name = "userGroup")
 public class Group implements Permissible {
     public static final Group DEFAULT = new Group("_");
-    @Name
     @Deprecated
     @Setter
     private String name;
@@ -27,6 +24,9 @@ public class Group implements Permissible {
     @Setter
     @NonNull
     private List<Perm> permList = new ArrayList<>();
+    /**
+     * 父租
+     */
     @Setter
     private String extend;
 
@@ -55,7 +55,7 @@ public class Group implements Permissible {
 
     public static Optional<Group> getGroup(String name) {
         if (name == null) return Optional.empty();
-        return Optional.ofNullable(Core.get().ORM().fetch(Group.class, Cnd.where("name", "=", name)));
+        return Optional.ofNullable(Core.get().ORM().where("name=?", name).first(Group.class));
     }
 
     public static Group getDefault() {

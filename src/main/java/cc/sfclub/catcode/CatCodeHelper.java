@@ -2,7 +2,6 @@ package cc.sfclub.catcode;
 
 import cc.sfclub.catcode.entities.At;
 import cc.sfclub.catcode.entities.Image;
-import org.nutz.repo.Base64;
 
 import java.util.LinkedList;
 import java.util.List;

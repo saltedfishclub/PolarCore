@@ -28,4 +28,8 @@ public class GroupMessage extends Message {
     public void reply(long msgId, String message) {
         group.reply(msgId, message);
     }
+
+    public void reply(String message) {
+        group.reply(super.getMessageID(), message);
+    }
 }
