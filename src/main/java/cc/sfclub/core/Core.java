@@ -41,7 +41,7 @@ public class Core {
     private User CONSOLE;
     private final CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
     private Map<String, Bot> bots = new HashMap<>();
-    public static final String CORE_VERSION = "V4.3.7";
+    public static final String CORE_VERSION = "V4.8.0";
     private Database ORM;
 
     public Core(CoreCfg config, PermCfg permCfg, DatabaseCfg dbcfg) {
@@ -61,7 +61,7 @@ public class Core {
             ORM().createTable(User.class);
             Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, "user");
             ORM().createTable(Group.class);
-            Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, Group.class.getName());
+            Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, "userGroup");
             config.setResetDatabase(false);
             config.saveConfig();
         }
