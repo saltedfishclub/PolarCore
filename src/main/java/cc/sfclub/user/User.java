@@ -1,7 +1,7 @@
 package cc.sfclub.user;
 
 import cc.sfclub.core.Core;
-import cc.sfclub.database.converter.StrListConverter;
+import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
 import com.dieselpoint.norm.Query;
@@ -24,7 +24,7 @@ public class User implements Permissible {
      * 权限列表
      */
     @Column(name = "permList")
-    @Convert(converter = StrListConverter.class)
+    @Convert(converter = PermListConverter.class)
     public List<Perm> permList = new LinkedList<>();
     /**
      * 用户组名
