@@ -29,10 +29,12 @@ public class User implements Permissible {
     /**
      * 用户组名
      */
+    @Setter
     private String userGroup;
     /**
      * UID
      */
+    @Setter
     private String uniqueID = UUID.randomUUID().toString();
     /**
      * 用户名
@@ -42,15 +44,18 @@ public class User implements Permissible {
     /**
      * 来源平台
      */
+    @Setter
     private String platform;
     /**
      * 来源平台分配的ID
      */
+    @Setter
     private String platformId;
     /**
      * 在进行权限判断，信息获取的时候会跳转到这个变量索引的User。
      * 用于进行跨平台同步一用户。使用UUID
      */
+    @Setter
     private String redirectTo;
 
     public User() {
