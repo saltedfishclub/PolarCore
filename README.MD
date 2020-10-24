@@ -5,9 +5,7 @@ v4 refactored.
 Not completed yet.
 Open source as Apache2.0 License
 ## What
-A bot kernel.
-Permissible User system,Multi-platfrom message wrapper,Or such a plugin framework...
-lots of things that it can be.
+My bot's kernel.
 
 ## Use as a lib
 ```groovy

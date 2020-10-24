@@ -4,17 +4,31 @@ import cc.sfclub.core.Core;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.WeakHashMap;
+
 @Getter
 @Setter
 public class Perm {
+    private static final WeakHashMap<String, Perm> cachedPermObj = new WeakHashMap<>();
     private String node;
 
     public Perm(String node) {
         this.node = node;
     }
 
+    /**
+     * Please use Perm.of()
+     */
+    @Deprecated
     public Perm() {
 
+    }
+
+    public static Perm of(String perm) {
+        if (!cachedPermObj.containsKey(perm)) {
+            cachedPermObj.put(perm, new Perm(perm));
+        }
+        return cachedPermObj.get(perm);
     }
 
     public static Result compare(String orig, String target) {
