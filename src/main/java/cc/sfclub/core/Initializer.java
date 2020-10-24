@@ -3,20 +3,26 @@ package cc.sfclub.core;
 import cc.sfclub.command.CommandListener;
 import cc.sfclub.command.Source;
 import cc.sfclub.command.internal.Me;
+import cc.sfclub.command.internal.Op;
 import cc.sfclub.events.message.group.GroupMessage;
 import cc.sfclub.events.server.ServerStartedEvent;
 import cc.sfclub.events.server.ServerStoppingEvent;
 import cc.sfclub.plugin.Plugin;
 import cc.sfclub.plugin.PluginManager;
 import cc.sfclub.transform.internal.ConsoleBot;
+import cc.sfclub.user.User;
+import cc.sfclub.user.perm.Perm;
 import cc.sfclub.util.common.SimpleFile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import lombok.SneakyThrows;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.*;
 import java.util.jar.JarFile;
+
+import static com.mojang.brigadier.arguments.StringArgumentType.string;
 
 public class Initializer {
     private static final CoreCfg cfg = (CoreCfg) new CoreCfg().saveDefaultOrLoad();
@@ -42,6 +48,10 @@ public class Initializer {
         Scanner scanner = new Scanner(System.in);
         EventBus.getDefault().register(new CommandListener());
         Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("me").executes(new Me()));
+        Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("op")
+                .requires(e -> User.byUUID(e.getSender()).hasPermission(Perm.of("internal.op")))
+                .then(RequiredArgumentBuilder.<Source, String>argument("user", string()).executes(new Op()))
+        );
         String command;
         while (scanner.hasNextLine()) {
             command = scanner.nextLine();
