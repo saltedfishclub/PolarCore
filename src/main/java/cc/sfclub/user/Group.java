@@ -1,29 +1,30 @@
 package cc.sfclub.user;
 
 import cc.sfclub.core.Core;
+import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import javax.persistence.Convert;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@Getter
 @Table(name = "userGroup")
 public class Group implements Permissible {
     public static final Group DEFAULT = new Group("_");
-    @Deprecated
-    @Setter
-    private String name;
-    @Deprecated
-    @Setter
     @NonNull
-    private List<Perm> permList = new ArrayList<>();
+    @Deprecated
+    @Convert(converter = PermListConverter.class)
+    public List<Perm> permList = new ArrayList<>();
+    @Setter
+    @Getter
+    private String name;
     /**
      * 父租
      */
