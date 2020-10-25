@@ -3,8 +3,11 @@ package cc.sfclub.transform.internal;
 import cc.sfclub.core.Core;
 import cc.sfclub.transform.Contact;
 import cc.sfclub.user.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class VirtContact extends Contact {
+    private static final Logger logger = LoggerFactory.getLogger("VirtualContact");
     public VirtContact(long ID) {
         super(ID);
     }
@@ -26,11 +29,11 @@ public class VirtContact extends Contact {
 
     @Override
     public void sendMessage(String message) {
-        Core.getLogger().info("[CONSOLE_PRIVATE_MESSAGE] {}", message);
+        logger.info("[CONSOLE_PRIVATE_MESSAGE] {}", message);
     }
 
     @Override
     public void reply(long messageId, String message) {
-        Core.getLogger().info("[CONSOLE_PRIVATE_REPLY] {}", message);
+        logger.info("[CONSOLE_PRIVATE_REPLY] {}", message);
     }
 }

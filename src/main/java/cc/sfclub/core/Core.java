@@ -1,12 +1,12 @@
 package cc.sfclub.core;
 
 import cc.sfclub.command.Source;
+import cc.sfclub.core.security.PolarSec;
 import cc.sfclub.transform.Bot;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
 import cc.sfclub.user.perm.Perm;
 import com.dieselpoint.norm.Database;
-import com.google.gson.Gson;
 import com.mojang.brigadier.CommandDispatcher;
 import lombok.Getter;
 import lombok.NonNull;
@@ -22,22 +22,16 @@ public class Core {
 
     public static final int CONFIG_VERSION = 2;
     /**
-     * Get a public GSON
-     *
-     * @return GSOn
-     */
-    @Getter
-    private static final Gson gson = new Gson();
-    /**
      * get a logger
      *
      * @return logger
      */
-    @Getter
-    private static final Logger logger = LoggerFactory.getLogger("Core");
+    private final Logger logger = LoggerFactory.getLogger("Core");
     private final CoreCfg config;
     private final PermCfg permCfg;
     private final DatabaseCfg dbcfg;
+    @Getter
+    private final PolarSec polarSec = new PolarSec();
     private User CONSOLE;
     private final CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
     private Map<String, Bot> bots = new HashMap<>();
@@ -50,18 +44,18 @@ public class Core {
         this.dbcfg = dbcfg;
     }
 
-    public void loadDatabase() {
+    protected void loadDatabase() {
         ORM = new Database();
         ORM.setJdbcUrl(dbcfg.getJdbcUrl());
         ORM.setUser(dbcfg.getUser());
         ORM.setPassword(dbcfg.getPassword());
         //load user table
-        Core.getLogger().info("Loading Database..");
+        logger.info("Loading Database..");
         if (config.isResetDatabase()) {
             ORM().createTable(User.class);
-            Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, "user");
+            logger.info(I18N.get().exceptions.TABLE_LOADING, "user");
             ORM().createTable(Group.class);
-            Core.getLogger().info(I18N.get().exceptions.TABLE_LOADING, "userGroup");
+            logger.info(I18N.get().exceptions.TABLE_LOADING, "userGroup");
             config.setResetDatabase(false);
             config.saveConfig();
         }
@@ -113,7 +107,7 @@ public class Core {
      */
     public Database ORM() {
         if (ORM == null) {
-            getLogger().error("DATABASE IS MISSING");
+            logger.error("DATABASE IS MISSING");
         }
         return ORM;
     }

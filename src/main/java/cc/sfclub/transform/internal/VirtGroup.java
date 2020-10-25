@@ -1,12 +1,14 @@
 package cc.sfclub.transform.internal;
 
-import cc.sfclub.core.Core;
 import cc.sfclub.transform.ChatGroup;
 import cc.sfclub.transform.Contact;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
 public class VirtGroup extends ChatGroup {
+    private static final Logger logger = LoggerFactory.getLogger("VirtualGroup");
     public VirtGroup(long ID, Set<Contact> members) {
         super(ID, members);
     }
@@ -33,11 +35,11 @@ public class VirtGroup extends ChatGroup {
 
     @Override
     public void sendMessage(String message) {
-        Core.getLogger().info("[CONSOLE_GROUP] {}", message);
+        logger.info("[CONSOLE_GROUP] {}", message);
     }
 
     @Override
     public void reply(long messageId, String message) {
-        Core.getLogger().info("[CONSOLE_GROUP_REPLY] {} :: {}", messageId, message);
+        logger.info("[CONSOLE_GROUP_REPLY] {} :: {}", messageId, message);
     }
 }
