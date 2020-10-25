@@ -53,6 +53,8 @@ public class I18N extends JsonConfig {
         public String LOADED_MODULE = "Modules Loaded.";
         public String FIRST_START = "Go to edit your config first :D";
         public String STOPPING_SERVER = "Stopping server..";
+        public String PLUGIN_PRELOADING = "Scanned Plugin {} ver {}";
+        public String PLUGIN_LOADING = "Loading Plugin {} ver {}";
     }
 
     public class Misc {
@@ -65,6 +67,11 @@ public class I18N extends JsonConfig {
         public String TABLE_LOADING = "Loading Table \"{}\"..";
         public String CONFIG_OUTDATED = "CONFIG \"{}\" IS OUTDATED! TRY TO DELETE IT FOR A REGENERATION.";
         public String PLUGIN_NOT_SUBSCRIBER = "Plugin {} didn't subscribe any event!";
-        public String PLUGIN_DEPENDS_ILLEGAL = "Could not load dependencies for plugin(s): {}";
+        public String PLUGIN_DEPENDENCY_MISSING = "Can't find dependency {} for {}!";
+        public String PLUGIN_MAIN_CLASS_NOT_FOUND = "Can't find class {} as main class for plugin {}.";
+        public String PLUGIN_DATA_CLASS_NOT_FOUND = "Can't find class {} as data class for plugin {}.";
+        public String PLUGIN_HAVE_NO_AVAILABLE_CONSTRUCTOR = "Plugin {} have no empty args or accessible constructor.";
+        public String PLUGIN_DEPEND_LOOP = "Dependency loop detected! {} and {} will not loaded.";
+        public String PLUGIN_FAILED_TO_LOAD = "Failed to load these plugins: {}";
     }
 }
