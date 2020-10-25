@@ -3,12 +3,15 @@ package cc.sfclub.user.perm;
 import cc.sfclub.core.Core;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.WeakHashMap;
 
 @Getter
 @Setter
 public class Perm {
+    private static final Logger logger = LoggerFactory.getLogger(Perm.class);
     private static final WeakHashMap<String, Perm> cachedPermObj = new WeakHashMap<>();
     private String node;
 
@@ -39,7 +42,7 @@ public class Perm {
             if (target.matches(orig)) result = Result.SUCCEED;
         }
         if (Core.get() != null && Core.get().config().isDebug()) {
-            Core.getLogger().info("[DEBUG][Perm] Compare: {} , {} == {}", orig, target, result);
+            logger.info("[DEBUG][Perm] Compare: {} , {} == {}", orig, target, result);
         }
         return result;
     }
