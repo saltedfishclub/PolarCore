@@ -5,6 +5,7 @@ import cc.sfclub.core.security.PolarSec;
 import cc.sfclub.transform.Bot;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
+import cc.sfclub.user.UserManager;
 import cc.sfclub.user.perm.Perm;
 import com.dieselpoint.norm.Database;
 import com.mojang.brigadier.CommandDispatcher;
@@ -30,6 +31,7 @@ public class Core {
     private final CoreCfg config;
     private final PermCfg permCfg;
     private final DatabaseCfg dbcfg;
+    private UserManager userManager;
     @Getter
     private final PolarSec polarSec = new PolarSec();
     private User CONSOLE;
@@ -42,9 +44,11 @@ public class Core {
         this.config = config;
         this.permCfg = permCfg;
         this.dbcfg = dbcfg;
+        loadDatabase();
+        loadUserManager();
     }
 
-    protected void loadDatabase() {
+    private void loadDatabase() {
         ORM = new Database();
         ORM.setJdbcUrl(dbcfg.getJdbcUrl());
         ORM.setUser(dbcfg.getUser());
@@ -59,14 +63,19 @@ public class Core {
             config.setResetDatabase(false);
             config.saveConfig();
         }
-        if (!User.existsName("CONSOLE")) {
+    }
+
+    private void loadUserManager() {
+        userManager = new UserManager(ORM());
+        if (!userManager.existsName("CONSOLE")) {
             User console = new User(null, Perm.of(".*"));
             console.setUserName("CONSOLE");
-            User.addRaw(console);
+            userManager.addRaw(console);
         }
-        this.CONSOLE = User.byName("CONSOLE");
-        permCfg.getGroupList().forEach(Core.get().ORM()::insert);
+        this.CONSOLE = userManager.byName("CONSOLE");
+        permCfg.getGroupList().forEach(ORM()::insert);
     }
+
     /**
      * Get core
      *
@@ -144,5 +153,9 @@ public class Core {
      */
     public CommandDispatcher<Source> dispatcher() {
         return this.dispatcher;
+    }
+
+    public UserManager userManager() {
+        return this.userManager;
     }
 }

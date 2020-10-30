@@ -1,16 +1,17 @@
 package cc.sfclub.user;
 
-import cc.sfclub.core.Core;
+import cc.sfclub.Internal;
 import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
-import com.dieselpoint.norm.Query;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,13 +61,17 @@ public class User implements Permissible {
      * 用于进行跨平台同步一用户。使用UUID
      */
     @Getter
-    @Setter
     private String redirectTo;
+    @Setter(AccessLevel.PROTECTED)
+    @Transient
+    private User realUser;
 
+    @Internal
     public User() {
 
     }
 
+    @Internal
     public User(String Group) {
         userGroup = Group;
     }
@@ -75,62 +80,20 @@ public class User implements Permissible {
         this.userGroup = group;
         permList.addAll(Arrays.asList(InitialPermissions));
     }
-
     public User(String Group, String platform, String platformId) {
         this.platformId = platformId;
         this.platform = platform;
         userGroup = Group;
     }
 
-    public static User byName(String userName) {
-        return Core.get().ORM().where("userName=?", userName).first(User.class);
-    }
-
-    public static User byUUID(String userId) {
-        return Core.get().ORM().where("uniqueId=?", userId).first(User.class);
-    }
-
-    public static User byPlatformID(String platform, String id) {
-        return Core.get().ORM().where("platform=? AND platformId=?", platform, id).first(User.class);
-    }
-
-    public static boolean existsId(String userId) {
-        return Core.get().ORM().where("uniqueID=?", userId) == null;
-    }
-
-    public static boolean existsName(String userName) {
-
-        return Core.get().ORM().table("User").where("userName=?", userName).results(User.class).size() != 0;
-    }
-
-    public static Query addRaw(User u) {
-        return Core.get().ORM().insert(u);
-    }
-
-    public static Query update(User u) {
-        return Core.get().ORM().update(u);
-    }
-
-    public static User register(String group, String platform, String id) {
-        User user = new User(group, platform, id);
-        Core.get().ORM().insert(user);
-        return user;
-    }
-
-    public static User register(String group, Perm... initialPermissions) {
-        User user = new User(group, initialPermissions);
-        Core.get().ORM().insert(user);
-        return user;
-    }
-
     @Override
     public boolean hasPermission(Perm perm) {
-        if (redirectTo == null) {
+        if (realUser == null) {
             if (Group.getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
                 return true;
             } else return permList.contains(perm);
         }
-        return byUUID(redirectTo).hasPermission(perm);
+        return realUser.hasPermission(perm);
     }
 
     @Override
@@ -138,13 +101,13 @@ public class User implements Permissible {
         if (redirectTo == null) {
             permList.add(perm);
         } else {
-            byUUID(redirectTo).addPermission(perm);
+            realUser.addPermission(perm);
         }
     }
 
     @Override
     public void delPermission(Perm perm) {
-        if (redirectTo != null) byUUID(redirectTo).addPermission(perm);
+        if (redirectTo != null) realUser.addPermission(perm);
         else {
             permList.remove(perm);
         }
@@ -155,5 +118,15 @@ public class User implements Permissible {
             return uniqueID;
         }
         return userName + "(" + uniqueID + ")";
+    }
+
+    /**
+     * 注意: 请使用UserManager.setRedirectUser(本对象，目标);
+     *
+     * @param s
+     */
+    @Internal
+    public void setRedirectTo(String s) {
+        this.redirectTo = s;
     }
 }
