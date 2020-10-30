@@ -68,7 +68,7 @@ public class Core {
     private void loadUserManager() {
         userManager = new UserManager(ORM());
         if (!userManager.existsName("CONSOLE")) {
-            User console = new User(null, Perm.of(".*"));
+            User console = userManager.register(null, Perm.of(".*"));
             console.setUserName("CONSOLE");
             userManager.addRaw(console);
         }
