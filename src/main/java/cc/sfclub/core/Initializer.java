@@ -14,7 +14,6 @@ import cc.sfclub.util.common.SimpleFile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import lombok.SneakyThrows;
-import org.greenrobot.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +45,7 @@ public class Initializer {
     }
     private static void waitCommand() {
         Scanner scanner = new Scanner(System.in);
-        EventBus.getDefault().register(new CommandListener());
+        Event.registerListeners(new CommandListener());
         Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("me").executes(new Me()));
         Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("op")
                 .requires(e -> Core.get().userManager().byUUID(e.getSender()).hasPermission(Perm.of("internal.op")))
@@ -57,10 +56,10 @@ public class Initializer {
             command = scanner.nextLine();
             if ("stop".equals(command)) {
                 logger.info(I18N.get().server.STOPPING_SERVER);
-                EventBus.getDefault().post(new ServerStoppingEvent());
+                Event.postEvent(new ServerStoppingEvent());
                 System.exit(0);
             }
-            EventBus.getDefault().post(new GroupMessage(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
+            Event.postEvent(new GroupMessage(Core.get().console().getUniqueID(), command, 0L, "CONSOLE", 0L));
         }
         scanner.close();
     }
