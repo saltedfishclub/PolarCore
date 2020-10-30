@@ -40,6 +40,14 @@ public class JavaPluginLoader implements PluginLoader {
         }
     }
 
+    /**
+     * 在所有插件Classpath中寻找class
+     *
+     * @param clazzName 类名
+     * @param excepted  排除掉的CL
+     * @return clazz
+     * @throws ClassNotFoundException
+     */
     public Class<?> findClass(String clazzName, ClassLoader excepted) throws ClassNotFoundException {
         Class<?>[] result = new Class<?>[]{null};
         classLoaders.stream().filter(cl -> cl != excepted).forEach(cl -> {
@@ -61,13 +69,16 @@ public class JavaPluginLoader implements PluginLoader {
         return pluginMap.get(name);
     }
 
+    /**
+     * 加载插件并自动加载依赖。
+     */
     @Override
-    public void loadPlugins() {
+    public void loadPlugins(File[] plugins) {
         if (!rootPath.toFile().exists()) {
             rootPath.toFile().mkdir();
         }
         Map<String, PluginDescription> preloadingPlugins = new HashMap<>();
-        for (File file : Objects.requireNonNull(rootPath.toFile().listFiles())) {
+        for (File file : plugins) {
             PluginDescription description = getDescriptionOf(file);
             if (description == null) {
                 continue;
@@ -139,11 +150,20 @@ public class JavaPluginLoader implements PluginLoader {
         return errorPlugins;
     }
 
+    /**
+     * 卸载全部插件
+     */
     @Override
     public void unloadPlugins() {
 
     }
 
+    /**
+     * 获取插件文件描述信息
+     *
+     * @param file
+     * @return
+     */
     @Override
     public PluginDescription getDescriptionOf(File file) {
         try {
@@ -161,6 +181,12 @@ public class JavaPluginLoader implements PluginLoader {
         return null;
     }
 
+    /**
+     * 获取插件PolarClassloader.Nullable
+     *
+     * @param name
+     * @return
+     */
     public PolarClassloader getClassloaderOf(String name) {
         if (!pluginMap.containsKey(name)) {
             return null;
@@ -168,6 +194,14 @@ public class JavaPluginLoader implements PluginLoader {
         return (PolarClassloader) pluginMap.get(name).getClass().getClassLoader();
     }
 
+    /**
+     * 加载插件，不会自动加载依赖
+     *
+     * @param file 插件
+     * @return 插件对象
+     * @throws InvalidPluginException
+     * @throws DependencyMissingException
+     */
     @Override
     public Plugin loadPlugin(File file) throws InvalidPluginException, DependencyMissingException {
         PluginDescription description = getDescriptionOf(file);
@@ -210,11 +244,23 @@ public class JavaPluginLoader implements PluginLoader {
         return null;
     }
 
+    /**
+     * 卸载插件
+     *
+     * @param plugin
+     * @throws PluginNotLoadedException
+     */
     @Override
     public void unloadPlugin(Plugin plugin) throws PluginNotLoadedException {
 
     }
 
+    /**
+     * 插件是否加载
+     *
+     * @param name
+     * @return
+     */
     @Override
     public boolean isPluginLoaded(String name) {
         return pluginMap.containsKey(name);

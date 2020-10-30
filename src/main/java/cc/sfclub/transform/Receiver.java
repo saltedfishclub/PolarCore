@@ -1,6 +1,6 @@
 package cc.sfclub.transform;
 
-public interface IReceiver {
+public interface Receiver {
     /**
      * Send a message
      *

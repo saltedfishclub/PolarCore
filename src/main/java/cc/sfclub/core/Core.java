@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * 核心。
+ */
 public class Core {
     private static Core core;
 
@@ -153,6 +156,11 @@ public class Core {
         return this.dispatcher;
     }
 
+    /**
+     * 获取用户管理器
+     *
+     * @return
+     */
     public UserManager userManager() {
         return this.userManager;
     }

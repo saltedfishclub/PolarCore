@@ -4,9 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Transform Bot 基类
+ */
 public abstract class Bot {
     private static final Map<Long, ChatGroup> groupCache = new HashMap<>();
     private static final Map<Long, Contact> contactCache = new HashMap<>();
+
     public abstract String getName();
 
     /**

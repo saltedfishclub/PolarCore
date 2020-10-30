@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Event
+ * 事件基类/控制相关
  */
 
 public abstract class Event {

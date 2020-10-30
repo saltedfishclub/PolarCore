@@ -48,7 +48,7 @@ public class Initializer {
         Event.registerListeners(new CommandListener());
         Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("me").executes(new Me()));
         Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("op")
-                .requires(e -> Core.get().userManager().byUUID(e.getSender()).hasPermission(Perm.of("internal.op")))
+                .requires(e -> e.getSender().hasPermission(Perm.of("internal.op")))
                 .then(RequiredArgumentBuilder.<Source, String>argument("user", string()).executes(new Op()))
         );
         String command;

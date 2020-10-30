@@ -2,6 +2,9 @@ package cc.sfclub.user.perm;
 
 import cc.sfclub.user.User;
 
+/**
+ * 纯文本模板
+ */
 public class PureStringPerm extends Perm {
     private String node;
 

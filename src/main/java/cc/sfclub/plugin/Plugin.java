@@ -18,8 +18,21 @@ public abstract class Plugin {
     private PluginDescription description;
     private SimpleConfig<?> config;
     private File dataFolder;
+    /**
+     * 获取插件Logger
+     *
+     * @return
+     */
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private boolean loaded = false;
 
+    /**
+     * Plugin 静态方法，用于获取到插件实例
+     *
+     * @param t
+     * @param <T>
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static <T> T get(Class<T> t) {
         ClassLoader loader = t.getClassLoader();
@@ -30,18 +43,26 @@ public abstract class Plugin {
         return null;
     }
 
-    public Logger getLogger() {
-        return LoggerFactory.getLogger(this.getClass());
-    }
-
+    @Deprecated
+    //todo
     public void registerBot(Bot bot) {
         Core.get().registerBot(bot);
     }
 
+    /**
+     * 注册命令
+     *
+     * @param commandTree 命令树
+     */
     public void registerCommand(LiteralArgumentBuilder<Source> commandTree) {
         Core.get().dispatcher().register(commandTree);
     }
 
+    /**
+     * 获取PolarCore版本
+     *
+     * @return
+     */
     public String getCoreVersion() {
         return Core.CORE_VERSION;
     }

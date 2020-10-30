@@ -24,6 +24,12 @@ public abstract class Perm {
 
     }
 
+    /**
+     * 从缓存中获取权限，当缓存中不存在时使用PureStringPerm模板新建存入并返回。
+     *
+     * @param perm
+     * @return
+     */
     public static Perm of(String perm) {
         if (!cachedPermObj.containsKey(perm)) {
             cachedPermObj.put(perm, new PureStringPerm(perm));
@@ -31,10 +37,18 @@ public abstract class Perm {
         return cachedPermObj.get(perm);
     }
 
+    /**
+     * 注册权限到缓存，注意缓存内的对象若无额外的强引用可能被GC
+     *
+     * @param perm
+     */
     public static void register(Perm perm) {
         cachedPermObj.put(perm.toString(), perm);
     }
 
+    /**
+     * 权限判定
+     */
     public static Result compare(Perm orig, Perm target, User u) {
         Result result = Result.FAILED;
         if (target.toString().startsWith("-") && target.toString().matches(orig.toString().replaceFirst("-", ""))) {

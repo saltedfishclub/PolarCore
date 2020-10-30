@@ -7,6 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * 猫码工具类
+ */
 public class CatCodeHelper {
     private static final Pattern number = Pattern.compile("^([-+])?\\d+(\\.\\d+)?E?$");
 
@@ -79,11 +82,10 @@ public class CatCodeHelper {
         } else {
             a = args[0].split(":");
         }
-        if (!isNumeric(a[1])) {
+        /*if (!isNumeric(a[1])) {
             return null;
-        }
-        usrId = Long.parseLong(a[1]);
-        at.userId = usrId;
+        }*/
+        at.userId = a[1];
         return at;
     }
 
