@@ -58,6 +58,11 @@ public class UserManager {
         return db.update(u);
     }
 
+    private Group preprocess(Group group) {
+        group.setUserManager(this);
+        return group;
+    }
+
     public User register(String group, String platform, String id) {
         User user = new User(group, platform, id);
         db.insert(user);
@@ -70,19 +75,23 @@ public class UserManager {
         return user;
     }
 
+    public void addRaw(Group group) {
+        db.insert(group);
+    }
+
     public Group registerGroup(String name, Perm... InitialPerms) {
         Optional<Group> i = getGroup(name);
         if (i.isPresent()) {
-            return i.get();
+            return preprocess(i.get());
         }
-        Group group = new Group(name, InitialPerms);
+        Group group = preprocess(new Group(name, InitialPerms));
         Core.get().ORM().insert(group);
         return group;
     }
 
     public Optional<Group> getGroup(String name) {
         if (name == null) return Optional.empty();
-        return Optional.ofNullable(Core.get().ORM().where("name=?", name).first(Group.class));
+        return Optional.ofNullable(preprocess(db.where("name=?", name).first(Group.class)));
     }
 
     public Group getDefault() {

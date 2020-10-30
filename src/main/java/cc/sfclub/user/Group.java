@@ -1,9 +1,10 @@
 package cc.sfclub.user;
 
-import cc.sfclub.core.Core;
+import cc.sfclub.Internal;
 import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -25,6 +26,8 @@ public class Group implements Permissible {
     @Setter
     @Getter
     private String name;
+    @Setter(AccessLevel.PROTECTED)
+    private UserManager userManager;
     /**
      * 父租
      */
@@ -35,11 +38,13 @@ public class Group implements Permissible {
      * Only for ORM Initial.(NoArgConstructor required)
      */
     @Deprecated
+    @Internal
     public Group() {
         name = null;
     }
 
-    public Group(String name, Perm... InitialPerms) {
+    @Internal
+    protected Group(String name, Perm... InitialPerms) {
         permList.addAll(Arrays.asList(InitialPerms));
         this.name = name;
     }
@@ -49,8 +54,8 @@ public class Group implements Permissible {
         if ("_".equals(name)) {
             return permList.contains(perm);
         }
-        Optional<Group> father = Core.get().userManager().getGroup(extend);
-        return father.orElse(Core.get().userManager().getDefault()).hasPermission(perm) || permList.contains(perm);
+        Optional<Group> father = userManager.getGroup(extend);
+        return father.orElse(userManager.getDefault()).hasPermission(perm) || permList.contains(perm);
     }
 
     @Override
