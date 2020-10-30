@@ -55,7 +55,7 @@ public class Group implements Permissible {
             return permList.contains(perm);
         }
         Optional<Group> father = userManager.getGroup(extend);
-        return father.orElse(userManager.getDefault()).hasPermission(perm) || permList.contains(perm);
+        return father.orElse(DEFAULT).hasPermission(perm) || permList.contains(perm);
     }
 
     @Override
