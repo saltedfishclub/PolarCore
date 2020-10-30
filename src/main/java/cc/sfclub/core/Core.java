@@ -73,7 +73,7 @@ public class Core {
             userManager.addRaw(console);
         }
         this.CONSOLE = userManager.byName("CONSOLE");
-        permCfg.getGroupList().forEach(ORM()::insert);
+        permCfg.getGroupList().forEach(userManager::addRaw);
     }
 
     /**
