@@ -1,6 +1,7 @@
 package cc.sfclub.user;
 
 import cc.sfclub.Internal;
+import cc.sfclub.core.Core;
 import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
@@ -54,7 +55,7 @@ public class Group implements Permissible {
         if ("_".equals(name)) {
             return permList.contains(perm);
         }
-        Optional<Group> father = userManager.getGroup(extend);
+        Optional<Group> father = Core.get().userManager().getGroup(extend);
         return father.orElse(DEFAULT).hasPermission(perm) || permList.contains(perm);
     }
 
