@@ -37,7 +37,6 @@ public class UserManager {
         if (u.getRedirectTo() != null) {
             u.setRealUser(byUUID(u.getRedirectTo()));
         }
-        u.setManager(this);
         return u;
     }
 
@@ -58,10 +57,6 @@ public class UserManager {
         return db.update(u);
     }
 
-    private Group preprocess(Group group) {
-        group.setUserManager(this);
-        return group;
-    }
 
     public User register(String group, String platform, String id) {
         User user = new User(group, platform, id);
@@ -82,16 +77,16 @@ public class UserManager {
     public Group registerGroup(String name, Perm... InitialPerms) {
         Optional<Group> i = getGroup(name);
         if (i.isPresent()) {
-            return preprocess(i.get());
+            return i.get();
         }
-        Group group = preprocess(new Group(name, InitialPerms));
+        Group group = new Group(name, InitialPerms);
         Core.get().ORM().insert(group);
         return group;
     }
 
     public Optional<Group> getGroup(String name) {
         if (name == null) return Optional.empty();
-        return Optional.ofNullable(preprocess(db.where("name=?", name).first(Group.class)));
+        return Optional.ofNullable(db.where("name=?", name).first(Group.class));
     }
 
     public Group getDefault() {

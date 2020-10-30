@@ -1,6 +1,7 @@
 package cc.sfclub.user;
 
 import cc.sfclub.Internal;
+import cc.sfclub.core.Core;
 import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
@@ -65,9 +66,6 @@ public class User implements Permissible {
     @Setter(AccessLevel.PROTECTED)
     @Transient
     private User realUser;
-    @Transient
-    @Setter(AccessLevel.PROTECTED)
-    private UserManager manager;
 
     @Internal
     public User() {
@@ -93,7 +91,7 @@ public class User implements Permissible {
     @Override
     public boolean hasPermission(Perm perm) {
         if (realUser == null) {
-            if (manager.getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
+            if (Core.get().userManager().getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
                 return true;
             } else return permList.contains(perm);
         }
@@ -135,6 +133,6 @@ public class User implements Permissible {
     }
 
     public void save() {
-        manager.update(this);
+        Core.get().userManager().update(this);
     }
 }
