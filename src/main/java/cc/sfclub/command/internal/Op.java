@@ -21,6 +21,7 @@ public class Op implements Command<Source> {
             return 0;
         }
         user.addPermission(Perm.of(".*"));
+        Core.get().userManager().update(user);
         context.getSource().getMessageEvent().reply("User " + user.asFormattedName() + " is op now.");
         return 0;
     }

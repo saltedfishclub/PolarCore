@@ -44,32 +44,13 @@ public class Group implements Permissible {
         this.name = name;
     }
 
-    public static Group register(String name, Perm... InitialPerms) {
-        Optional<Group> i = getGroup(name);
-        if (i.isPresent()) {
-            return i.get();
-        }
-        Group group = new Group(name, InitialPerms);
-        Core.get().ORM().insert(group);
-        return group;
-    }
-
-    public static Optional<Group> getGroup(String name) {
-        if (name == null) return Optional.empty();
-        return Optional.ofNullable(Core.get().ORM().where("name=?", name).first(Group.class));
-    }
-
-    public static Group getDefault() {
-        return getGroup(Core.get().permCfg().getDefaultGroup()).orElse(DEFAULT);
-    }
-
     @Override
     public boolean hasPermission(Perm perm) {
         if ("_".equals(name)) {
             return permList.contains(perm);
         }
-        Optional<Group> father = getGroup(extend);
-        return father.orElse(getDefault()).hasPermission(perm) || permList.contains(perm);
+        Optional<Group> father = Core.get().userManager().getGroup(extend);
+        return father.orElse(Core.get().userManager().getDefault()).hasPermission(perm) || permList.contains(perm);
     }
 
     @Override

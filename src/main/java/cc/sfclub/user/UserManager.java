@@ -1,8 +1,11 @@
 package cc.sfclub.user;
 
+import cc.sfclub.core.Core;
 import cc.sfclub.user.perm.Perm;
 import com.dieselpoint.norm.Database;
 import com.dieselpoint.norm.Query;
+
+import java.util.Optional;
 
 public class UserManager {
     private final Database db;
@@ -34,6 +37,7 @@ public class UserManager {
         if (u.getRedirectTo() != null) {
             u.setRealUser(byUUID(u.getRedirectTo()));
         }
+        u.setManager(this);
         return u;
     }
 
@@ -64,5 +68,24 @@ public class UserManager {
         User user = new User(group, initialPermissions);
         db.insert(user);
         return user;
+    }
+
+    public Group registerGroup(String name, Perm... InitialPerms) {
+        Optional<Group> i = getGroup(name);
+        if (i.isPresent()) {
+            return i.get();
+        }
+        Group group = new Group(name, InitialPerms);
+        Core.get().ORM().insert(group);
+        return group;
+    }
+
+    public Optional<Group> getGroup(String name) {
+        if (name == null) return Optional.empty();
+        return Optional.ofNullable(Core.get().ORM().where("name=?", name).first(Group.class));
+    }
+
+    public Group getDefault() {
+        return getGroup(Core.get().permCfg().getDefaultGroup()).orElse(Group.DEFAULT);
     }
 }

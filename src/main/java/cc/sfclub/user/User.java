@@ -65,6 +65,9 @@ public class User implements Permissible {
     @Setter(AccessLevel.PROTECTED)
     @Transient
     private User realUser;
+    @Transient
+    @Setter(AccessLevel.PROTECTED)
+    private UserManager manager;
 
     @Internal
     public User() {
@@ -72,15 +75,16 @@ public class User implements Permissible {
     }
 
     @Internal
-    public User(String Group) {
+    protected User(String Group) {
         userGroup = Group;
     }
 
-    public User(String group, Perm... InitialPermissions) {
+    protected User(String group, Perm... InitialPermissions) {
         this.userGroup = group;
         permList.addAll(Arrays.asList(InitialPermissions));
     }
-    public User(String Group, String platform, String platformId) {
+
+    protected User(String Group, String platform, String platformId) {
         this.platformId = platformId;
         this.platform = platform;
         userGroup = Group;
@@ -89,7 +93,7 @@ public class User implements Permissible {
     @Override
     public boolean hasPermission(Perm perm) {
         if (realUser == null) {
-            if (Group.getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
+            if (manager.getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
                 return true;
             } else return permList.contains(perm);
         }
