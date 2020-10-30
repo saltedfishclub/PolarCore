@@ -4,11 +4,11 @@ import cc.sfclub.command.CommandListener;
 import cc.sfclub.command.Source;
 import cc.sfclub.command.internal.Me;
 import cc.sfclub.command.internal.Op;
+import cc.sfclub.events.Event;
 import cc.sfclub.events.message.group.GroupMessage;
 import cc.sfclub.events.server.ServerStartedEvent;
 import cc.sfclub.events.server.ServerStoppingEvent;
 import cc.sfclub.transform.internal.ConsoleBot;
-import cc.sfclub.user.User;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.util.common.SimpleFile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -41,7 +41,7 @@ public class Initializer {
         Core.get().registerBot(new ConsoleBot());
         loadPlugins();
         logger.info(I18N.get().server.LOADED_MODULE);
-        EventBus.getDefault().post(new ServerStartedEvent());
+        Event.postEvent(new ServerStartedEvent());
         waitCommand();
     }
     private static void waitCommand() {
@@ -49,7 +49,7 @@ public class Initializer {
         EventBus.getDefault().register(new CommandListener());
         Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("me").executes(new Me()));
         Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("op")
-                .requires(e -> User.byUUID(e.getSender()).hasPermission(Perm.of("internal.op")))
+                .requires(e -> Core.get().userManager().byUUID(e.getSender()).hasPermission(Perm.of("internal.op")))
                 .then(RequiredArgumentBuilder.<Source, String>argument("user", string()).executes(new Op()))
         );
         String command;
@@ -89,7 +89,6 @@ public class Initializer {
         if (cfg.getConfig_version() != Core.CONFIG_VERSION)
             logger.warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
         Core.setDefaultCore(new Core(cfg, permCfg, dbCfg));
-        Core.get().loadDatabase();
     }
 
     private static void loadLang() {

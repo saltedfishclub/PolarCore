@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 
 public abstract class Event {
     private static final Logger logger = LoggerFactory.getLogger(Event.class);
-    private static EventBus eventBus;
-
-    static {
-        initEventBus();
-    }
+    private static EventBus eventBus = EventBus.builder()
+            .eventInheritance(true)
+            .sendNoSubscriberEvent(false)
+            .throwSubscriberException(true)
+            .build();
 
     public static boolean registerListeners(Object... object) {
         eventBus.register(object);
@@ -30,7 +30,6 @@ public abstract class Event {
         EventBus.builder()
                 .eventInheritance(true)
                 .sendNoSubscriberEvent(false)
-                .logger((org.greenrobot.eventbus.Logger) logger)
                 .throwSubscriberException(true)
                 .build();
     }
