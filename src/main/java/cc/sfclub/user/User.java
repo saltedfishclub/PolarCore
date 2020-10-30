@@ -133,4 +133,8 @@ public class User implements Permissible {
     public void setRedirectTo(String s) {
         this.redirectTo = s;
     }
+
+    public void save() {
+        manager.update(this);
+    }
 }
