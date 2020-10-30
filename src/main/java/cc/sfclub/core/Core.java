@@ -115,9 +115,7 @@ public class Core {
      * @return ORM
      */
     public Database ORM() {
-        if (ORM == null) {
-            logger.error("DATABASE IS MISSING");
-        }
+        assert ORM != null;
         return ORM;
     }
 
