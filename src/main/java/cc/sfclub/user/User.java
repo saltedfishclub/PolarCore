@@ -93,7 +93,9 @@ public class User implements Permissible {
         if (realUser == null) {
             if (Core.get().userManager().getGroup(getUserGroup()).orElse(Group.DEFAULT).hasPermission(perm)) {
                 return true;
-            } else return permList.contains(perm);
+            } else {
+                return permList.stream().anyMatch(e -> Perm.compare(e, perm, this) == Perm.Result.SUCCEED);
+            }
         }
         return realUser.hasPermission(perm);
     }
