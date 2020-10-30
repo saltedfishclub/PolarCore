@@ -18,7 +18,9 @@ public abstract class Event {
             .build();
 
     public static boolean registerListeners(Object... object) {
-        eventBus.register(object);
+        for (Object o : object) {
+            eventBus.register(o);
+        }
         return true;
     }
 

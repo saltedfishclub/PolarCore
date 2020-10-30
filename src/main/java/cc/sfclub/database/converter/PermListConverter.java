@@ -13,7 +13,7 @@ public class PermListConverter implements AttributeConverter<List<Perm>, String>
     @Override
     public String convertToDatabaseColumn(List<Perm> attribute) {
         StringJoiner result = new StringJoiner(",");
-        attribute.forEach(e -> result.add(e.getNode().replace("\\", "\\\\").replaceAll(",", "\\\\,")));
+        attribute.forEach(e -> result.add(e.toString().replace("\\", "\\\\").replaceAll(",", "\\\\,")));
         return result.toString();
     }
 
