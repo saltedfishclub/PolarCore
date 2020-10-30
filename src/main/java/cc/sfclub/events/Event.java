@@ -5,38 +5,39 @@ import org.greenrobot.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Event
  */
 
 public abstract class Event {
     private static final Logger logger = LoggerFactory.getLogger(Event.class);
-    private static final Set<Object> listeners = new HashSet<>();
-    private static final EventBus eventBus = EventBus.builder()
-            .eventInheritance(true)
-            .sendNoSubscriberEvent(false)
-            .logger((org.greenrobot.eventbus.Logger) logger)
-            .throwSubscriberException(true)
-            .build();
+    private static EventBus eventBus;
+
+    static {
+        initEventBus();
+    }
 
     public static boolean registerListeners(Object... object) {
-        if (listeners.contains(object)) {
-            return false;
-        }
         eventBus.register(object);
         return true;
     }
 
     public static void unregisterListeners(Object... object) {
-        listeners.remove(object);
         eventBus.unregister(object);
     }
 
+    private static void initEventBus() {
+        EventBus.builder()
+                .eventInheritance(true)
+                .sendNoSubscriberEvent(false)
+                .logger((org.greenrobot.eventbus.Logger) logger)
+                .throwSubscriberException(true)
+                .build();
+    }
+
     public static void unregisterAllListeners() {
-        listeners.forEach(eventBus::unregister);
+        eventBus = null;
+        initEventBus();
     }
 
     public static void postEvent(Event event) {
