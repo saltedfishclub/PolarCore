@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public abstract class Contact implements IReceiver {
+public abstract class Contact implements Receiver {
     private final long ID;
 
     /**

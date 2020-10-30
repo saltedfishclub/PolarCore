@@ -1,7 +1,14 @@
 package cc.sfclub.catcode.entities;
 
 public class At {
-    public long userId;
+
+    /**
+     * 目标用户ID
+     */
+    public String userId;
+    /**
+     * 是否是at所有人
+     */
     public boolean all;
 
     @Override

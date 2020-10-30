@@ -17,6 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 权限组
+ */
 @Table(name = "userGroup")
 public class Group implements Permissible {
     public static final Group DEFAULT = new Group("_");

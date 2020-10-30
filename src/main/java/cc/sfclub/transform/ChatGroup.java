@@ -8,11 +8,12 @@ import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public abstract class ChatGroup implements IReceiver {
+public abstract class ChatGroup implements Receiver {
     @Getter
     private final long ID;
     /**
      * all members from the group.
+     *
      * @return member set
      */
     @Getter

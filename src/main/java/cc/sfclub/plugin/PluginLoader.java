@@ -7,7 +7,7 @@ import cc.sfclub.plugin.exception.PluginNotLoadedException;
 import java.io.File;
 
 public interface PluginLoader {
-    void loadPlugins();
+    void loadPlugins(File[] plugins);
 
     void unloadPlugins();
 

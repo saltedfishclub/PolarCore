@@ -3,6 +3,7 @@ package cc.sfclub.catcode;
 import java.util.Arrays;
 
 /**
+ * Base64工具类
  * A very fast and memory efficient class to encode and decode to and from BASE64 in full accordance
  * with RFC 2045.<br><br>
  * On Windows XP sp1 with 1.4.2_04 and later ;), this encoder and decoder is about 10 times faster

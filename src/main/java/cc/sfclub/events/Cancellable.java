@@ -1,7 +1,7 @@
 package cc.sfclub.events;
 
 /**
- * A interface that means could be cancelled.
+ * A interface that means this event could be cancelled.
  */
 
 public interface Cancellable {

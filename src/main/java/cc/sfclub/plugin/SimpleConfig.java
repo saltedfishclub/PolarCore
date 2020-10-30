@@ -12,6 +12,11 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * 配置包装
+ *
+ * @param <C> 数据类
+ */
 public class SimpleConfig<C> {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private String root;
@@ -39,6 +44,9 @@ public class SimpleConfig<C> {
         Files.write(new File(root + "/" + getConfigFileName()).toPath(), gson.toJson(configObj).getBytes());
     }
 
+    /**
+     * 若文件不存在则保存默认
+     */
     @SneakyThrows
     public void saveDefault() {
         Path a = new File(root + "/" + getConfigFileName()).toPath();
@@ -47,6 +55,11 @@ public class SimpleConfig<C> {
         }
     }
 
+    /**
+     * 获取包装对象
+     *
+     * @return
+     */
     public C get() {
         return configObj;
     }
