@@ -27,6 +27,7 @@ import java.util.jar.JarFile;
 
 public class JavaPluginLoader implements PluginLoader {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    //todo never updated
     private final Set<PolarClassloader> classLoaders = new LinkedHashSet<>();
     private final Path rootPath;
     private final Set<String> failedToLoads = new HashSet<>();

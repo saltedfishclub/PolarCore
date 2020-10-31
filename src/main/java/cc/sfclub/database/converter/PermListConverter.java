@@ -36,7 +36,6 @@ public class PermListConverter implements AttributeConverter<List<Perm>, String>
                 if (flag) {
                     flag = false;
                     temp.append(c);
-                    ;
                     continue;
                 }
                 result.add(Perm.of(temp.toString()));

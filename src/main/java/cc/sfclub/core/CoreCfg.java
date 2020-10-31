@@ -4,6 +4,7 @@ import cc.sfclub.util.common.JsonConfig;
 import lombok.Getter;
 import lombok.Setter;
 
+@SuppressWarnings("all")
 @Getter
 public class CoreCfg extends JsonConfig {
     private String commandPrefix = "!p";

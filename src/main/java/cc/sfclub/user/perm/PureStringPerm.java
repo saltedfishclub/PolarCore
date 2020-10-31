@@ -6,7 +6,7 @@ import cc.sfclub.user.User;
  * 纯文本模板
  */
 public class PureStringPerm extends Perm {
-    private String node;
+    private final String node;
 
     public PureStringPerm(String node) {
         this.node = node;

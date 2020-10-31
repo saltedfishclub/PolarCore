@@ -39,7 +39,7 @@ public class Core {
     private final PolarSec polarSec = new PolarSec();
     private User CONSOLE;
     private final CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
-    private Map<String, Bot> bots = new HashMap<>();
+    private final Map<String, Bot> bots = new HashMap<>();
     public static final String CORE_VERSION = "V4.8.0";
     private Database ORM;
 

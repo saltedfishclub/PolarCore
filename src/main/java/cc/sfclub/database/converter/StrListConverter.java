@@ -34,7 +34,6 @@ public class StrListConverter implements AttributeConverter<List<String>, String
                 if (flag) {
                     flag = false;
                     temp.append(c);
-                    ;
                     continue;
                 }
                 result.add(temp.toString());
