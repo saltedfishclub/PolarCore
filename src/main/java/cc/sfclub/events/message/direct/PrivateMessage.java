@@ -25,4 +25,8 @@ public class PrivateMessage extends Message {
     public void reply(long msgId, String message) {
         contact.reply(msgId, message);
     }
+
+    public void reply(String message) {
+        reply(super.getMessageID(), message);
+    }
 }
