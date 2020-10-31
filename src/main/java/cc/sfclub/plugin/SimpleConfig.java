@@ -23,7 +23,7 @@ public class SimpleConfig<C> {
     private C configObj;
     @Setter
     @Getter
-    private String configFileName;
+    private String configFileName = "config.json";
     private Class<C> clazz;
 
     @SneakyThrows

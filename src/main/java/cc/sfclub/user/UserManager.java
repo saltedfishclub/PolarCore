@@ -139,7 +139,7 @@ public class UserManager {
             return i.get();
         }
         Group group = new Group(name, InitialPerms);
-        Core.get().ORM().insert(group);
+        db.insert(group);
         return group;
     }
 

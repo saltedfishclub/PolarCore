@@ -76,7 +76,7 @@ public class Initializer {
         }
         if (cfg.getConfig_version() != Core.CONFIG_VERSION)
             logger.warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
-        Core.setDefaultCore(new Core(cfg, permCfg, dbCfg));
+        new Core(cfg, permCfg, dbCfg);
         if (!Core.get().userManager().existsName("CONSOLE")) {
             User console = Core.get().userManager().register(null, Perm.of(".*"));
             console.setUserName("CONSOLE");

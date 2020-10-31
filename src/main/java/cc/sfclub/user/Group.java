@@ -5,12 +5,12 @@ import cc.sfclub.core.Core;
 import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.Convert;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,15 +23,21 @@ import java.util.Optional;
 @Table(name = "userGroup")
 public class Group implements Permissible {
     public static final Group DEFAULT = new Group("_");
+    /**
+     * 数据库索引
+     */
+    @Id
+    @Deprecated
+    @Internal
+    public long id;
     @NonNull
     @Deprecated
     @Convert(converter = PermListConverter.class)
     public List<Perm> permList = new ArrayList<>();
     @Setter
     @Getter
+    @Id
     private String name;
-    @Setter(AccessLevel.PROTECTED)
-    private UserManager userManager;
     /**
      * 父租
      */

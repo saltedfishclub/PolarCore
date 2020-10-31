@@ -55,6 +55,7 @@ public class Core {
         loadDatabase();
         loadUserManager();
         pluginManager.loadPlugins();
+        Core.core = this;
         Event.postEvent(new ServerStartedEvent());
     }
 
@@ -103,10 +104,6 @@ public class Core {
      */
     public static Core get() {
         return core;
-    }
-
-    protected static void setDefaultCore(Core core) {
-        Core.core = core;
     }
 
     /**

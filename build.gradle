@@ -42,7 +42,7 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     //Database
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
-    implementation 'org.xerial:sqlite-jdbc:3.31.1'
+    implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
     // https://mvnrepository.com/artifact/com.dieselpoint/norm
     compile group: 'com.dieselpoint', name: 'norm', version: '0.8.10'
 

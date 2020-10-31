@@ -1,7 +1,6 @@
 package cc.sfclub.plugin;
 
 import cc.sfclub.core.I18N;
-import cc.sfclub.events.Event;
 import cc.sfclub.plugin.exception.DependencyMissingException;
 import cc.sfclub.plugin.exception.InvalidPluginException;
 import cc.sfclub.plugin.java.JavaPluginLoader;
@@ -53,9 +52,10 @@ public class PluginManager {
 
     public Set<String> checkDependencies(Map<String, PluginDescription> preloadingPlugins) {
         Set<String> errorPlugins = new HashSet<>();
-        while (preloadingPlugins.values().iterator().hasNext()) {
-            PluginDescription desc = preloadingPlugins.values().iterator().next();
-            if (desc.getDependencies().isEmpty()) {
+        Iterator<PluginDescription> iter = preloadingPlugins.values().iterator();
+        while (iter.hasNext()) {
+            PluginDescription desc = iter.next();
+            if (desc.getDependencies() == null) {
                 continue;
             }
 
@@ -103,7 +103,7 @@ public class PluginManager {
      * @return
      */
     public boolean isPluginLoaded(String name) {
-        return pluginMap.containsKey(name);
+        return pluginMap.get(name) != null && pluginMap.get(name).isLoaded();
     }
 
     public Plugin getPlugin(String name) {
@@ -125,11 +125,23 @@ public class PluginManager {
         if (isPluginLoaded(name)) {
             return false;
         }
-        for (String dep : plugin.getDependencies()) {
-            if (!isPluginLoaded(dep)) {
-                if (!loadPluginWithDependency(dep, plugin, loadStack)) {
-                    failedToLoads.add(dep);
-                    return false;
+        if (plugin.getDependencies() != null) {
+            for (String dep : plugin.getDependencies()) {
+                if (!isPluginLoaded(dep)) {
+                    if (!loadPluginWithDependency(dep, plugin, loadStack)) {
+                        failedToLoads.add(dep);
+                        return false;
+                    }
+                }
+            }
+        }
+        if (plugin.getSoftDependencies() != null) {
+            for (String dep : plugin.getSoftDependencies()) {
+                if (!isPluginLoaded(dep)) {
+                    if (!loadPluginWithDependency(dep, plugin, loadStack)) {
+                        failedToLoads.add(dep);
+                        return true;
+                    }
                 }
             }
         }
@@ -154,12 +166,13 @@ public class PluginManager {
         Plugin plugin = getPlugin(name);
         plugin.setLoaded(false);
         plugin.onDisable();
-        Event.unregisterListeners(plugin);
-        pluginMap.remove(name);
+        if (plugin.getConfig() != null) plugin.getConfig().saveConfig();
+        pluginMap.put(name, null);
         return true;
     }
 
     public void unloadPlugins() {
         pluginMap.keySet().forEach(this::unloadPlugin);
+        pluginMap.clear();
     }
 }
