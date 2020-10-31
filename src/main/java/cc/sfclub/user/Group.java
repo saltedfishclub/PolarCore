@@ -5,7 +5,6 @@ import cc.sfclub.core.Core;
 import cc.sfclub.database.converter.PermListConverter;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
@@ -23,20 +22,11 @@ import java.util.Optional;
 @Table(name = "userGroup")
 public class Group implements Permissible {
     public static final Group DEFAULT = new Group("_");
-    /**
-     * 数据库索引
-     */
-    @Id
-    @Deprecated
-    @Internal
-    public long id;
     @NonNull
     @Deprecated
     @Convert(converter = PermListConverter.class)
     public List<Perm> permList = new ArrayList<>();
     @Setter
-    @Getter
-    @Id
     private String name;
     /**
      * 父租
@@ -76,5 +66,10 @@ public class Group implements Permissible {
     @Override
     public void delPermission(Perm perm) {
         permList.remove(perm);
+    }
+
+    @Id
+    public String getName() {
+        return name;
     }
 }
