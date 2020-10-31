@@ -1,6 +1,7 @@
 package cc.sfclub.plugin.java;
 
 import cc.sfclub.core.I18N;
+import cc.sfclub.events.Event;
 import cc.sfclub.plugin.*;
 import cc.sfclub.plugin.exception.DependencyMissingException;
 import cc.sfclub.plugin.exception.InvalidPluginException;
@@ -124,6 +125,9 @@ public class JavaPluginLoader implements PluginLoader {
             PolarClassloader cl = new PolarClassloader(new URL[]{file.toURI().toURL()}, this, description.getName());
             Class<?> pluginClass = cl.findClass(description.getMain(), false);
             Plugin plugin = (Plugin) pluginClass.getConstructor().newInstance();
+            if (description.isAutoRegister()) {
+                Event.registerListeners(plugin);
+            }
             plugin.setDescription(description);
             plugin.setLoaded(true);
             plugin.setDataFolder(new File(rootPath.toString() + "/" + description.getName()));
