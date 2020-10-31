@@ -25,7 +25,6 @@ public abstract class Plugin {
      */
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private boolean loaded = false;
-
     /**
      * Plugin 静态方法，用于获取到插件实例
      *
@@ -38,10 +37,14 @@ public abstract class Plugin {
         ClassLoader loader = t.getClassLoader();
         if (loader instanceof PolarClassloader) {
             PolarClassloader pcl = ((PolarClassloader) loader);
-            return (T) pcl.getLoader().getPluginByName(pcl.getPluginName());
+            return (T) pcl.getLoader().getPluginManager().getPlugin(pcl.getPluginName());
         }
         return null;
     }
+
+    public abstract void onEnable();
+
+    public abstract void onDisable();
 
     @Deprecated
     //todo

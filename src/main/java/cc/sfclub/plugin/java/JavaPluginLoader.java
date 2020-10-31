@@ -1,15 +1,11 @@
 package cc.sfclub.plugin.java;
 
 import cc.sfclub.core.I18N;
-import cc.sfclub.plugin.Plugin;
-import cc.sfclub.plugin.PluginDescription;
-import cc.sfclub.plugin.PluginLoader;
-import cc.sfclub.plugin.SimpleConfig;
+import cc.sfclub.plugin.*;
 import cc.sfclub.plugin.exception.DependencyMissingException;
 import cc.sfclub.plugin.exception.InvalidPluginException;
-import cc.sfclub.plugin.exception.PluginNotLoadedException;
 import com.google.gson.Gson;
-import lombok.SneakyThrows;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,21 +17,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class JavaPluginLoader implements PluginLoader {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    //todo never updated
-    private final Set<PolarClassloader> classLoaders = new LinkedHashSet<>();
     private final Path rootPath;
-    private final Set<String> failedToLoads = new HashSet<>();
     private final Gson gson = new Gson();
-    private final Map<String, Plugin> pluginMap = new HashMap<>();
+    @Getter
+    private final PluginManager pluginManager;
 
-    public JavaPluginLoader(Path rootPath) {
+    public JavaPluginLoader(Path rootPath, PluginManager pm) {
         this.rootPath = rootPath;
+        this.pluginManager = pm;
         if (!rootPath.toFile().exists()) {
             rootPath.toFile().mkdir();
         }
@@ -51,7 +46,8 @@ public class JavaPluginLoader implements PluginLoader {
      */
     public Class<?> findClass(String clazzName, ClassLoader excepted) throws ClassNotFoundException {
         Class<?>[] result = new Class<?>[]{null};
-        classLoaders.stream().filter(cl -> cl != excepted).forEach(cl -> {
+        pluginManager.getPlugins().stream().filter(cl -> cl.getClass().getClassLoader() != excepted).forEach(p -> {
+            PolarClassloader cl = (PolarClassloader) p.getClass().getClassLoader();
             try {
                 if (result[0] == null) {
                     result[0] = cl.findClass(clazzName, false);
@@ -66,98 +62,10 @@ public class JavaPluginLoader implements PluginLoader {
     }
 
     @Override
-    public Plugin getPluginByName(String name) {
-        return pluginMap.get(name);
+    public String getFilePattern() {
+        return ".*\\.jar";
     }
 
-    /**
-     * 加载插件并自动加载依赖。
-     */
-    @Override
-    public void loadPlugins(File[] plugins) {
-        if (!rootPath.toFile().exists()) {
-            rootPath.toFile().mkdir();
-        }
-        Map<String, PluginDescription> preloadingPlugins = new HashMap<>();
-        for (File file : plugins) {
-            PluginDescription description = getDescriptionOf(file);
-            if (description == null) {
-                continue;
-            }
-            preloadingPlugins.put(description.getName(), description);
-            logger.info(I18N.get().server.PLUGIN_PRELOADING, description.getName(), description.getVersion());
-        }
-        Set<String> errorPlugins = checkDependencies(preloadingPlugins);
-        errorPlugins.forEach(preloadingPlugins::remove);
-        //Load Plugins
-        preloadingPlugins.forEach(this::loadPluginWithDependency);
-        logger.error(I18N.get().exceptions.PLUGIN_FAILED_TO_LOAD, Arrays.toString(failedToLoads.toArray()));
-    }
-
-    private boolean loadPluginWithDependency(String name, PluginDescription plugin) {
-        return loadPluginWithDependency(name, plugin, new Stack<>());
-    }
-
-    @SneakyThrows
-    private boolean loadPluginWithDependency(String name, PluginDescription plugin, Stack<String> loadStack) {
-        if (failedToLoads.contains(name)) {
-            return false;
-        }
-        if (loadStack.search(name) != -1) {
-            logger.error(I18N.get().exceptions.PLUGIN_DEPEND_LOOP, name, loadStack.pop());
-            logger.error("Plugin Dependency Stack: {}", Arrays.toString(loadStack.toArray()));
-            return false;
-        }
-        loadStack.push(name);
-        if (isPluginLoaded(name)) {
-            return false;
-        }
-        for (String dep : plugin.getDependencies()) {
-            if (!isPluginLoaded(dep)) {
-                if (!loadPluginWithDependency(dep, plugin, loadStack)) {
-                    return false;
-                }
-            }
-        }
-        try {
-            loadPlugin(plugin.getPluginFile());
-            return true;
-        } catch (DependencyMissingException e) {
-            logger.error("Unknown Error!", e);
-            return false;
-        }
-    }
-
-    /**
-     * @return error plugins
-     */
-    public Set<String> checkDependencies(Map<String, PluginDescription> preloadingPlugins) {
-        Set<String> errorPlugins = new HashSet<>();
-        while (preloadingPlugins.values().iterator().hasNext()) {
-            PluginDescription desc = preloadingPlugins.values().iterator().next();
-            if (desc.getDependencies().isEmpty()) {
-                continue;
-            }
-            Check:
-            for (String dependency : desc.getDependencies()) {
-                if (!preloadingPlugins.containsKey(dependency)) {
-                    logger.warn(I18N.get().exceptions.PLUGIN_DEPENDENCY_MISSING, dependency, desc.getName());
-                    //preloadingPlugins.remove(desc.getName());
-                    errorPlugins.add(desc.getName());
-                    break Check;
-                }
-            }
-        }
-        return errorPlugins;
-    }
-
-    /**
-     * 卸载全部插件
-     */
-    @Override
-    public void unloadPlugins() {
-
-    }
 
     /**
      * 获取插件文件描述信息
@@ -189,10 +97,10 @@ public class JavaPluginLoader implements PluginLoader {
      * @return
      */
     public PolarClassloader getClassloaderOf(String name) {
-        if (!pluginMap.containsKey(name)) {
+        if (!pluginManager.isPluginLoaded(name)) {
             return null;
         }
-        return (PolarClassloader) pluginMap.get(name).getClass().getClassLoader();
+        return (PolarClassloader) pluginManager.getPlugin(name).getClass().getClassLoader();
     }
 
     /**
@@ -209,7 +117,7 @@ public class JavaPluginLoader implements PluginLoader {
         if (description == null) {
             throw new InvalidPluginException("Failed to load " + file.getAbsolutePath());
         }
-        if (checkDependencies(Map.of(description.getName(), description)).size() != 0) {
+        if (pluginManager.checkDependencies(Map.of(description.getName(), description)).size() != 0) {
             throw new DependencyMissingException("Dependency missing for " + description.getName());
         }
         try {
@@ -228,7 +136,8 @@ public class JavaPluginLoader implements PluginLoader {
                     logger.error(I18N.get().exceptions.PLUGIN_DATA_CLASS_NOT_FOUND, description.getDataClass(), description.getName());
                 }
             }
-            pluginMap.put(description.getName(), plugin);
+            //pluginMap.put(description.getName(), plugin);
+            return plugin;
         } catch (MalformedURLException | ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
             if (e instanceof ClassNotFoundException) {
@@ -243,27 +152,5 @@ public class JavaPluginLoader implements PluginLoader {
             }
         }
         return null;
-    }
-
-    /**
-     * 卸载插件
-     *
-     * @param plugin
-     * @throws PluginNotLoadedException
-     */
-    @Override
-    public void unloadPlugin(Plugin plugin) throws PluginNotLoadedException {
-
-    }
-
-    /**
-     * 插件是否加载
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean isPluginLoaded(String name) {
-        return pluginMap.containsKey(name);
     }
 }

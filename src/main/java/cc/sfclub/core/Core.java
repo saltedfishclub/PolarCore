@@ -2,11 +2,14 @@ package cc.sfclub.core;
 
 import cc.sfclub.command.Source;
 import cc.sfclub.core.security.PolarSec;
+import cc.sfclub.events.Event;
+import cc.sfclub.events.server.ServerStartedEvent;
+import cc.sfclub.events.server.ServerStoppingEvent;
+import cc.sfclub.plugin.PluginManager;
 import cc.sfclub.transform.Bot;
 import cc.sfclub.user.Group;
 import cc.sfclub.user.User;
 import cc.sfclub.user.UserManager;
-import cc.sfclub.user.perm.Perm;
 import com.dieselpoint.norm.Database;
 import com.mojang.brigadier.CommandDispatcher;
 import lombok.Getter;
@@ -14,6 +17,7 @@ import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -37,9 +41,9 @@ public class Core {
     private UserManager userManager;
     @Getter
     private final PolarSec polarSec = new PolarSec();
-    private User CONSOLE;
     private final CommandDispatcher<Source> dispatcher = new CommandDispatcher<>();
     private final Map<String, Bot> bots = new HashMap<>();
+    private final PluginManager pluginManager = new PluginManager("./plugins");
     public static final String CORE_VERSION = "V4.8.0";
     private Database ORM;
 
@@ -47,8 +51,11 @@ public class Core {
         this.config = config;
         this.permCfg = permCfg;
         this.dbcfg = dbcfg;
+        loadLang(config);
         loadDatabase();
         loadUserManager();
+        pluginManager.loadPlugins();
+        Event.postEvent(new ServerStartedEvent());
     }
 
     private void loadDatabase() {
@@ -68,15 +75,25 @@ public class Core {
         }
     }
 
+    private void loadLang(CoreCfg cfg) {
+        new File("locale").mkdir();
+        I18N i18N = new I18N(cfg.getLocale());
+        I18N.setInst((I18N) i18N.saveDefaultOrLoad());
+        if (i18N.getConfVer() != I18N.CONFIG_VERSION) {
+            logger.warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
+        }
+    }
+
     private void loadUserManager() {
         userManager = new UserManager(ORM());
-        if (!userManager.existsName("CONSOLE")) {
-            User console = userManager.register(null, Perm.of(".*"));
-            console.setUserName("CONSOLE");
-            userManager.addRaw(console);
-        }
-        this.CONSOLE = userManager.byName("CONSOLE");
         permCfg.getGroupList().forEach(userManager::addRaw);
+    }
+
+    public void stop() {
+        logger.info(I18N.get().server.STOPPING_SERVER);
+        Event.postEvent(new ServerStoppingEvent());
+        pluginManager.unloadPlugins();
+        Event.unregisterAllListeners();
     }
 
     /**
@@ -140,14 +157,6 @@ public class Core {
         return this.config;
     }
 
-    /**
-     * get console user
-     *
-     * @return console
-     */
-    public User console() {
-        return this.CONSOLE;
-    }
 
     /**
      * @return command dispatcher
