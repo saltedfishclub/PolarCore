@@ -3,7 +3,6 @@ package cc.sfclub.user;
 import cc.sfclub.core.Core;
 import cc.sfclub.user.perm.Perm;
 import com.dieselpoint.norm.Database;
-import com.dieselpoint.norm.Query;
 
 import java.util.Optional;
 
@@ -88,12 +87,12 @@ public class UserManager {
         return db.table("User").where("userName=?", userName).results(User.class).size() != 0;
     }
 
-    public Query addRaw(User u) {
-        return db.insert(u);
+    public void addRaw(User u) {
+        db.insert(u);
     }
 
-    public Query update(User u) {
-        return db.update(u);
+    public void update(User u) {
+        db.update(u);
     }
 
     /**

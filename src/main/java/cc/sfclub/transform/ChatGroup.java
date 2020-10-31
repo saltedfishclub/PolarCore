@@ -102,15 +102,18 @@ public abstract class ChatGroup implements Receiver {
     @Override
     public boolean equals(Object obj) {
         if (super.equals(obj)) return true;
-        if (!(obj instanceof Contact)) return false;
-        ChatGroup group = (ChatGroup) obj;
-        return group.getID() == this.ID;
+        if (obj instanceof ChatGroup) {
+            ChatGroup group = (ChatGroup) obj;
+            return group.getID() == this.ID;
+        }
+        return false;
     }
 
     /**
      * roles
      */
+    @SuppressWarnings("UnnecessarySemicolon")
     public enum Role {
-        OWNER, ADMIN, MEMBER;
+        OWNER, ADMIN, MEMBER
     }
 }

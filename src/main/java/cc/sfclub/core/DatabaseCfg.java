@@ -3,6 +3,7 @@ package cc.sfclub.core;
 import cc.sfclub.util.common.JsonConfig;
 import lombok.Getter;
 
+@SuppressWarnings("all")
 @Getter
 public class DatabaseCfg extends JsonConfig {
     private String jdbcUrl = "jdbc:sqlite:data.db"; //Mysql: jdbc:mysql://localhost:3306/XX

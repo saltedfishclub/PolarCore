@@ -17,11 +17,10 @@ public abstract class Event {
             .throwSubscriberException(true)
             .build();
 
-    public static boolean registerListeners(Object... object) {
+    public static void registerListeners(Object... object) {
         for (Object o : object) {
             eventBus.register(o);
         }
-        return true;
     }
 
     public static void unregisterListeners(Object... object) {
