@@ -19,13 +19,6 @@ import java.util.UUID;
 //@Table(name="user")
 public class User implements Permissible {
     /**
-     * 数据库索引
-     */
-    @Id
-    @Deprecated
-    @Internal
-    public long id;
-    /**
      * 权限列表
      */
     @Column(name = "permList")
@@ -40,9 +33,8 @@ public class User implements Permissible {
     /**
      * UID
      */
-    @Getter
     @Setter
-    private String uniqueID = UUID.randomUUID().toString();
+    public String uniqueID = UUID.randomUUID().toString();
     /**
      * 用户名
      */
@@ -140,5 +132,10 @@ public class User implements Permissible {
 
     public void save() {
         Core.get().userManager().update(this);
+    }
+
+    @Id
+    public String getUniqueID() {
+        return uniqueID;
     }
 }
