@@ -1,6 +1,6 @@
 package cc.sfclub.transform.internal;
 
-import cc.sfclub.core.Core;
+import cc.sfclub.core.Initializer;
 import cc.sfclub.transform.Contact;
 import cc.sfclub.user.User;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class VirtContact extends Contact {
 
     @Override
     public User asPermObj() {
-        return Core.get().console();
+        return Initializer.getCONSOLE();
     }
 
     @Override
