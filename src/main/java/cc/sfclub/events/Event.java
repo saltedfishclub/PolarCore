@@ -52,7 +52,7 @@ public abstract class Event {
         eventBus.cancelEventDelivery(event);
     }
 
-    public void broadcastMessage(MessageEvent event, long time) {
+    public static void broadcastMessage(MessageEvent event, long time) {
         Core.get().getPolarSec().postMessage(event, time);
     }
 }
