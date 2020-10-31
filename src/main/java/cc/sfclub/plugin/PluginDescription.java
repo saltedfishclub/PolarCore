@@ -37,14 +37,12 @@ public class PluginDescription {
      * dependencies.
      */
     @SerializedName("depend")
-    @Builder.Default
-    private Set<String> dependencies = new HashSet<>();
+    private Set<String> dependencies;
     /**
      * dependencies but optional.
      */
     @SerializedName("soft-depend")
-    @Builder.Default
-    private Set<String> softDependencies = new HashSet<>();
+    private Set<String> softDependencies;
     @Setter
     private transient File pluginFile;
 

@@ -9,10 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +18,13 @@ import java.util.UUID;
 @Entity(name = "user")
 //@Table(name="user")
 public class User implements Permissible {
+    /**
+     * 数据库索引
+     */
+    @Id
+    @Deprecated
+    @Internal
+    public long id;
     /**
      * 权限列表
      */
