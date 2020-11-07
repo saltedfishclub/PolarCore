@@ -18,7 +18,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -47,6 +46,7 @@ public class JavaPluginLoader implements PluginLoader {
      */
     public Class<?> findClass(String clazzName, ClassLoader excepted) throws ClassNotFoundException {
         Class<?>[] result = new Class<?>[]{null};
+        boolean found = false;
         pluginManager.getPlugins().stream().filter(cl -> cl.getClass().getClassLoader() != excepted).forEach(p -> {
             PolarClassloader cl = (PolarClassloader) p.getClass().getClassLoader();
             try {
@@ -118,9 +118,9 @@ public class JavaPluginLoader implements PluginLoader {
         if (description == null) {
             throw new InvalidPluginException("Failed to load " + file.getAbsolutePath());
         }
-        if (pluginManager.checkDependencies(Map.of(description.getName(), description)).size() != 0) {
+        /*if (pluginM) {
             throw new DependencyMissingException("Dependency missing for " + description.getName());
-        }
+        }*/
         try {
             PolarClassloader cl = new PolarClassloader(new URL[]{file.toURI().toURL()}, this, description.getName());
             Class<?> pluginClass = cl.findClass(description.getMain(), false);

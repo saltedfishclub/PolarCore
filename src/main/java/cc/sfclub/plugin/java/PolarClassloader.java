@@ -29,13 +29,14 @@ public class PolarClassloader extends URLClassLoader implements NullCatWillDress
     }
 
     public Class<?> findClass(String clazz, boolean searchGlobal) throws ClassNotFoundException {
-        Class<?> result = super.findClass(clazz);
-        if (result != null) {
+        try {
+            Class<?> result = super.findClass(clazz);
             return result;
+        } catch (ClassNotFoundException ignored) {
+            if (searchGlobal) {
+                return loader.findClass(clazz, this);
+            }
+            throw new ClassNotFoundException(clazz);
         }
-        if (searchGlobal) {
-            return loader.findClass(clazz, this);
-        }
-        throw new ClassNotFoundException(clazz);
     }
 }
