@@ -23,7 +23,6 @@ public class PluginManager {
         this.rootPath = rootPath;
         pluginLoaders.add(new JavaPluginLoader(new File(rootPath).toPath(), this));
     }
-
     public void loadPlugins() {
         File pluginsDir = new File(rootPath);
         Map<String, PluginDescription> preloadingPlugins = new HashMap<>();

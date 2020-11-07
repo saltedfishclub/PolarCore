@@ -7,16 +7,18 @@ import cc.sfclub.plugin.exception.DependencyMissingException;
 import cc.sfclub.plugin.exception.InvalidPluginException;
 import com.google.gson.Gson;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.misc.Unsafe;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -27,6 +29,7 @@ public class JavaPluginLoader implements PluginLoader {
     private final Gson gson = new Gson();
     @Getter
     private final PluginManager pluginManager;
+    private Unsafe unsafe;
 
     public JavaPluginLoader(Path rootPath, PluginManager pm) {
         this.rootPath = rootPath;
@@ -34,6 +37,16 @@ public class JavaPluginLoader implements PluginLoader {
         if (!rootPath.toFile().exists()) {
             rootPath.toFile().mkdir();
         }
+    }
+
+    @SneakyThrows
+    public Unsafe getUnsafe() {
+        if (unsafe == null) {
+            Field f = Unsafe.class.getField("theUnsafe");
+            f.setAccessible(true);
+            unsafe = (Unsafe) f.get(null);
+        }
+        return unsafe;
     }
 
     /**
@@ -122,7 +135,7 @@ public class JavaPluginLoader implements PluginLoader {
             throw new DependencyMissingException("Dependency missing for " + description.getName());
         }*/
         try {
-            PolarClassloader cl = new PolarClassloader(new URL[]{file.toURI().toURL()}, this, description.getName());
+            PolarClassloader cl = new PolarClassloader(file, this, description.getName());
             Class<?> pluginClass = cl.findClass(description.getMain(), false);
             Plugin plugin = (Plugin) pluginClass.getConstructor().newInstance();
             if (description.isAutoRegister()) {
@@ -142,11 +155,11 @@ public class JavaPluginLoader implements PluginLoader {
             }
             //pluginMap.put(description.getName(), plugin);
             return plugin;
-        } catch (MalformedURLException | ClassNotFoundException | NoSuchMethodException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
             if (e instanceof ClassNotFoundException) {
                 logger.error(I18N.get().exceptions.PLUGIN_MAIN_CLASS_NOT_FOUND, description.getMain(), description.getName());
-            } else if (e instanceof NoSuchMethodException) {
+            } else {
                 logger.error(I18N.get().exceptions.PLUGIN_HAVE_NO_AVAILABLE_CONSTRUCTOR, description.getName());
             }
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
@@ -154,6 +167,8 @@ public class JavaPluginLoader implements PluginLoader {
             if (e instanceof IllegalAccessException) {
                 logger.error(I18N.get().exceptions.PLUGIN_HAVE_NO_AVAILABLE_CONSTRUCTOR, description.getName());
             }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
         return null;
     }
