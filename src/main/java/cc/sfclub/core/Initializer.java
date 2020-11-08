@@ -18,6 +18,7 @@ import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
@@ -30,6 +31,9 @@ public class Initializer {
 
     @SneakyThrows
     public static void main(String[] args) {
+        if (Arrays.stream(args).anyMatch(e -> e.equals("MloadDriverClass"))) {
+            Class.forName("org.sqlite.JDBC"); //Don't ask why,that's magic.
+        }
         System.out.println("\n" + "________      ______             _________                  \n" +
                 "___  __ \\________  /_____ _________  ____/_________________ \n" +
                 "__  /_/ /  __ \\_  /_  __ `/_  ___/  /    _  __ \\_  ___/  _ \\\n" +
