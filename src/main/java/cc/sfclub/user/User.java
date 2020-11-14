@@ -100,7 +100,9 @@ public class User implements Permissible {
     @Override
     public void addPermission(Perm perm) {
         if (redirectTo == null) {
-            permList.add(perm);
+            if (!hasPermission(perm)) {
+                permList.add(perm);
+            }
         } else {
             realUser.addPermission(perm);
         }
@@ -108,7 +110,7 @@ public class User implements Permissible {
 
     @Override
     public void delPermission(Perm perm) {
-        if (redirectTo != null) realUser.addPermission(perm);
+        if (redirectTo != null) realUser.delPermission(perm);
         else {
             permList.remove(perm);
         }
