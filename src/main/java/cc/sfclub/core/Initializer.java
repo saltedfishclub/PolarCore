@@ -34,7 +34,8 @@ public class Initializer {
         if (Arrays.stream(args).anyMatch(e -> e.equals("MloadDriverClass"))) {
             Class.forName("org.sqlite.JDBC"); //Don't ask why,that's magic.
         }
-        System.out.println("\n" + "________      ______             _________                  \n" +
+        System.out.println("\n" +
+                "________      ______             _________                  \n" +
                 "___  __ \\________  /_____ _________  ____/_________________ \n" +
                 "__  /_/ /  __ \\_  /_  __ `/_  ___/  /    _  __ \\_  ___/  _ \\\n" +
                 "_  ____// /_/ /  / / /_/ /_  /   / /___  / /_/ /  /   /  __/\n" +
@@ -58,7 +59,7 @@ public class Initializer {
         String command;
         while (scanner.hasNextLine()) {
             command = scanner.nextLine();
-            Event.postEvent(new GroupMessage(CONSOLE.getUniqueID(), command, 0L, "CONSOLE", 0L));
+            Event.postEvent(new GroupMessage(CONSOLE.getUniqueID(), command, 0L, User.CONSOLE_USER_NAME, 0L));
         }
         scanner.close();
     }
@@ -81,12 +82,12 @@ public class Initializer {
         if (cfg.getConfig_version() != Core.CONFIG_VERSION)
             logger.warn(I18N.get().exceptions.CONFIG_OUTDATED, cfg.getConfigName());
         new Core(cfg, permCfg, dbCfg);
-        if (!Core.get().userManager().existsName("CONSOLE")) {
+        if (!Core.get().userManager().existsName(User.CONSOLE_USER_NAME)) {
             User console = Core.get().userManager().register(null, Perm.of(".*"));
-            console.setUserName("CONSOLE");
+            console.setUserName(User.CONSOLE_USER_NAME);
             Core.get().userManager().addRaw(console);
         }
-        CONSOLE = Core.get().userManager().byName("CONSOLE");
+        CONSOLE = Core.get().userManager().byName(User.CONSOLE_USER_NAME);
         Core.get().registerBot(new ConsoleBot());
     }
 

@@ -19,7 +19,7 @@ public class VirtContact extends Contact {
 
     @Override
     public String getUsername() {
-        return "CONSOLE";
+        return User.CONSOLE_USER_NAME;
     }
 
     @Override

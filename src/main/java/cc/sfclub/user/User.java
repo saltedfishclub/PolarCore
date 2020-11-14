@@ -18,6 +18,7 @@ import java.util.UUID;
 @Entity(name = "user")
 //@Table(name="user")
 public class User implements Permissible {
+    public static final String CONSOLE_USER_NAME = "CONSOLE";
     /**
      * 权限列表
      */
