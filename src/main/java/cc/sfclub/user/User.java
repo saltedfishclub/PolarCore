@@ -3,11 +3,15 @@ package cc.sfclub.user;
 import cc.sfclub.Internal;
 import cc.sfclub.core.Core;
 import cc.sfclub.database.converter.PermListConverter;
+import cc.sfclub.transform.Contact;
+import cc.sfclub.transform.exception.ContactNotFoundException;
+import cc.sfclub.user.exception.UserPlatformUnboundException;
 import cc.sfclub.user.perm.Perm;
 import cc.sfclub.user.perm.Permissible;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -85,6 +89,13 @@ public class User implements Permissible {
         userGroup = Group;
     }
 
+    @SneakyThrows
+    public Contact asContact() {
+        return Core.get().bot(platform).orElseThrow(() -> new UserPlatformUnboundException(this))
+                .getContact(Long.parseLong(platformId))
+                .orElseThrow(() -> new ContactNotFoundException("Cannot convert " + this + " to a contact.(" + platform + ":: " + platformId + ")"));
+    }
+
     @Override
     public boolean hasPermission(Perm perm) {
         if (realUser == null) {
@@ -140,5 +151,10 @@ public class User implements Permissible {
     @Id
     public String getUniqueID() {
         return uniqueID;
+    }
+
+    @Override
+    public String toString() {
+        return asFormattedName();
     }
 }
