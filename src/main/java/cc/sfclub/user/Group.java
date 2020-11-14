@@ -60,7 +60,9 @@ public class Group implements Permissible {
 
     @Override
     public void addPermission(Perm perm) {
-        permList.add(perm);
+        if (!hasPermission(perm)) {
+            permList.add(perm);
+        }
     }
 
     @Override
