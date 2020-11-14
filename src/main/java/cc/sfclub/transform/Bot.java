@@ -1,5 +1,9 @@
 package cc.sfclub.transform;
 
+import cc.sfclub.core.Core;
+import cc.sfclub.transform.exception.GroupNotFoundException;
+import cc.sfclub.transform.exception.PlatformNotFoundException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +16,12 @@ public abstract class Bot {
     private static final Map<Long, Contact> contactCache = new HashMap<>();
 
     public abstract String getName();
+
+    public static ChatGroup getGroup(String platform, long groupId) throws GroupNotFoundException, PlatformNotFoundException {
+        return Core.get().bot(platform).orElseThrow(() -> new PlatformNotFoundException(platform))
+                .getGroup(groupId)
+                .orElseThrow(() -> new GroupNotFoundException(groupId + ""));
+    }
 
     /**
      * Add a group to simple cache.
