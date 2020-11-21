@@ -19,8 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "user")
-//@Table(name="user")
+@Entity
+@Table(name = "user")
 public class User implements Permissible {
     public static final String CONSOLE_USER_NAME = "CONSOLE";
     /**
@@ -30,31 +30,35 @@ public class User implements Permissible {
     @Convert(converter = PermListConverter.class)
     public List<Perm> permList = new LinkedList<>();
     /**
-     * 用户组名
+     * 用户名
      */
+    @Column(name = "userName")
     @Getter
     @Setter
-    private String userGroup;
+    public String userName;
     /**
      * UID
      */
     @Setter
     public String uniqueID = UUID.randomUUID().toString();
     /**
-     * 用户名
+     * 用户组名
      */
+    @Column(name = "userGroup")
     @Getter
     @Setter
-    private String userName;
+    private String userGroup;
     /**
      * 来源平台
      */
+    @Column(name = "platform")
     @Getter
     @Setter
     private String platform;
     /**
      * 来源平台分配的ID
      */
+    @Column(name = "platformId")
     @Getter
     @Setter
     private String platformId;
@@ -62,6 +66,7 @@ public class User implements Permissible {
      * 在进行权限判断，信息获取的时候会跳转到这个变量索引的User。
      * 用于进行跨平台同步一用户。使用UUID
      */
+    @Column(name = "redirectTo")
     @Getter
     private String redirectTo;
     @Setter(AccessLevel.PROTECTED)
@@ -142,10 +147,6 @@ public class User implements Permissible {
     @Internal
     public void setRedirectTo(String s) {
         this.redirectTo = s;
-    }
-
-    public void save() {
-        Core.get().userManager().update(this);
     }
 
     @Id

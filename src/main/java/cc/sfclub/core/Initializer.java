@@ -18,7 +18,6 @@ import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
@@ -31,9 +30,7 @@ public class Initializer {
 
     @SneakyThrows
     public static void main(String[] args) {
-        if (Arrays.stream(args).anyMatch(e -> e.equals("MloadDriverClass"))) {
-            Class.forName("org.sqlite.JDBC"); //Don't ask why,that's magic.
-        }
+        Class.forName("org.sqlite.JDBC"); //Don't ask why,that's magic.
         System.out.println("\n" +
                 "________      ______             _________                  \n" +
                 "___  __ \\________  /_____ _________  ____/_________________ \n" +
@@ -42,6 +39,7 @@ public class Initializer {
                 "/_/     \\____//_/  \\__,_/ /_/    \\____/  \\____//_/    \\___/ \n" +
                 "                                                            \n");
         logger.info(I18N.get().server.STARTING, Core.CORE_VERSION);
+        logger.info("Java Version: {}", Runtime.version().toString());
         logger.info(I18N.get().server.LOADING_MODULES);
         loadCore();
         logger.info(I18N.get().server.LOADED_MODULE);
@@ -85,7 +83,7 @@ public class Initializer {
         if (!Core.get().userManager().existsName(User.CONSOLE_USER_NAME)) {
             User console = Core.get().userManager().register(null, Perm.of(".*"));
             console.setUserName(User.CONSOLE_USER_NAME);
-            Core.get().userManager().addRaw(console);
+            Core.get().userManager().update(console);
         }
         CONSOLE = Core.get().userManager().byName(User.CONSOLE_USER_NAME);
         Core.get().registerBot(new ConsoleBot());

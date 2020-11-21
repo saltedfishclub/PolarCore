@@ -84,7 +84,7 @@ public class UserManager {
      */
     public boolean existsName(String userName) {
 
-        return db.table("User").where("userName=?", userName).results(User.class).size() != 0;
+        return db.table("user").where("userName=?", userName).results(User.class).size() != 0;
     }
 
     public void addRaw(User u) {
