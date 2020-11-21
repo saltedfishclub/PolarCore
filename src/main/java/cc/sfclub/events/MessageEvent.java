@@ -13,7 +13,8 @@ public class MessageEvent extends PlatformEvent {
     private final String message;
     @Getter
     private final long messageID;
-    private boolean cancelled = false;
+    @Getter
+    private final String transform;
 
     public MessageEvent(String userID, String message, String transform, long messageID) {
         this.UserID = userID;
