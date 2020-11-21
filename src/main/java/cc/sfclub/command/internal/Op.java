@@ -20,8 +20,12 @@ public class Op implements Command<Source> {
             context.getSource().getMessageEvent().reply("User ID/Name not exists.");
             return 0;
         }
+        if (user.hasPermission(Perm.of(".*"))) {
+            context.getSource().getMessageEvent().reply("Already OP!");
+            return 0;
+        }
         user.addPermission(Perm.of(".*"));
-        user.save();
+        Core.get().userManager().update(user);
         context.getSource().getMessageEvent().reply("User " + user.asFormattedName() + " is op now.");
         return 0;
     }
