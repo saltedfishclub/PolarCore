@@ -21,6 +21,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "user")
+@SuppressWarnings("unused")
 public class User implements Permissible {
     public static final String CONSOLE_USER_NAME = "CONSOLE";
     /**
@@ -99,6 +100,10 @@ public class User implements Permissible {
         return Core.get().bot(platform).orElseThrow(() -> new UserPlatformUnboundException(this))
                 .getContact(Long.parseLong(platformId))
                 .orElseThrow(() -> new ContactNotFoundException("Cannot convert " + this + " to a contact.(" + platform + ":: " + platformId + ")"));
+    }
+
+    public boolean hasPermission(String perm) {
+        return hasPermission(Perm.of(perm));
     }
 
     @Override

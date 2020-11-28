@@ -20,6 +20,7 @@ import java.util.Optional;
  * 权限组
  */
 @Table(name = "userGroup")
+@SuppressWarnings("unused")
 public class Group implements Permissible {
     public static final Group DEFAULT = new Group("_");
     @NonNull
@@ -56,6 +57,10 @@ public class Group implements Permissible {
         }
         Optional<Group> father = Core.get().userManager().getGroup(extend);
         return father.orElse(DEFAULT).hasPermission(perm) || permList.contains(perm);
+    }
+
+    public boolean hasPermission(String perm) {
+        return hasPermission(Perm.of(perm));
     }
 
     @Override
