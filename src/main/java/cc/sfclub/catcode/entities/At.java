@@ -1,5 +1,8 @@
 package cc.sfclub.catcode.entities;
 
+import lombok.Builder;
+
+@Builder
 public class At {
 
     /**
