@@ -69,12 +69,10 @@ public class CatCodeHelper {
         String str = strAt.replaceFirst("\\[", "");
         str = str.replaceAll("]", "");
         if ("AtAll".equals(str)) {
-            At at = new At();
-            at.all = true;
-            return at;
+            return At.builder().all(true).build();
         }
         String[] args = str.split(",");
-        At at = new At();
+        At at = At.builder().build();
         long usrId;
         String[] a;
         if (args.length == 0) {
@@ -102,7 +100,7 @@ public class CatCodeHelper {
         String str = strImg.replaceFirst("\\[", "");
         str = str.replaceAll("]", "");
         String[] args = str.split(",");
-        Image img = new Image();
+        Image img = Image.builder().build();
         String[] a;
         if (args.length == 0) {
             a = str.split(":");
