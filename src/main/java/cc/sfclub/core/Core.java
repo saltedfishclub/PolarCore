@@ -48,6 +48,7 @@ public class Core {
     private Database ORM;
 
     public Core(CoreCfg config, PermCfg permCfg, DatabaseCfg dbcfg) {
+        Core.core = this;
         this.config = config;
         this.permCfg = permCfg;
         this.dbcfg = dbcfg;
@@ -55,7 +56,6 @@ public class Core {
         loadDatabase();
         loadUserManager();
         pluginManager.loadPlugins();
-        Core.core = this;
         Event.postEvent(new ServerStartedEvent());
     }
 
