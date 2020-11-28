@@ -1,10 +1,12 @@
 package cc.sfclub.catcode.entities;
 
 import cc.sfclub.catcode.Base64;
+import lombok.Builder;
 
 /**
  * 图片消息
  */
+@Builder
 public class Image {
     /**
      * 图片地址
