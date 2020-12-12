@@ -46,8 +46,6 @@ public abstract class Plugin {
 
     public abstract void onDisable();
 
-    @Deprecated
-    //todo
     public void registerBot(Bot bot) {
         Core.get().registerBot(bot);
     }
