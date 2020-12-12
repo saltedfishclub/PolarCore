@@ -38,4 +38,8 @@ public class Source {
     public User getSender() {
         return Core.get().userManager().byUUID(messageEvent.getUserID());
     }
+
+    public void reply(String message) {
+        messageEvent.reply(message);
+    }
 }
