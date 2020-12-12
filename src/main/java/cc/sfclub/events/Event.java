@@ -55,4 +55,5 @@ public abstract class Event {
     public static void broadcastMessage(MessageEvent event, long time) {
         Core.get().getPolarSec().postMessage(event, time);
     }
+
 }

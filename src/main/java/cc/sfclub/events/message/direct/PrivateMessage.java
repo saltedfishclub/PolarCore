@@ -1,9 +1,14 @@
 package cc.sfclub.events.message.direct;
 
 import cc.sfclub.core.Core;
+import cc.sfclub.events.internal.MessageListener;
 import cc.sfclub.events.message.Message;
+import cc.sfclub.transform.Bot;
 import cc.sfclub.transform.Contact;
+import cc.sfclub.user.User;
 import lombok.Getter;
+
+import java.util.function.Consumer;
 
 /**
  * When a private message was received
@@ -28,5 +33,21 @@ public class PrivateMessage extends Message {
 
     public void reply(String message) {
         reply(super.getMessageID(), message);
+    }
+
+    public static void subscribeAlways(Consumer<PrivateMessage> handler) {
+        MessageListener.mHandlers.add(handler);
+    }
+
+    public Contact senderAsContact() {
+        return getTransformAsBot().getContact(Long.parseLong(getSender().getPlatformId())).orElseThrow(NullPointerException::new);
+    }
+
+    public Bot getTransformAsBot() {
+        return Core.get().bot(getTransform()).orElseThrow(NullPointerException::new);
+    }
+
+    public User getSender() {
+        return Core.get().userManager().byUUID(getUserID());
     }
 }

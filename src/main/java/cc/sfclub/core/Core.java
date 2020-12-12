@@ -3,6 +3,7 @@ package cc.sfclub.core;
 import cc.sfclub.command.Source;
 import cc.sfclub.core.security.PolarSec;
 import cc.sfclub.events.Event;
+import cc.sfclub.events.internal.MessageListener;
 import cc.sfclub.events.server.ServerStartedEvent;
 import cc.sfclub.events.server.ServerStoppingEvent;
 import cc.sfclub.plugin.PluginManager;
@@ -56,6 +57,7 @@ public class Core {
         loadDatabase();
         loadUserManager();
         pluginManager.loadPlugins();
+        Event.registerListeners(new MessageListener());
         Event.postEvent(new ServerStartedEvent());
     }
 
