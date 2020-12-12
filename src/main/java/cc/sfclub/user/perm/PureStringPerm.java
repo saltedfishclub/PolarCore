@@ -9,6 +9,7 @@ public class PureStringPerm extends Perm {
     private final String node;
 
     public PureStringPerm(String node) {
+        super();
         this.node = node;
     }
 

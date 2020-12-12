@@ -1,6 +1,5 @@
 package cc.sfclub.user.perm;
 
-import cc.sfclub.Internal;
 import cc.sfclub.core.Core;
 import cc.sfclub.user.User;
 import lombok.Getter;
@@ -16,11 +15,7 @@ public abstract class Perm {
     private static final Logger logger = LoggerFactory.getLogger(Perm.class);
     private static final WeakHashMap<String, Perm> cachedPermObj = new WeakHashMap<>();
 
-    /**
-     * Please use Perm.of()
-     */
-    @Internal
-    public Perm() {
+    protected Perm() {
 
     }
 

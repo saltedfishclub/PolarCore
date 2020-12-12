@@ -18,6 +18,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+@SuppressWarnings("deprecated")
 public class PolarClassloader extends URLClassLoader implements NullCatWillDress {
     @Getter
     private final JavaPluginLoader loader;
@@ -53,6 +54,7 @@ public class PolarClassloader extends URLClassLoader implements NullCatWillDress
     public Class<?> findClass(String moduleName) throws ClassNotFoundException {
         return findClass(moduleName, true);
     }
+
     @SuppressWarnings("all")
     public Class<?> findClass(String clazz, boolean searchGlobal) throws ClassNotFoundException {
         Class<?> target = classes.get(clazz);
