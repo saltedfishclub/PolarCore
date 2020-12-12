@@ -4,7 +4,6 @@ import cc.sfclub.command.CommandListener;
 import cc.sfclub.command.Source;
 import cc.sfclub.command.internal.Me;
 import cc.sfclub.command.internal.Op;
-import cc.sfclub.command.internal.Stop;
 import cc.sfclub.events.Event;
 import cc.sfclub.events.message.group.GroupMessage;
 import cc.sfclub.transform.internal.ConsoleBot;
@@ -41,6 +40,7 @@ public class Initializer {
         logger.info(I18N.get().server.STARTING, Core.CORE_VERSION);
         logger.info("Java Version: {}", Runtime.version().toString());
         logger.info(I18N.get().server.LOADING_MODULES);
+        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
         loadCore();
         logger.info(I18N.get().server.LOADED_MODULE);
         waitCommand();
@@ -53,7 +53,6 @@ public class Initializer {
                 .requires(e -> e.getSender().hasPermission(Perm.of("internal.op")))
                 .then(RequiredArgumentBuilder.<Source, String>argument("user", string()).executes(new Op()))
         );
-        Core.get().dispatcher().register(LiteralArgumentBuilder.<Source>literal("stop").executes(new Stop()));
         String command;
         while (scanner.hasNextLine()) {
             command = scanner.nextLine();
