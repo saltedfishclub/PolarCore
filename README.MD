@@ -4,7 +4,7 @@ v4 refactored.
 
 Under Heavy Development.  
 Open source / Apache2.0 License
-## What
+## What  
 A Chatbot kernel which had built-in User,Permission,SpecialMessages,Command systems.  
 Also,It support to use `adapters` to warp diffirient messages into polarCore's.
 
