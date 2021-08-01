@@ -8,6 +8,7 @@ import cc.sfclub.polar.user.User;
  */
 public interface IContact extends IMessageSource, Permissible {
     String getNickName();
+    String getUserName();
     boolean blocked();
     /**
      * Nullable.

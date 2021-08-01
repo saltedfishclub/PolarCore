@@ -9,6 +9,7 @@ import cc.sfclub.polar.user.User;
 public interface IMember extends IMessageSource, Permissible {
     boolean reachable();
     String getNickName();
+    String getUserName();
     String getHonor();
 
     /**

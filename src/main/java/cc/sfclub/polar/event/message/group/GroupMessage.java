@@ -2,10 +2,7 @@ package cc.sfclub.polar.event.message.group;
 
 import cc.sfclub.polar.event.message.GroupMessageEvent;
 import cc.sfclub.polar.event.message.MessageEvent;
-import cc.sfclub.polar.platfrom.AbstractChatGroup;
-import cc.sfclub.polar.platfrom.IMember;
-import cc.sfclub.polar.platfrom.IMessageSource;
-import cc.sfclub.polar.platfrom.IPlatform;
+import cc.sfclub.polar.platfrom.*;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -13,12 +10,12 @@ public class GroupMessage extends GroupMessageEvent {
     private final AbstractChatGroup group;
     private final long time;
     private final String message;
-    private final IPlatform platform;
+    private final IBot bot;
     private final IMember sender;
     private final long id;
     @Override
-    public IPlatform getPlatform() {
-        return platform;
+    public IBot getBot() {
+        return bot;
     }
 
     @Override
@@ -48,5 +45,4 @@ public class GroupMessage extends GroupMessageEvent {
     public void reply(String messsage){
         sender.reply(id,message);
     }
-
 }

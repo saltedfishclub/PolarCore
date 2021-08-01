@@ -40,6 +40,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compileOnly 'org.jetbrains:annotations:21.0.1'
     //Database
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
     implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
