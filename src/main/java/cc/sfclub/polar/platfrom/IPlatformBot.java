@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.List;
 
-public interface IBot {
+public interface IPlatformBot {
     @NotNull
     Iterator<IContact> getContacts();
 

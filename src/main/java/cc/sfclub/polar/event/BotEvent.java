@@ -1,12 +1,10 @@
 package cc.sfclub.polar.event;
 
-import cc.sfclub.polar.platfrom.IBot;
-import cc.sfclub.polar.platfrom.IPlatform;
-import lombok.Getter;
+import cc.sfclub.polar.platfrom.IPlatformBot;
 
 /**
  * 一个平台事件。
  */
 public abstract class BotEvent extends Event {
-    public abstract IBot getBot();
+    public abstract IPlatformBot getBot();
 }

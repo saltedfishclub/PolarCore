@@ -2,10 +2,9 @@ package cc.sfclub.polar.event.message.contact;
 
 import cc.sfclub.polar.event.message.MessageAction;
 import cc.sfclub.polar.event.message.PrivateMessageEvent;
-import cc.sfclub.polar.platfrom.IBot;
+import cc.sfclub.polar.platfrom.IPlatformBot;
 import cc.sfclub.polar.platfrom.IContact;
 import cc.sfclub.polar.platfrom.IMessageSource;
-import cc.sfclub.polar.platfrom.IPlatform;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +15,7 @@ public class PrivateMessageAction extends PrivateMessageEvent {
     private final IContact contact;
     private final long id;
     private final String message;
-    private final IBot bot;
+    private final IPlatformBot bot;
     private long time;
 
     @Override
