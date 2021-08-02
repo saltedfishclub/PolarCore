@@ -1,7 +1,8 @@
-package cc.sfclub.polar.user.perm.internal;
+package cc.sfclub.polar.database.converter;
 
 import cc.sfclub.polar.user.perm.Perm;
 import cc.sfclub.polar.user.perm.PermInitializer;
+import cc.sfclub.polar.user.perm.internal.LiteralPermInitializer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

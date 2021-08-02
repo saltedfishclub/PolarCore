@@ -2,12 +2,11 @@ package cc.sfclub.polar.user.data;
 
 import cc.sfclub.polar.user.Permissible;
 import cc.sfclub.polar.user.perm.Perm;
-import cc.sfclub.polar.user.perm.internal.PermListConverter;
+import cc.sfclub.polar.database.converter.PermListConverter;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Table(name = "t_user_data")
 @Data
@@ -23,6 +22,7 @@ public class UserData implements Permissible {
 
     @Override
     public boolean hasPermission(Perm perm) {
+        //// TODO: 02/08/2021
         return permissionNodes.contains(perm);
     }
 
