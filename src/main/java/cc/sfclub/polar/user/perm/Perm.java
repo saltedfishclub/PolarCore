@@ -2,6 +2,7 @@ package cc.sfclub.polar.user.perm;
 
 import cc.sfclub.polar.user.User;
 import cc.sfclub.polar.user.perm.internal.LiteralPerm;
+import cc.sfclub.polar.user.perm.internal.LiteralPermInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +54,7 @@ public abstract class Perm {
         return target.hasPermission(u, result);
     }
     public Class<? extends PermInitializer<?>> serializer(){
-        return null;
+        return LiteralPermInitializer.class;
     }
     public String deserialize(){
         return asLiteralNode();
