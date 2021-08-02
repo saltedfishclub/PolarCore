@@ -1,6 +1,7 @@
 package cc.sfclub.polar.user.data;
 
 import cc.sfclub.polar.user.Permissible;
+import cc.sfclub.polar.user.UserGroup;
 import cc.sfclub.polar.user.perm.Perm;
 import cc.sfclub.polar.database.converter.PermListConverter;
 import lombok.Data;
@@ -18,7 +19,8 @@ public class UserData implements Permissible {
     public long registrationTime;
     @Convert(converter=PermListConverter.class)
     public List<Perm> permissionNodes;
-    public String userGroup;
+    @Convert
+    public UserGroup userGroup;
 
     @Override
     public boolean hasPermission(Perm perm) {
@@ -34,5 +36,15 @@ public class UserData implements Permissible {
     @Override
     public List<Perm> getPermissions() {
         return permissionNodes;
+    }
+
+    @Override
+    public void delPermission() {
+        ///todo
+    }
+
+    @Override
+    public void addPermissions(Perm... perms) {
+
     }
 }
