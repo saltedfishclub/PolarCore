@@ -19,6 +19,7 @@ public class User implements Permissible{
     private IPlatform platform;
     @Convert(converter = UserDataConverter.class)
     private UserData userData;
+    private String platformIdentifier; //such as Telegram UID, ??? UIN
 
     @Override
     public boolean hasPermission(Perm perm) {
