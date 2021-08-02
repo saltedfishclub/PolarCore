@@ -8,4 +8,6 @@ public interface Permissible {
     boolean hasPermission(Perm perm);
     boolean hasPermission(String perm);
     List<Perm> getPermissions();
+    void delPermission();
+    void addPermissions(Perm... perms);
 }

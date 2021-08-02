@@ -5,12 +5,14 @@ import cc.sfclub.polar.database.converter.UserDataConverter;
 import cc.sfclub.polar.platfrom.IPlatform;
 import cc.sfclub.polar.user.data.UserData;
 import cc.sfclub.polar.user.perm.Perm;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "t_platfrom_user")
+@Data
 public class User implements Permissible{
     @GeneratedValue
     @Id
@@ -18,7 +20,9 @@ public class User implements Permissible{
     @Convert(converter = PlatformConverter.class)
     private IPlatform platform;
     @Convert(converter = UserDataConverter.class)
-    private UserData userData;
+    private transient UserData userData; // transient 可以防止被序列化
+    @Column(name = "userData")
+    private int p_userData;
     private String platformIdentifier; //such as Telegram UID, ??? UIN
 
     @Override
@@ -35,4 +39,15 @@ public class User implements Permissible{
     public List<Perm> getPermissions() {
         return userData.getPermissions();
     }
+
+    @Override
+    public void delPermission() {
+    //todo
+    }
+
+    @Override
+    public void addPermissions(Perm... perms) {
+
+    }
+
 }
