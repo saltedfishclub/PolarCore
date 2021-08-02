@@ -1,9 +1,5 @@
 package cc.sfclub.polar.platfrom;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,7 +8,7 @@ import java.util.List;
 public interface IPlatform {
 
     String getName();
-    List<IBot> getBots();
+    List<IPlatformBot> getBots();
 
     /**
      * 由 Core 定时调用刷新逻辑。

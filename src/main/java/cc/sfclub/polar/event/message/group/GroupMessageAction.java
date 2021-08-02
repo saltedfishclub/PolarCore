@@ -6,12 +6,10 @@ import cc.sfclub.polar.platfrom.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.AbstractList;
-
 @Getter
 @RequiredArgsConstructor
 public class GroupMessageAction extends GroupMessageEvent {
-    private final IBot bot;
+    private final IPlatformBot bot;
     private final AbstractChatGroup group;
     private final IMember sender;
     private final String message;
