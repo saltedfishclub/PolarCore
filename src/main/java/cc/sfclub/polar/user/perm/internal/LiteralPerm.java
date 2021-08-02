@@ -1,7 +1,7 @@
-package cc.sfclub.polar.user.perm;
+package cc.sfclub.polar.user.perm.internal;
 
-import cc.sfclub.polar.user.Perm;
 import cc.sfclub.polar.user.User;
+import cc.sfclub.polar.user.perm.Perm;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

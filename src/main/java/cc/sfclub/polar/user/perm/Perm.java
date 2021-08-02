@@ -1,7 +1,7 @@
-package cc.sfclub.polar.user;
+package cc.sfclub.polar.user.perm;
 
-import cc.sfclub.polar.user.perm.LiteralPerm;
-import org.jetbrains.annotations.ApiStatus;
+import cc.sfclub.polar.user.User;
+import cc.sfclub.polar.user.perm.internal.LiteralPerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,15 +46,18 @@ public abstract class Perm {
         } else {
             if (target.asLiteralNode().matches(orig.asLiteralNode())) result = Result.SUCCEED;
         }
-        /*if (Core.get() != null && Core.get().config().isDebug()) {
-            logger.info("[DEBUG][Perm] Compare: {} , {} == {}", orig, target, result);
-        }*/
+        logger.debug("[DEBUG][Perm] Compare: {} , {} == {}", orig, target, result);
         if (u == null) {
             return result;
         }
         return target.hasPermission(u, result);
     }
-
+    public Class<? extends PermInitializer<?>> serializer(){
+        return null;
+    }
+    public String deserialize(){
+        return asLiteralNode();
+    }
     /**
      * 只会比较权限节点是否一致
      *
@@ -83,5 +86,10 @@ public abstract class Perm {
     @Deprecated
     public String toString(){
         return asLiteralNode();
+    }
+
+    @Override
+    public int hashCode() {
+        return asLiteralNode().hashCode();
     }
 }
