@@ -14,7 +14,7 @@ public class Bot {
     private final EventChannel eventChannel;
     protected static Bot instance;
     public static Bot getInstance(){
-
+        return instance;
     }
     public static UserManager getUserManager(){
         return getInstance().userManager;
