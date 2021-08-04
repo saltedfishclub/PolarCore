@@ -4,7 +4,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version "6.0.0"
 }
 group 'cc.sfclub.polar'
-version '4.8.0' //EDIT CORE.JAVA
+version '5.0.0'
 
 assemble.dependsOn(shadowJar)
 sourceCompatibility = 11
@@ -28,7 +28,7 @@ javadoc {
 shadowJar {
     zip64 true
     manifest {
-        attributes 'Main-Class': 'cc.sfclub.core.Initializer'
+        attributes 'Main-Class': 'cc.sfclub.polar.loader.Loader'
     }
 }
 dependencies {
