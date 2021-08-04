@@ -49,7 +49,7 @@ public class UserManager {
     public User searchUserByPlatformID(String identifier){
 
     }
-    public UserGroup searchUserByGroup(String name){
+    public UserGroup searchGroupByName(String name){
 
     }
     public void save(User u){
