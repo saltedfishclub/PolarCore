@@ -11,7 +11,7 @@ public interface IMember extends IMessageSource, Permissible {
     String getNickName();
     String getUserName();
     String getHonor();
-
+    int id();
     /**
      * Nullable.
      * @return

@@ -10,6 +10,7 @@ public interface IContact extends IMessageSource, Permissible {
     String getNickName();
     String getUserName();
     boolean blocked();
+    int id();
     /**
      * Nullable.
      * @return
