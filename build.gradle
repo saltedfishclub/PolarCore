@@ -3,7 +3,7 @@ plugins {
     id "de.lukaskoerfer.gradle.delombok" version "0.2"
     id 'com.github.johnrengelman.shadow' version "6.0.0"
 }
-group 'com.github.saltedfishclub'
+group 'cc.sfclub.polar'
 version '4.8.0' //EDIT CORE.JAVA
 
 assemble.dependsOn(shadowJar)

@@ -18,11 +18,9 @@ public class User implements Permissible{
     @Id
     private int id;
     @Convert(converter = PlatformConverter.class)
-    private IPlatform platform;
+    private transient IPlatform platform;
     @Convert(converter = UserDataConverter.class)
-    private transient UserData userData; // transient 可以防止被序列化
-    @Column(name = "userData")
-    private int p_userData;
+    private UserData userData;
     private String platformIdentifier; //such as Telegram UID, ??? UIN
 
     @Override

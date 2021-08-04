@@ -11,4 +11,5 @@ public interface IMessageSource {
      */
     void send(String message);
     void reply(long id,String message);
+    boolean recall(long id,String message);
 }
