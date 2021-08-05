@@ -9,16 +9,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ServiceLoader;
 
+@Converter
 public class PermListConverter implements AttributeConverter<List<Perm>,String> {
     public static List<PermInitializer<?>> INITIALIZERS = new LinkedList<>();
+
     static {
         INITIALIZERS.add(new LiteralPermInitializer());
         //// TODO: 02/08/2021 Init or ...
     }
+
     @Override
     public String convertToDatabaseColumn(List<Perm> attribute) {
         JsonArray ja = new JsonArray();

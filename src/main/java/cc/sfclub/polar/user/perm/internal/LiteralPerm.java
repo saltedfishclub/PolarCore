@@ -1,6 +1,6 @@
 package cc.sfclub.polar.user.perm.internal;
 
-import cc.sfclub.polar.user.User;
+import cc.sfclub.polar.user.data.User;
 import cc.sfclub.polar.user.perm.Perm;
 import lombok.AllArgsConstructor;
 

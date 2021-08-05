@@ -4,7 +4,9 @@ import cc.sfclub.polar.Bot;
 import cc.sfclub.polar.platfrom.IPlatform;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
+@Converter
 public class PlatformConverter implements AttributeConverter<IPlatform,String > {
     @Override
     public String convertToDatabaseColumn(IPlatform attribute) {

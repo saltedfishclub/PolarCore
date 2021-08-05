@@ -1,7 +1,7 @@
 package cc.sfclub.polar.platfrom;
 
 import cc.sfclub.polar.user.Permissible;
-import cc.sfclub.polar.user.User;
+import cc.sfclub.polar.user.data.User;
 
 /**
  * 群成员。
