@@ -1,28 +1,31 @@
-package cc.sfclub.polar.user;
+package cc.sfclub.polar.user.data;
 
 import cc.sfclub.polar.database.converter.PlatformConverter;
-import cc.sfclub.polar.database.converter.UserDataConverter;
 import cc.sfclub.polar.platfrom.IPlatform;
-import cc.sfclub.polar.user.data.UserData;
+import cc.sfclub.polar.user.Permissible;
 import cc.sfclub.polar.user.perm.Perm;
+import io.ebean.Model;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Table(name = "t_platfrom_user")
+@Entity
 @Data
-public class User implements Permissible{
-    @GeneratedValue
+@EqualsAndHashCode(callSuper = true)
+public class User extends Model implements Permissible {
     @Id
-    @Column
     private long id;
+    //@ManyToOne(optional = false)
     @Convert(converter = PlatformConverter.class)
-    @Column
     private IPlatform platform;
-    @Convert(converter = UserDataConverter.class)
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id")
     @Column
     private UserData userData;
+
     @Column
     private String platformIdentifier; //such as Telegram UID, QQ UIN
 
@@ -43,7 +46,7 @@ public class User implements Permissible{
 
     @Override
     public void delPermission() {
-    //todo
+        //todo
     }
 
     @Override

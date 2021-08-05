@@ -1,6 +1,7 @@
 package cc.sfclub.polar.user;
 
 import cc.sfclub.polar.platfrom.IPlatform;
+import cc.sfclub.polar.user.data.User;
 import cc.sfclub.polar.user.data.UserData;
 import cc.sfclub.polar.user.perm.Perm;
 import io.ebean.Database;
