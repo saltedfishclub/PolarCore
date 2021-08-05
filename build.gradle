@@ -26,12 +26,35 @@ javadoc {
     source = "build/delombok/delombok"
     failOnError = false
 }
-
+task info {
+    println 'Building on '+System.getProperty("os.name") +" by user "+System.getProperty("user.name")
+}
 shadowJar {
     zip64 true
+    classifier(getCheckedOutGitCommitHash()+"-"+(System.getProperty("user.name").contains("bear") || System.getProperty("user.name").equals("runner")?"Official":"Community"))
     manifest {
-        attributes 'Main-Class': 'cc.sfclub.polar.loader.Loader'
+        attributes 'Main-Class': 'cc.sfclub.polar.loader.Loader',
+                'Build-Date': new Date().toString(),
+        'Build-By': System.getProperty("user.name"),
+        'Commit-Hash': getCheckedOutGitCommitHash()
     }
+}
+def getCheckedOutGitCommitHash() {
+    def gitFolder = "$projectDir/.git/"
+    def takeFromHash = 7
+    /*
+     * '.git/HEAD' contains either
+     *      in case of detached head: the currently checked out commit hash
+     *      otherwise: a reference to a file containing the current commit hash
+     */
+    def head = new File(gitFolder + "HEAD").text.split(":") // .git/HEAD
+    def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
+    // def isRef = head.length > 1     // ref: refs/heads/master
+
+    if(isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
+
+    def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
+    refHead.text.trim().take takeFromHash
 }
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
