@@ -7,7 +7,7 @@ public class PlatformManager {
 
     }
     public IPlatform getByName(String name){
-
+        return null;
     }
     private void refreshAll(){
 

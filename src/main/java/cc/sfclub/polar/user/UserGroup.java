@@ -2,6 +2,7 @@ package cc.sfclub.polar.user;
 
 import cc.sfclub.polar.database.converter.PermListConverter;
 import cc.sfclub.polar.user.perm.Perm;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
@@ -14,12 +15,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Table(name = "userGroup")
+@Getter
 public class UserGroup implements Permissible{
     public static final UserGroup DEFAULT = new UserGroup("_");
     @NonNull
     @Deprecated
     @Convert(converter = PermListConverter.class)
-    public List<Perm> permList = new LinkedList<>();
+    private List<Perm> permList = new LinkedList<>();
+    @Id
     @Setter
     private String name;
     /**
@@ -27,14 +30,6 @@ public class UserGroup implements Permissible{
      */
     @Setter
     private String extend;
-
-    /**
-     * Only for ORM Initial.(NoArgConstructor required)
-     */
-    @Deprecated
-    public UserGroup() {
-        name = null;
-    }
 
     protected UserGroup(String name, Perm... InitialPerms) {
         permList.addAll(Arrays.asList(InitialPerms));
@@ -72,10 +67,5 @@ public class UserGroup implements Permissible{
                 permList.add(perm1);
             }
         }
-    }
-
-    @Id
-    public String getName() {
-        return name;
     }
 }
