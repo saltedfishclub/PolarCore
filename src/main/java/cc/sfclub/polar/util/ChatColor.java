@@ -11,6 +11,9 @@ public class ChatColor {
     static {
         COLORS.put('b',AnsiString.Color.LightBlue);
         COLORS.put('a',AnsiString.Color.Green);
+        COLORS.put('c',AnsiString.Color.Red);
+        COLORS.put('d',AnsiString.Color.Magenta);
+        COLORS.put('e',AnsiString.Color.Yellow);
         COLORS.put('r',AnsiString.Color.Reset);
     }
 
@@ -26,48 +29,27 @@ public class ChatColor {
         StringBuilder sb = new StringBuilder();
         StringBuilder concating=null;
         for(var i = 0;i!=str.length();i++){
-            char character = str.charAt(i);
-            if(character == '\\' ){
-                boolean skip = i == 0 || str.charAt(i - 1) != '\\'; // 如果前面不是一个 \
-                if(skip){
-                    sb.append(character);
-                }else{
-                    continue;
-                }
-            }
-            if (character == '&') {
-                boolean skip = i!=0 && str.charAt(i - 1) == '\\'; // 如果前面是一个 \
-                if(skip){
-                    sb.append(character);
-                }else{
-                    if(i != str.length()-1){ // 是否是末尾
-                        char color = str.charAt(i+1);
-                        if(COLORS.containsKey(color)){
-                            if(concating!=null){
-                                sb.append(attribute.overlay(concating.toString()));
-                            }
-                            concating=null;
-                            attribute=COLORS.get(color);
-                            flag=true;
-                            i = i+1;
-                            continue;
-                        }else{
-                            sb.append(character);
-                        }
-                    }else{
-                        sb.append(character);
-                    }
-                }
-            }
-            if (flag) {
-                if(concating==null){
-                    concating = new StringBuilder();
-                }
-                concating.append(character);
-            }
-            if (concating !=null && i == str.length()-1) {
-                sb.append(attribute.overlay(concating.toString()));
-            }
+            char character=str.charAt(i);
+           if(character=='&' && i != str.length()-1){
+               char color = str.charAt(i+1);
+               if(!COLORS.containsKey(color)){
+                   continue;
+               }
+               if(concating!=null){
+                   sb.append(attribute.overlay(concating.toString()));
+               }
+               i=i+1;
+               flag=true;
+               attribute=COLORS.get(color);
+               concating=new StringBuilder();
+               continue;
+           }
+           if(flag){
+               concating.append(character);
+           }
+           if(i==str.length()-1 && flag){
+               sb.append(concating).append("&r");
+           }
         }
         return sb.toString();
     }

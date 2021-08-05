@@ -36,7 +36,8 @@ shadowJar {
         attributes 'Main-Class': 'cc.sfclub.polar.loader.Loader',
                 'Build-Date': new Date().toString(),
         'Build-By': System.getProperty("user.name"),
-        'Commit-Hash': getCheckedOutGitCommitHash()
+        'Commit-Hash': getCheckedOutGitCommitHash(),
+        'Version': project.version
     }
 }
 def getCheckedOutGitCommitHash() {
