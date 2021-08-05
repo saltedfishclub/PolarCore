@@ -17,23 +17,19 @@ public class ChatColor {
         COLORS.put('r',AnsiString.Color.Reset);
     }
 
-    /**
-     * Buggy.
-     * @param str
-     * @return
-     */
     @ApiStatus.Experimental
-    public static final String of(String str){
-        boolean flag=false;
-        AnsiString.Attribute attribute=null;
+    public static final String of(String star) {
+        String str = star + "&r";
+        boolean flag = false;
+        AnsiString.Attribute attribute = null;
         StringBuilder sb = new StringBuilder();
-        StringBuilder concating=null;
-        for(var i = 0;i!=str.length();i++){
-            char character=str.charAt(i);
-           if(character=='&' && i != str.length()-1){
-               char color = str.charAt(i+1);
-               if(!COLORS.containsKey(color)){
-                   continue;
+        StringBuilder concating = null;
+        for (var i = 0; i != str.length(); i++) {
+            char character = str.charAt(i);
+            if (character == '&' && i != str.length() - 1) {
+                char color = str.charAt(i + 1);
+                if (!COLORS.containsKey(color)) {
+                    continue;
                }
                if(concating!=null){
                    sb.append(attribute.overlay(concating.toString()));
@@ -48,7 +44,7 @@ public class ChatColor {
                concating.append(character);
            }
            if(i==str.length()-1 && flag){
-               sb.append(concating).append("&r");
+               sb.append(concating);
            }
         }
         return sb.toString();
