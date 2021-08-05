@@ -38,6 +38,6 @@ public class Loader extends Bot {
         String buildDate = manifest.getMainAttributes().getValue("Build-Date");
         String buildBy = manifest.getMainAttributes().getValue("Build-By");
         boolean thirdparty = !buildBy.equals("runner");
-        log.info(ChatColor.of("&bBuild &a" + buildVer + "-" + buildCommit + " &bDate: &a" + buildDate + " " + (thirdparty ? "&cTHIRD PARTY BUILD BY " + buildBy : "&bCI BUILD")));
+        log.info(ChatColor.of("&bBuild &a" + buildVer + "+" + buildCommit + " &bDate: &a" + buildDate + " " + (thirdparty ? "&cTHIRD PARTY BUILD BY " + buildBy : "&bCI BUILD")));
     }
 }

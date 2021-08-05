@@ -5,7 +5,7 @@ plugins {
     id('io.ebean') version '12.8.0'
 }
 group 'cc.sfclub.polar'
-version '5.0.0'
+version '5.0.0-M1-dev1'
 
 assemble.dependsOn(shadowJar)
 sourceCompatibility = 11
