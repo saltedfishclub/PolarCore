@@ -2,7 +2,7 @@ package cc.sfclub.polar;
 
 import cc.sfclub.polar.platfrom.PlatformManager;
 import cc.sfclub.polar.user.UserManager;
-import com.dieselpoint.norm.Database;
+import io.ebean.Database;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -10,17 +10,20 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Table(name = "t_platfrom_user")
 @Data
 public class User implements Permissible{
     @GeneratedValue
     @Id
-    private int id;
+    @Column
+    private long id;
     @Convert(converter = PlatformConverter.class)
-    private transient IPlatform platform;
+    @Column
+    private IPlatform platform;
     @Convert(converter = UserDataConverter.class)
+    @Column
     private UserData userData;
+    @Column
     private String platformIdentifier; //such as Telegram UID, ??? UIN
 
     @Override

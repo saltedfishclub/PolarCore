@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "de.lukaskoerfer.gradle.delombok" version "0.2"
     id 'com.github.johnrengelman.shadow' version "6.0.0"
+    id('io.ebean') version '12.8.0'
 }
 group 'cc.sfclub.polar'
 version '5.0.0'
@@ -39,18 +40,23 @@ dependencies {
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
     implementation group: 'asia.kala', name: 'kala-ansi', version: '0.1.0'
     //Logger
-    // https://mvnrepository.com/artifact/org.tinylog/tinylog
-    implementation group: 'org.tinylog', name: 'tinylog', version: '1.3.6'
-
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compileOnly 'org.jetbrains:annotations:21.0.1'
     //Database
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
     implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
-    // https://mvnrepository.com/artifact/com.dieselpoint/norm
-    implementation group: 'com.dieselpoint', name: 'norm', version: '0.8.10'
+    compile 'io.ebean:ebean:12.8.0'
+
+    // query bean generation
+    annotationProcessor 'io.ebean:querybean-generator:12.8.0'
+
+    testCompile 'io.ebean:ebean-test:12.8.0'
 
     //Utils
-    implementation 'org.reflections:reflections:0.9.12'
+    //implementation 'org.reflections:reflections:0.9.12'
     compile 'com.github.iceBear67:Util:96b6e38669'
     compile 'com.mojang:brigadier:1.0.17'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'

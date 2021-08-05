@@ -7,6 +7,7 @@ import cc.sfclub.polar.database.converter.PermListConverter;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Table(name = "t_user_data")
@@ -18,7 +19,7 @@ public class UserData implements Permissible {
     public String nickName;
     public long registrationTime;
     @Convert(converter=PermListConverter.class)
-    public List<Perm> permissionNodes;
+    public List<Perm> permissionNodes=new LinkedList<>();
     @Convert
     public UserGroup userGroup;
 
