@@ -2,8 +2,8 @@ package cc.sfclub.polar.user;
 
 import cc.sfclub.polar.database.converter.PermListConverter;
 import cc.sfclub.polar.user.perm.Perm;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.Convert;
@@ -15,12 +15,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@AllArgsConstructor
 @Table(name = "userGroup")
 @Entity
 @Getter
 public class UserGroup implements Permissible{
     public static final UserGroup DEFAULT = new UserGroup("_");
-    @NonNull
     @Deprecated
     @Convert(converter = PermListConverter.class)
     private List<Perm> permList = new LinkedList<>();
