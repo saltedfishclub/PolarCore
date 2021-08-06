@@ -27,7 +27,7 @@ javadoc {
     failOnError = false
 }
 task info {
-    println 'Building on '+System.getProperty("os.name") +" by user "+System.getProperty("user.name")
+    println 'Building on ' + System.getProperty("os.name") + " by user " + System.getProperty("user.name")
 }
 shadowJar {
     zip64 true

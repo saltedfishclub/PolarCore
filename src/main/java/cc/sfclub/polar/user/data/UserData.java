@@ -8,14 +8,12 @@ import io.ebean.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Convert;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
 @Table(name = "t_user_data")
+@Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UserData extends Model implements Permissible {

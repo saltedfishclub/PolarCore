@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.Convert;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Table(name = "userGroup")
+@Entity
 @Getter
 public class UserGroup implements Permissible{
     public static final UserGroup DEFAULT = new UserGroup("_");
