@@ -20,7 +20,8 @@ public class UserManager {
         return u;
     }
     public User newUser(int platformId,IPlatform platform,boolean createUserData){
-        //// TODO: 02/08/2021
+        // TODO: 02/08/2021
+
         return null;
     }
     public UserGroup newGroup(String groupName, Perm... initialPerms){
