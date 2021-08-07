@@ -6,6 +6,7 @@ import cc.sfclub.polar.user.data.UserData;
 import cc.sfclub.polar.user.data.query.QUser;
 import cc.sfclub.polar.user.data.query.QUserData;
 import cc.sfclub.polar.user.perm.Perm;
+import cc.sfclub.polar.user.query.QUserGroup;
 import io.ebean.Database;
 import io.ebean.Ebean;
 import io.ebean.Query;
@@ -110,12 +111,18 @@ public class UserManager {
         return user;
     }
 
-    //TODO Fix EBean generate issue
     public UserGroup searchGroupByName(String name) {
-        return null;
+        QUserGroup qUserGroup = QUserGroup.alias();
+
+        UserGroup userGroup = qUserGroup
+                .select(qUserGroup.name, qUserGroup.extend, qUserGroup.permList)
+                .name.eq(name)
+                .findOne();
+
+        return userGroup;
     }
 
     public void save(User u) {
-
+        //TODO 2021.8.7
     }
 }
