@@ -15,6 +15,5 @@ public class TestEventChannel {
         ec.publish("abcd");
         ec.publish("AcCD");
 
-
     }
 }

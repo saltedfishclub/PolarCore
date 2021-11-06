@@ -6,6 +6,7 @@ import cc.sfclub.polar.api.platfrom.IPlatformManager;
 import cc.sfclub.polar.api.user.IUserManager;
 import cc.sfclub.polar.internal.loader.Loader;
 
+import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 
 public interface Bot {
@@ -21,4 +22,5 @@ public interface Bot {
 
     Supplier<IEventChannel<Event>> getChannelFactory();
 
+    ExecutorService getCommonPool();
 }

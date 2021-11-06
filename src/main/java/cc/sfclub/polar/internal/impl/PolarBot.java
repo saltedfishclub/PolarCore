@@ -9,6 +9,8 @@ import cc.sfclub.polar.api.user.IUserManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
@@ -18,4 +20,5 @@ public class PolarBot implements Bot {
     private final IPlatformManager platformManager;
     private final ChannelHolder<Event> eventChannel;
     private final Supplier<IEventChannel<Event>> channelFactory;
+    private final ExecutorService commonPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 }
