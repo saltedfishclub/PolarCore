@@ -33,7 +33,7 @@ shadowJar {
     zip64 true
     classifier(getCheckedOutGitCommitHash()+"-"+(System.getProperty("user.name").contains("bear") || System.getProperty("user.name").equals("runner")?"Official":"Community"))
     manifest {
-        attributes 'Main-Class': 'cc.sfclub.polar.loader.Loader',
+        attributes 'Main-Class': 'cc.sfclub.polar.internal.loader.Loader',
                 'Build-Date': new Date().toString(),
         'Build-By': System.getProperty("user.name"),
         'Commit-Hash': getCheckedOutGitCommitHash(),
