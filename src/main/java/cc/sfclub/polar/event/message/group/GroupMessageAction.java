@@ -2,9 +2,14 @@ package cc.sfclub.polar.event.message.group;
 
 import cc.sfclub.polar.event.message.GroupMessageEvent;
 import cc.sfclub.polar.event.message.MessageAction;
-import cc.sfclub.polar.platfrom.*;
+import cc.sfclub.polar.platfrom.AbstractChatGroup;
+import cc.sfclub.polar.platfrom.IMember;
+import cc.sfclub.polar.platfrom.IMessageSource;
+import cc.sfclub.polar.platfrom.IPlatformBot;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.time.Instant;
 
 @Getter
 @RequiredArgsConstructor
@@ -14,7 +19,7 @@ public class GroupMessageAction extends GroupMessageEvent {
     private final IMember sender;
     private final String message;
     private final long id;
-    private final long time;
+    private final Instant time;
     private MessageAction action;
     @Override
     public IMessageSource getMessageSource() {

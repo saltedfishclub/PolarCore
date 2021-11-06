@@ -1,33 +1,28 @@
 package cc.sfclub.polar.user.data;
 
-import cc.sfclub.polar.database.converter.PermListConverter;
+
+import cc.sfclub.polar.platfrom.PlatformIdentifier;
 import cc.sfclub.polar.user.Permissible;
 import cc.sfclub.polar.user.UserGroup;
 import cc.sfclub.polar.user.perm.Perm;
-import io.ebean.Model;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-import javax.persistence.Convert;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.LinkedList;
+import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-@Table(name = "t_user_data")
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class UserData extends Model implements Permissible {
-    @Id
-    @GeneratedValue
-    public int id;
-    public String nickName;
-    public long registrationTime;
-    @Convert(converter = PermListConverter.class)
-    public List<Perm> permissionNodes = new LinkedList<>();
-    @Convert
-    public UserGroup userGroup;
+
+@Getter
+public class UserData implements Permissible {
+
+    private String nickName;
+    private Instant registrationTime;
+
+    private List<PlatformIdentifier> relatedUsers;
+    private Set<Perm> permissionNodes = new LinkedHashSet<>();
+
+    private UserGroup userGroup;
 
     @Override
     public boolean hasPermission(Perm perm) {
@@ -41,7 +36,7 @@ public class UserData extends Model implements Permissible {
     }
 
     @Override
-    public List<Perm> getPermissions() {
+    public Set<Perm> getPermissions() {
         return permissionNodes;
     }
 

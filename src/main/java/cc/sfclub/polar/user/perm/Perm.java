@@ -1,6 +1,6 @@
 package cc.sfclub.polar.user.perm;
 
-import cc.sfclub.polar.user.data.User;
+import cc.sfclub.polar.user.User;
 import cc.sfclub.polar.user.perm.internal.LiteralPerm;
 import cc.sfclub.polar.user.perm.internal.LiteralPermInitializer;
 import org.slf4j.Logger;

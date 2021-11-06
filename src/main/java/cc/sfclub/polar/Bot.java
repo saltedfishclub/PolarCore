@@ -1,28 +1,30 @@
 package cc.sfclub.polar;
 
 import cc.sfclub.polar.platfrom.PlatformManager;
-import cc.sfclub.polar.user.UserManager;
-import io.ebean.Database;
-import lombok.Getter;
+import cc.sfclub.polar.user.IUserManager;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class Bot {
-    private final UserManager userManager;
+    private final IUserManager userManager;
     private final PlatformManager platformManager;
-    private final Database database;
     private final EventChannel eventChannel;
     protected static Bot instance;
-    public static Bot getInstance(){
+
+    public static Bot getInstance() {
         return instance;
     }
-    public static UserManager getUserManager(){
+
+    public static IUserManager getUserManager() {
         return getInstance().userManager;
     }
-    public static PlatformManager getPlatformManager(){
+
+    public static PlatformManager getPlatformManager() {
         return getInstance().platformManager;
     }
-    public static EventChannel getEventChannel(){
+
+    public static EventChannel getEventChannel() {
         return getInstance().eventChannel;
     }
+
 }
