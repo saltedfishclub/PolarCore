@@ -1,10 +1,9 @@
 package cc.sfclub.test;
 
-import cc.sfclub.polar.user.perm.Perm;
-import cc.sfclub.polar.user.perm.internal.LiteralPerm;
+import cc.sfclub.polar.api.user.perm.Perm;
+import cc.sfclub.polar.api.user.perm.internal.LiteralPerm;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runners.JUnit4;
 
 import java.util.Arrays;
 
