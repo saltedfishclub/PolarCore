@@ -31,17 +31,12 @@ public class UserData implements Permissible {
     }
 
     @Override
-    public boolean hasPermission(String perm) {
-        return permissionNodes.contains(Perm.of(perm));
-    }
-
-    @Override
     public Set<Perm> getPermissions() {
         return permissionNodes;
     }
 
     @Override
-    public void delPermission() {
+    public void delPermission(Perm perm) {
         ///todo
     }
 

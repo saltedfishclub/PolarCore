@@ -7,10 +7,8 @@ import java.util.Set;
 public interface Permissible {
     boolean hasPermission(Perm perm);
 
-    boolean hasPermission(String perm);
-
     Set<Perm> getPermissions();
 
-    void delPermission();
+    void delPermission(Perm perm);
     void addPermissions(Perm... perms);
 }
