@@ -69,15 +69,6 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compileOnly 'org.jetbrains:annotations:21.0.1'
-    //Database
-    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
-    implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
-    compile 'io.ebean:ebean:12.8.0'
-
-    // query bean generation
-    annotationProcessor 'io.ebean:querybean-generator:12.8.0'
-
-    testCompile 'io.ebean:ebean-test:12.8.0'
 
     //Utils
     //implementation 'org.reflections:reflections:0.9.12'
