@@ -1,8 +1,12 @@
 package cc.sfclub.polar.api;
 
+import cc.sfclub.polar.api.event.Event;
+import cc.sfclub.polar.api.event.IEventChannel;
 import cc.sfclub.polar.api.platfrom.IPlatformManager;
 import cc.sfclub.polar.api.user.IUserManager;
 import cc.sfclub.polar.internal.loader.Loader;
+
+import java.util.function.Supplier;
 
 public interface Bot {
     static Bot getInstance() {
@@ -13,6 +17,8 @@ public interface Bot {
 
     IPlatformManager getPlatformManager();
 
-    IEventChannel getEventChannel();
+    ChannelHolder<Event> getEventChannel();
+
+    Supplier<IEventChannel<Event>> getChannelFactory();
 
 }
