@@ -26,4 +26,5 @@ public interface IEventChannel<T> {
 
     IEventChannel<T> receive(Consumer<T> listener);
 
+    IEventChannel<T> receiveAsync(Consumer<T> listener);
 }

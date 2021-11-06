@@ -5,6 +5,8 @@ import cc.sfclub.polar.api.event.IEventChannel;
 import cc.sfclub.polar.internal.impl.event.operator.*;
 import lombok.RequiredArgsConstructor;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -56,6 +58,12 @@ public class EventChannelImpl<T> implements IEventChannel<T> {
     @Override
     public IEventChannel<T> receive(Consumer<T> listener) {
         operator.setNext(new DeliverOperator<>(listener));
+        return this;
+    }
+
+    @Override
+    public IEventChannel<T> receiveAsync(Consumer<T> listener) {
+        operator.setNext(new AsyncDeliverOperator<>(listener));
         return this;
     }
 
