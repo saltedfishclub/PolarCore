@@ -16,17 +16,11 @@ public interface User extends Permissible {
         return getData().hasPermission(perm);
     }
 
-
-    default boolean hasPermission(String perm) {
-        return getData().hasPermission(perm);
-    }
-
-
     default Set<Perm> getPermissions() {
         return getData().getPermissions();
     }
 
-    void delPermission();
+    default void delPermission(Perm perm) {getData().delPermission(perm);}
 
 
     default void addPermissions(Perm... perms) {

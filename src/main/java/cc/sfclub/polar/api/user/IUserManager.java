@@ -11,7 +11,7 @@ public interface IUserManager {
 
     UserGroup newGroup(String groupName, Perm... initialPerms);
 
-    User searchUserByID(int id);
+    User searchUserByID(PlatformIdentifier id);
 
     UserData searchUserDataByID(int id);
 
@@ -21,21 +21,13 @@ public interface IUserManager {
      * @param identifier
      * @return
      */
-    boolean existsUser(String identifier);
-
-    /**
-     * For polar user id.
-     *
-     * @param id
-     * @return
-     */
-    boolean existsUser(int id);
+    boolean existsUser(PlatformIdentifier identifier);
 
     boolean existsUserData(int id);
 
     boolean existsName(String name);
 
-    User searchUserByPlatformID(String identifier);
+    User searchUserByPlatformID(PlatformIdentifier identifier);
 
     UserGroup searchGroupByName(String name);
 

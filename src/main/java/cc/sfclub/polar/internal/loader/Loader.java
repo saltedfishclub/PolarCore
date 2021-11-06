@@ -1,7 +1,9 @@
 package cc.sfclub.polar.internal.loader;
 
 import cc.sfclub.polar.api.Bot;
+import cc.sfclub.polar.api.user.IUserManager;
 import cc.sfclub.polar.api.util.ChatColor;
+import cc.sfclub.polar.internal.impl.user.MemoryUserManagerImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -36,6 +38,8 @@ public class Loader {
         String buildBy = manifest.getMainAttributes().getValue("Build-By");
         boolean thirdparty = !buildBy.equals("runner");
         log.info(ChatColor.of("&bBuild &a" + buildVer + "+" + buildCommit + " &bDate: &a" + buildDate + " " + (thirdparty ? "&cTHIRD PARTY BUILD BY " + buildBy : "&bCI BUILD")));
-        botInst = null; // todo
+        // Initializing the bot
+        IUserManager um = new MemoryUserManagerImpl();
+
     }
 }

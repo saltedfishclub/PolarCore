@@ -1,12 +1,14 @@
 package cc.sfclub.polar.api.platfrom;
 
 import cc.sfclub.polar.api.user.User;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class PlatformIdentifier {
     private final String identifier;
     private final IPlatform platform;
