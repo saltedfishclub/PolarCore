@@ -21,7 +21,3 @@ If you want to use the latest build:
 ## How messages process
 User Messages from diffirient platforms <-> Adapter (Convert to CatCodes) <-> PolarCore and plugins
 
-## Demo
-Polar :0 (??? UIN)
-(Interaction should be in a Group,e.g `0(???)`)
-keep running on latest PolarCore.
