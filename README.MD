@@ -23,10 +23,6 @@ Message Flow:
 Used libraries:  
 NutDao,lombok,GSon,Reflections,Druid,Slf4j,Logback,EventBus
 
-## Demo
-Polar QQ:3325273573
-(Interaction should be in a Group,like `443098623(QQ)`)
-keep running on latest PolarCore. 
 
 ## SpecialThanks
 @MeiVinEight ~ Plugin System
