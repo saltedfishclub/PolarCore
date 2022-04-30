@@ -18,8 +18,3 @@ If you want to use the latest build:
 
 ## Structure
 User Messages <-> Wrappers (Convert to CatCodes) <-> PolarCore
-
-## Demo
-Polar :0 (??? UIN)
-(Interaction should be in a Group,e.g `0(???)`)
-keep running on latest PolarCore.
