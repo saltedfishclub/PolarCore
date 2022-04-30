@@ -23,10 +23,5 @@ Message Flow:
 Used libraries:  
 NutDao,lombok,GSon,Reflections,Druid,Slf4j,Logback,EventBus
 
-## Demo
-Polar ???:0
-(Interaction should be in a Group,like `0(???)`)
-keep running on latest PolarCore. 
-
 ## SpecialThanks
 @MeiVinEight ~ Plugin System
